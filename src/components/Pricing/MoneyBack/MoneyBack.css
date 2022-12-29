@@ -1,0 +1,15 @@
+.moneyBack{
+    text-align: left;
+}
+.MoneyBackText{
+    padding-right: 16%;
+}
+@media only screen and (max-width: 750px) {
+
+    .moneyBack{
+        text-align: center;
+    }
+    .MoneyBackText{
+        padding-right: 0%;
+    }
+}

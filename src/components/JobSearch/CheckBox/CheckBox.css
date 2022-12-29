@@ -1,0 +1,13 @@
+.ant-checkbox-checked .ant-checkbox-inner {
+  border-color: white;
+  background-color: #0a2c66;
+}
+.ant-slider-step {
+  background-color: #e6e6e6;
+  height: 5px;
+  border-radius: 10px;
+}
+.ant-slider-handle {
+  background-color: #0a2c66;
+  border-color: #0a2c66;
+}

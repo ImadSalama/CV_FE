@@ -1,0 +1,19 @@
+.ant-collapse-header {
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 5%;
+  font-family: AvenirTextBlack;
+}
+.ant-collapse-content-box {
+  font-size: 10px;
+  font-family: AvenirTextBlack;
+}
+.ant-collapse-borderless > .ant-collapse-item {
+  border-bottom: none;
+}
+.ant-collapse > .ant-collapse-item {
+  border-bottom: none;
+}
+.ant-collapse{
+background-color: transparent;
+}

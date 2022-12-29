@@ -1,0 +1,108 @@
+.ant-input-affix-wrapper:hover {
+  border-color: #ff4309 !important;
+  z-index: 1;
+}
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: #ff4309 !important;
+  border-right-width: 0.5px !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.5px rgb(255 67 9 / 20%);
+}
+.ant-input-affix-wrapper:hover {
+  border-color: #ff4309 !important;
+  z-index: 1;
+}
+.ant-input-affix-wrapper-focused,
+.ant-input-affix-wrapper:focus {
+  z-index: 1;
+}
+.ant-input-affix-wrapper:hover {
+  border-color: #ff4309 !important;
+  z-index: 1;
+}
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: #ff4309 !important;
+  border-right-width: 0.5px !important;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 2px rgb(255 67 9 / 20%);
+  box-shadow: 0 0 0 0.5px rgb(255 67 9 / 20%);
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: #ff4309 !important;
+}
+#CVMakingInputField:hover {
+  border-color: #ff4309 !important;
+}
+#CVMakingInputField {
+  border-radius: 5px !important;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px 2.5px 4px 0px rgba(0, 0, 0, 0.14);
+  margin: 24px 0;
+}
+#CVMakingInputField:hover {
+  border: 1px solid #ff4309;
+}
+
+#antInputField::placeholder {
+  color: #333333;
+  font-family: AvenirTextBlack;
+}
+
+#dateFields::placeholder {
+  color: #333333;
+  font-family: AvenirTextBlack;
+}
+.ant-picker-prev-icon,
+.ant-picker-super-prev-icon {
+  color: #ff4309;
+  background-image: url("./../DateField/next.png");
+  transform: rotate(45deg);
+}
+.ant-picker-next-icon,
+.ant-picker-super-next-icon {
+  color: #ff4309;
+  background-image: url("./../DateField/next.png");
+  transform: rotate(226deg);
+}
+.ant-picker-prev-icon::before,
+.ant-picker-next-icon::before,
+.ant-picker-super-prev-icon::before,
+.ant-picker-super-next-icon::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border: 0 solid currentColor;
+  border-width: 1.5px 0 0 1.5px;
+  content: unset;
+}
+.ant-picker-super-prev-icon::after,
+.ant-picker-super-next-icon::after {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border: 0 solid currentColor;
+  border-width: 1.5px 0 0 1.5px;
+  content: unset;
+}
+
+.ant-picker-dropdown {
+  border: 2px solid #0a2c66;
+}
+.ant-picker-header {
+  color: rgb(0 0 0 / 85%);
+  font-weight: bold;
+}
+.ant-picker-cell-in-view {
+  color: #0a2c66;
+  font-family: AvenirTextBlack;
+}

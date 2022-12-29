@@ -1,0 +1,38 @@
+.mainBorder {
+  border-radius: 10px;
+  width: 70%;
+  height: 40px;
+  display: flex;
+  padding: 0px 5px;
+  justify-content: space-between;
+  padding-top: 7px;
+}
+.home {
+  background-image: url("./Rectangle2992.png");
+}
+.pricing {
+  background-image: url("./Rectangle2992@2x.png");
+}
+.firstCategory {
+  color: white !important;
+  width: 50%;
+}
+.alignChange {
+  width: 100%;
+  display: flex;
+  justify-content: center !important;
+}
+.firstCategoryDiv {
+  text-align: center;
+  width: 50%;
+}
+.innerBorder {
+  background-color: white !important;
+  height: 30px;
+  border-radius: 5px;
+  width: 65%;
+  text-align: center;
+  color: #0a2c66;
+  padding-top: 2px;
+  margin-top: -2px;
+}

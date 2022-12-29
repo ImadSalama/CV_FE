@@ -1,0 +1,16 @@
+.sidenav {
+    height: 100%;
+    display:none;
+    position: relative;
+    z-index: 100;
+    left: 0;
+    background-color: #FFFFFF;
+    transition: 0.5s;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+ 
+  .show{
+    width: 250px;
+    display:block;
+    transition: 0.5s;
+  }

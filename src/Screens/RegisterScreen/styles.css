@@ -1,0 +1,121 @@
+.register {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  /* margin-top: 3rem; */
+  width: 100vw;
+  background-color: white;
+}
+.register .image-background {
+  min-height: 80%;
+  min-width: 80%;
+  background-image: url("../../images/CardBase.png");
+  background-size: cover;
+  background-position: center center;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.register .form {
+  max-width: 60rem;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+.register .form h1 {
+  font-weight: 500;
+}
+
+.register .form .password {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2px;
+}
+.register .form label {
+  margin-top: 5px;
+  display: block;
+  color: #0a2c66;
+}
+.register .form input,
+.register .form select {
+  margin-top: 4px;
+  padding: 5px 10px;
+  font-size: 15px;
+  width: 100%;
+}
+.register .form select {
+  width: 100%;
+}
+
+.register .form .forgot-pass {
+  color: #0a2c66;
+  font-size: 15px;
+  margin-top: 10px;
+}
+.register .form-button {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+.register .form-button button {
+  padding: 8px 10px;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  background-color: #0a2c66;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+.ant-input {
+  box-shadow: none !important;
+}
+.register .form .confirm {
+  display: flex;
+  flex-direction: column;
+}
+.register .form p {
+  color: #0a2c66;
+  font-size: 15px;
+}
+.register .form a {
+  color: #0a2c66;
+  text-decoration: none;
+}
+.register .content {
+  margin: 0 100px;
+}
+.register .dob {
+  margin-top: 10px;
+}
+.register .dob-inputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+select {
+  padding: 5px;
+}
+
+/* Responsiveness */
+/* Max Screen Size = 1050px */
+@media only screen and (max-width: 1050px) {
+  .image-background {
+    height: 90%;
+    width: 90%;
+  }
+}
+/* Max Screen Size = 850px */
+@media only screen and (max-width: 850px) {
+  body {
+    background-color: #f0f0f2;
+  }
+  .image-background {
+    background-image: none;
+    align-items: center;
+    justify-content: center;
+  }
+}

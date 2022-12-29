@@ -1,0 +1,17 @@
+.CVMakingButtonBack{
+color: #0A2C66;
+background-color: #FFFFFF;
+border: #0A2C66 solid 1px;
+}
+
+.CVMakingButtonNext{
+    background-color: #0A2C66;
+    color: white;
+}
+.CVMakingButton{
+    font-family: AvenirTextBlack;
+    padding: 5px 25px;
+    font-size: 15px;
+    border-radius: 5px;
+
+}

@@ -1,0 +1,12 @@
+.NameBadge {
+  background-color: #f4f4f4;
+  color: #0a2c66;
+  font-family: RobotoHeadingMedium;
+  margin-top: 15px;
+}
+.NameBadgeWithMargin {
+  background-color: #f4f4f4;
+  color: #0a2c66;
+  margin-top: 5%;
+  font-family: RobotoHeadingMedium;
+}

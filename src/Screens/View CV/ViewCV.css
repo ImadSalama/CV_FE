@@ -1,0 +1,53 @@
+.viewCVbutton{
+    background-color: #F9F9F9;
+    font-size: 12px;
+    font-family: AvenirText;
+    border-radius: 5%;
+    padding: 10px 25px;
+    opacity: 0.7;
+}
+
+.viewCVImg{
+    max-width: 100%;
+    max-height: 100%;
+}
+.viewCVbutton:hover{
+   
+    opacity: 1;
+}
+.viewCVTemplateHeading{
+
+font-size: 30px;
+font-family: RobotoHeadingMedium;
+color: white;
+}
+
+.viewCVTemplateParagraph{
+    font-size: 15px;
+    margin-top: 4%;
+    font-family: AvenirText;
+    color: white;
+    padding-right: 20%;
+}
+.btn{
+    margin-top: 7% ;
+}
+.big-banner{
+    background-image: url("./../../Assets/images/Path50309.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+   
+
+@media only screen and (max-width: 900px) {
+    .big-banner{
+        background-size: 1000px;
+    }
+    .viewCVTemplateHeading{
+        font-size: 20px!important;
+    }
+    .viewCVTemplateParagraph{
+        font-size: 11px;
+    }
+}

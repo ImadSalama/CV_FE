@@ -1,0 +1,16 @@
+#inp {
+  height: 40px;
+  border-color: white;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 4px 4px 5px #e9e5e5;
+}
+#inp::placeholder {
+  color: black;
+  font-size: 12px;
+}
+#inp:focus {
+  border-color: #dd4205;
+  -webkit-box-shadow: 0 0 0 1px #e9e5e5(40, 72, 229, 0.2);
+  box-shadow: 5px 5px 5px 5px #e9e5e5(40, 72, 229, 0.2);
+}

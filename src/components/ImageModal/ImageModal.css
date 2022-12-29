@@ -1,0 +1,16 @@
+.name {
+  margin-top: 12px;
+  text-transform: capitalize;
+}
+
+.ant-modal-body img:hover {
+  cursor: pointer;
+}
+.ant-modal-body {
+  overflow-y: scroll;
+  /* max-height: 300px; */
+}
+
+/* .imageColumn {
+  background-color: red;
+} */

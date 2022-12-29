@@ -1,0 +1,15 @@
+.title{
+    background-image: url('./../../Assets/images/Path50309.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+ }
+
+ @media only screen and (max-width: 900px) {
+    .title{
+        background-image: url('./../../Assets/images/Path50309.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+        background-size: 1000px;
+     }
+
+}

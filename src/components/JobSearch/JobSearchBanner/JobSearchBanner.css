@@ -1,0 +1,91 @@
+.manImage {
+  max-width: 100%;
+  border: #707070;
+  fill: #ffffff;
+  filter: blur(15px);
+}
+.frontImage {
+  position: absolute;
+  top: 0%;
+  left: 0px;
+  max-width: 100%;
+  fill: #000000;
+  opacity: 0.64;
+}
+.heart {
+  position: absolute;
+  margin-left: -12px;
+  /* left: 0%; */
+}
+
+.jobSearchHeadings {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  text-align: center;
+}
+#jobSearch {
+  width: 100%;
+  height: 45px;
+  border: none;
+  border-radius: 3px;
+  font-family: "AvenirTextBlack";
+  font-weight: bold;
+  background-color: white;
+}
+#job {
+  width: 100%;
+  height: 42px;
+  border: none;
+  /* border-radius: 5px; */
+  font-family: "AvenirTextBlack";
+}
+.ant-btn-primary {
+  background: #0a2c66;
+  border-color: #0a2c66;
+  border-radius: 5px 0px 5px 0px;
+}
+#searchBtn {
+  border-color: #0a2c66;
+  margin-left: 10px;
+}
+.anticon {
+  vertical-align: 0em !important;
+}
+#arrows {
+  background-color: white;
+  /* border: thin solid grey; */
+  border-radius: 4px;
+  font-family: "AvenirText";
+
+  font-size: 0.9em;
+  padding: 0.5em 3.5em 0.5em 1em;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+#arrows {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA3klEQVRIS+3VMU9CMRTF8d8zBL+aizoQFhx0kUk33RzdYMNFXUFnYeGrYYyaJiUxJHDLSxodbNKpfeffc9/pbaPyaCrr+3OA++z4rtT5Pg5GuMnCY9yWQEoBE1xhlUUP8YDrCBIB0vojLvGO0yz4hm4JJAKcYYoPHGOZAUdYoIMBXrc5iQAHeMlzviFygj7O8dkWEJU4XI8chALRhn9AVKHf70VRTHu4wFfbmKZLNKt50dLBnna0imcMd/2I0phWa3Y/D1e1Xa9BCZJG0VuQNpaWKMx72xS1Fl5/WN3BN+AgJhnZQlq4AAAAAElFTkSuQmCC");
+  background-position: calc(100% - 0.5rem), 100% 0;
+  background-size: 1.5em 1.5em;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 45px;
+}
+
+select.arrows:focus {
+  border-color: blue;
+  outline: 0;
+}
+
+#jobBtn {
+  height: 45px;
+  width: 100%;
+  border: none;
+  background-color: #0a2c66;
+  color: white;
+  border-radius: 3px;
+  font-family: "AvenirTextBlack";
+}

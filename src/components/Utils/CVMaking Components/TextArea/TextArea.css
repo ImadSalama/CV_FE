@@ -1,0 +1,41 @@
+#CVMakingInputField:hover {
+    border-color: #FF4309!important;
+    z-index: 1;
+}
+#CVMakingInputField:focus, #CVMakingInputField-focused {
+    border-color: #FF4309!important;
+    outline: 0;
+    box-shadow: 0 0 0 0.5px rgb(255 67 9 / 20%);
+}
+#CVMakingInputField:hover {
+    border-color: #FF4309!important;
+    z-index: 1;
+}
+#CVMakingInputField-focused, #CVMakingInputField:focus {
+    z-index: 1;
+}
+#CVMakingInputField:hover {
+    border-color: #FF4309!important;
+    z-index: 1;
+}
+#CVMakingInputField:focus, #CVMakingInputField-focused {
+    border-color: #FF4309!important;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px rgb(255 67 9 / 20%);
+    box-shadow: 0 0 0 0.5px rgb(255 67 9 / 20%);
+}
+
+#CVMakingInputField:hover {
+    border-color: #FF4309!important;
+}
+#CVMakingInputField{
+    border-radius: 5px!important;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 2.5px 4px 0px rgba(0,0,0,0.14);
+    
+}
+.ant-input::placeholder{
+    color: #333333;
+    font-family: AvenirTextBlack;
+}

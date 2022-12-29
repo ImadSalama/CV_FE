@@ -1,0 +1,83 @@
+.navbar-brand2{
+  position: relative;
+  padding: 0px!important;
+  margin: 0px!important;
+  left: 20%;
+}
+nav{
+  padding: 0px!important;
+
+}
+.nav-item {
+  margin: 0% 3%;
+  font-size: 13px;
+  color: #333333;
+  font-family: AvenirTextBlack;
+}
+
+.navbar-collapse{
+justify-content: center;
+}
+.navbar-nav{
+justify-content: end;
+}
+.longName1{
+  min-width: 25%;
+}
+.signUp{
+background-color: #0A2C66;
+border: none;
+min-width: 19%;
+text-align: center;
+background-color: #FFFFFF;
+}
+.signUpButton{
+
+  background-color: #0A2C66;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  font-size: 11px!important;
+  margin-top: 5%;
+
+border-radius: 5px;
+  font-family: AvenirTextBlack;
+
+}
+#loginButton{
+  color: #FF4309!important;
+  font-size: 10px;
+  margin-top: 4%;
+}
+
+@media only screen and (max-width: 991px) {
+  .navbar-brand2{
+    position: relative;
+    padding: 0px!important;
+    margin: 0px!important;
+    text-align: center;
+  }
+  .navbar-collapse.collapse.in {
+    display: block!important;
+  }
+  #loginButton{
+    color: #FF4309!important;
+    font-size: 13px;
+    margin-top: 0%;
+  }
+  .signUp{
+    background-color: #0A2C66;
+    border: none;
+    text-align:left;
+    background-color: #FFFFFF;
+
+    }
+    .signUpButton{
+      margin-top: 0%;
+
+    }
+    .nav-item1{
+      text-align: center;
+      font-size: 15px!important;
+      border-bottom: 1px solid #ECECEC!important;
+    }
+}

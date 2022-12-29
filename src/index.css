@@ -1,0 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-print-color-adjust: exact !important;
+}
+@font-face {
+  font-family: "RobotoHeading";
+  src: local("RobotoHeading"),
+    url(./Assets/Fonts/Roboto/Roboto-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "RobotoBold";
+  src: local("RobotoBold"),
+    url(./Assets/Fonts/Roboto/Roboto-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "RobotoHeadingMedium";
+  src: local("RobotoHeadingMedium"),
+    url(./Assets/Fonts/Roboto/Roboto-Medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: "AvenirText";
+  src: local("AvenirText"),
+    url(./Assets/Fonts/Avenir/AvenirLTStd-Roman.otf) format("opentype");
+}
+@font-face {
+  font-family: "AvenirTextBlack";
+  src: local("AvenirTextBlack"),
+    url(./Assets/Fonts/Avenir/AvenirLTStd-Book.otf) format("opentype");
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-bottom: 5px !important;
+}
+.main-screen #print-content {
+  position: relative;
+}
+.main-screen #print-content .opacity-img {
+  position: absolute;
+  opacity: 0.2;
+}
+
+.my-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+.width-70 {
+  width: 70% !important;
+}
+.circle {
+  width: 200px;
+  margin: 6px 20px 20px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  vertical-align: top;
+}
+.orange-span {
+  color: #f4501d;
+  background: #f4501d12;
+}
+.blue-span {
+  background: #422fbd10;
+  color: #1e1950;
+}
+.orange-color {
+  color: #ff8a23 !important;
+}
+
+span.orange-color {
+  font-size: 10px;
+}
+.plus {
+  color: #ff8a23 !important;
+  font-size: 25px;
+  top: -20px;
+  left: 20px;
+  position: absolute;
+}
+.pink-span {
+  background-color: #ff7aa2;
+  color: white;
+}
+.light-pink {
+  background-color: #ffe0e9;
+  color: black;
+}
+.w-60 {
+  width: 60% !important;
+}
+.second-portion .container {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+.template-screen .modal {
+  overflow: auto !important;
+}
+.template-screen .modal-content {
+  width: 75%;
+}
+.template-screen .close {
+  color: white;
+}
+.custom_container {
+  width: 90%;
+  margin: 0 auto;
+}
+.customImage {
+  border-style: none;
+  background: #d9d5f2;
+  border-top-left-radius: 31px;
+  border-bottom-left-radius: 19px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 32px;
+  padding: 10px;
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.transitionfade {
+  animation: 1s ease-out 0s 1 slideInFromLeft;
+}
