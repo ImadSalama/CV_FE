@@ -2,7 +2,9 @@ import React from 'react';
 
 
 const GlowButton = ({ name = "button" }) => {
-    return (<button style={{
+    return (<button 
+       
+        style={{
         fontSize: "12px",
         padding: "2% 6%",
         borderRadius: "5px",
@@ -11,8 +13,8 @@ const GlowButton = ({ name = "button" }) => {
 
         boxShadow: "0 5px 15px rgba(255, 255, 255, .4)"
     }}>
-        { name}
-    </button >);
+        { name}  
+    </button >  );
 }
 
 export default GlowButton;

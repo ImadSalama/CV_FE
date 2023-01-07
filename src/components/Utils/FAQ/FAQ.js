@@ -16,9 +16,23 @@ const qstn4 = `Can I hide an item on my Resume?`;
 const qstn5 = `Does it cost money to use Carrer CV?`;
 
 const ans1 = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
+Certainly, your data will be safe, we have complete confidentiality on this subject, so rest assured.
+`;
+
+const ans2 = `
+Oh! No, you can only download a PDF file
+`;
+
+const ans3 = `
+Yes, you can edit it whenever you want.
+`;
+
+const ans4 = `
+Yes, you can hide what you want and show what you want, it's up to you.
+`;
+
+const ans5 = `
+There is a small amount to be paid, and you have the option to use our site monthly or quarterly.
 `;
 
 const genExtra = () => (
@@ -35,7 +49,7 @@ export default class FAQ extends Component {
     return (
       <>
         <Collapse
-          defaultActiveKey={["5"]}
+          defaultActiveKey={[""]}
           bordered={false}
           onChange={callback}
         >
@@ -43,16 +57,16 @@ export default class FAQ extends Component {
             <div>{ans1}</div>
           </Panel>
           <Panel header={qstn2} key="2" extra={genExtra()} showArrow={false}>
-            <div>{ans1}</div>
+            <div>{ans2}</div>
           </Panel>
           <Panel header={qstn3} key="3" extra={genExtra()} showArrow={false}>
-            <div>{ans1}</div>
+            <div>{ans3}</div>
           </Panel>
           <Panel header={qstn4} key="4" extra={genExtra()} showArrow={false}>
-            <div>{ans1}</div>
+            <div>{ans4}</div>
           </Panel>
           <Panel header={qstn5} key="5" extra={genExtra()} showArrow={false}>
-            <div>{ans1}</div>
+            <div>{ans5}</div>
           </Panel>
         </Collapse>
       </>

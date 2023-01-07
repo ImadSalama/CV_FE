@@ -1,23 +1,32 @@
 import React from "react";
-import { Row, Col, InputNumber, Input, Button } from "antd";
+import { Row, Col, InputNumber, Input, Button , Typography} from "antd";
 import "./JobSearchBanner.css";
 import man from "./backMan.png";
 import { UnorderedListOutlined } from "@ant-design/icons";
 import heart from "./heart.png";
 import front from "./Path50326@2x.png";
+import MovingComponent from "react-moving-text"
 
-const JobSearchBanner = ({
-  isMobile,
-  isTabletOrMobile,
-  sidebarDisplay,
-  setWidth,
-}) => {
+function JobSearchBanner ({
+ 
+}) {
   return (
-    <div>
-      <img className="manImage" src={man} alt="ManImage" />
-      <img className="frontImage" src={front} alt="blackScreen" />
+    <div style={{display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "calc(100vh - 87px)", backgroundImage: "linear-gradient(140deg, #FF4309 0%, #ccc 50%, #0A2C66 75%)"}}>
+    <MovingComponent
+    type="rotateSlowDown"
+    duration="1800ms"
+    delay="0s"
+    direction="normal"
+    timing="ease"
+    iteration="3"
+    fillMode="backwards">
+    <Typography color="blue" style={{fontSize: 60}}>Comming Soon!</Typography>
+  </MovingComponent>
+    </div>
+      /* <img className="manImage" src={man} alt="ManImage" />
+      <img className="frontImage" src={front} alt="blackScreen" /> */
 
-      <div className="jobSearchHeadings">
+      /* <div className="jobSearchHeadings">
         <h1
           className={isMobile ? "text-center" : "py-5 text-center"}
           style={{
@@ -158,8 +167,8 @@ const JobSearchBanner = ({
         </>
       ) : (
         <></>
-      )}
-    </div>
+      )} */
+  
   );
 };
 

@@ -22,9 +22,12 @@ const stepPages = [
 import { useQuery } from "../../../services/urlQueryService";
 import ShowResume from "../../../components/ShowResume/ShowResume";
 import "./main.css";
+import { getISMemeberUser } from "../../../helpers";
+import { useHistory } from "react-router-dom";
 
 export default () => {
   const [step, setStep] = React.useState(0);
+  const [isMember] = React.useState(() => getISMemeberUser());
 
   const [personalInfo, setPersonalInfo] = useState({});
   const [extraFields, setExtraFields] = useState({
@@ -167,14 +170,14 @@ export default () => {
         setPreviewResume(true);
       }
     },
-    [steps, isLastStep, isPreviousStepsValid, step, lastStepIndex],
+    [steps, isLastStep, isPreviousStepsValid, step, lastStepIndex]
   );
   const onPrevClick = React.useCallback(
     (event) => {
       event.preventDefault();
       setStep(() => Math.max(step - 1, 0));
     },
-    [step, setStep],
+    [step, setStep]
   );
   const StepPagePrint = stepPages[step];
   const onChangeProfileClick = () => {
@@ -187,6 +190,18 @@ export default () => {
       setProfileImage(img);
     }
   };
+
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
+      history.push("/Payment");
+    }
+  }, [isMember, resumeNumber]);
+
+  if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
+    return null;
+  }
 
   return (
     <>
@@ -263,11 +278,25 @@ export default () => {
                   >
                     Step {step + 1} of 4
                   </span>
-                  <div>
+                  <div
+                    className="prev-next-btn"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
                     {step !== 0 ? (
                       <Button
                         style={{
                           marginRight: "16px",
+                          backgroundColor: "#fff",
+                          fontSize: "12px",
+                          padding: "2% 6%",
+                          borderRadius: "5px",
+                          color: "#0a2c66",
+                          fontStyle: "AvenirText",
+                          width: "fit-content",
+                          boxShadow: "0 5px 15px rgba(255, 255, 255, .4)",
                         }}
                         onClick={onPrevClick}
                       >
@@ -278,6 +307,18 @@ export default () => {
                       primary={true}
                       disabled={isLastStep ? !isPreviousStepsValid : false}
                       onClick={formRenderProps.onSubmit}
+                      style={{
+                        marginRight: "16px",
+
+                        backgroundColor: "#fff",
+                        fontSize: "12px",
+                        padding: "2% 6%",
+                        borderRadius: "5px",
+                        color: "#0a2c66",
+                        fontStyle: "AvenirText",
+                        width: "fit-content",
+                        boxShadow: "0 5px 15px rgba(255, 255, 255, .4)",
+                      }}
                     >
                       {isLastStep ? "Submit" : "Next"}
                     </Button>

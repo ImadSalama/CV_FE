@@ -11,7 +11,7 @@ const JobDescription = ({
 }) => {
   return (
     <>
-      <Card style={{ backgroundColor: color }} hoverable>
+      {/* <Card style={{ backgroundColor: color }} hoverable>
 
         {desgination}
         {description}
@@ -20,7 +20,7 @@ const JobDescription = ({
           <Col style={{ marginLeft: "10px" }}>{duration}</Col>
           <Col style={{ marginLeft: "10px" }}>{salary}</Col>
         </Row>
-      </Card>
+      </Card> */}
     </>
   );
 };

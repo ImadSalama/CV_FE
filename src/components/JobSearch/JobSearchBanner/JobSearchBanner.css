@@ -1,4 +1,4 @@
-.manImage {
+/* .manImage {
   max-width: 100%;
   border: #707070;
   fill: #ffffff;
@@ -15,10 +15,10 @@
 .heart {
   position: absolute;
   margin-left: -12px;
-  /* left: 0%; */
-}
+  
+} */
 
-.jobSearchHeadings {
+/* .jobSearchHeadings {
   position: absolute;
   top: 10%;
   width: 100%;
@@ -33,12 +33,12 @@
   font-weight: bold;
   background-color: white;
 }
-#job {
-  width: 100%;
+#job { */
+/* width: 100%;
   height: 42px;
   border: none;
-  /* border-radius: 5px; */
-  font-family: "AvenirTextBlack";
+  border-radius: 5px; */
+/* font-family: "AvenirTextBlack";
 }
 .ant-btn-primary {
   background: #0a2c66;
@@ -53,9 +53,9 @@
   vertical-align: 0em !important;
 }
 #arrows {
-  background-color: white;
-  /* border: thin solid grey; */
-  border-radius: 4px;
+  background-color: white; */
+/* border: thin solid grey; */
+/* border-radius: 4px;
   font-family: "AvenirText";
 
   font-size: 0.9em;
@@ -88,4 +88,9 @@ select.arrows:focus {
   color: white;
   border-radius: 3px;
   font-family: "AvenirTextBlack";
+} */
+
+
+.main {
+  background-color: black;
 }

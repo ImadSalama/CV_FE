@@ -61,15 +61,15 @@ const PricingScreen = () => {
         <MoneyBack />
       </div>
 
-      <div className="container" style={{ marginTop: "10%" }}>
+      {/* <div className="container" style={{ marginTop: "10%" }}>
         <PricingCard />
-      </div>
+      </div> */}
       <div className="mt-5">
         <Slider />
       </div>
-      <div style={{ marginTop: "10%" }} className="mt-5">
+      {/* <div style={{ marginTop: "10%" }} className="mt-5">
         <Questions />
-      </div>
+      </div> */}
       <div className="mt-5">
         <PricingJoinNow
           qoute={"Try Professional Resume Maker Now"}

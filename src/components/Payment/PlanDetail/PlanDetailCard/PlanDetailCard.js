@@ -3,6 +3,7 @@ import { Row, Col, Divider } from "antd";
 import lockIcon from "../../../../Assets/icons/Icon ionic-md-lock.png";
 import PlanDetailPackageCard from "../PlanDetailPacakgeCard/PlanDetailPackageCard";
 
+
 const PlanDetailCard = () => {
   return (
     <div>
@@ -25,6 +26,7 @@ const PlanDetailCard = () => {
                 </span>
               </p>
             }
+        
           />
           <PlanDetailPackageCard
             title={
@@ -61,36 +63,3 @@ const PlanDetailCard = () => {
 };
 
 export default PlanDetailCard;
-
-// <PlanDetailPackageCard
-//   title={
-//     <>
-//       <h6>
-//         <strong>Your Plan Detail</strong>
-//       </h6>
-//       <Divider style={{ border: "1px solid grey" }} />
-//       <p>
-//         Professional - Access All Visualcv Pro Features &nbsp;
-//         <span className="text-center">3x</span>
-//         <span style={{ float: "right" }}>
-//           &nbsp;<strong>$12/Month</strong>
-//         </span>
-//       </p>
-//       <Divider style={{ border: "1px solid grey" }} />
-//       <p>
-//         Resume Formating Services
-//         <span style={{ marginLeft: "28%" }}>1x</span>
-//         <span style={{ float: "right" }}>
-//           <strong>$0</strong>
-//         </span>
-//       </p>
-//       <Divider style={{ border: "1px solid grey" }} />
-//       <p>
-//         <strong>Today's Charge</strong>
-//         <span style={{ float: "right" }}>
-//           <strong>$36.00</strong>
-//         </span>
-//       </p>
-//     </>
-//   }
-// />

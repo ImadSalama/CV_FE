@@ -1,13 +1,17 @@
 .ant-input {
-  border: white;
+
   background-color: white;
   border-radius: 5px;
   box-shadow: 5px 5px 6px #e9e5e5;
+  border: solid;
+  border-width: thin;
 }
+
 .ant-input::placeholder {
   color: black;
   font-size: 12px;
 }
+
 .ant-input:focus {
   border-color: red;
   -webkit-box-shadow: 0 0 0 2px #e9e5e5(40, 72, 229, 0.2);

@@ -3,9 +3,19 @@ import BannerCard from "../BannerCard/BannerCard";
 import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import CardTabs from "./../PricingCardTabs/CardTabs";
+import { useHistory } from "react-router-dom";
 
 const PricingBannerCard = (props) => {
   const [cardVal, setCardVal] = useState(false);
+  const history = useHistory();
+  const goWithPro = () => {
+    history.push("/Payment")
+  }
+
+  const signupFree=() =>{
+    history.push("/register")
+
+  }
   return (
     <>
       <Row justify="center">
@@ -105,6 +115,7 @@ const PricingBannerCard = (props) => {
             btnText="Sign up Free"
             firstBtn={props.firstBtn}
             checkPage={props.checkPage}
+            onClick={signupFree}
           />
         </Col>
 
@@ -246,6 +257,7 @@ const PricingBannerCard = (props) => {
             }
             btnText="Get Started With Pro"
             firstBtn={props.secondBtn}
+            onClick={goWithPro}
           />
         </Col>
       </Row>

@@ -15,7 +15,8 @@ const BannerCard = ({
   firstBtn,
   btnText,
   cardColor,
-  checkPage
+  checkPage,
+  onClick
 }) => {
   return (
     <div >
@@ -51,6 +52,7 @@ const BannerCard = ({
             backgroundColor: firstBtn
 
           }}
+          onClick={onClick}
         >
           {btnText}
         </Button>

@@ -1,5 +1,9 @@
 import React from "react";
 import Carousel from "react-grid-carousel";
+import istockphoto from "../../../images/istockphoto.jpg";
+import istockphoto2 from "../../../images/istockphoto2.jpg";
+import images from "../../../images/images.jpg"
+
 import "./Slider.css";
 
 const Slider = () => {
@@ -36,9 +40,7 @@ const Slider = () => {
               marginLeft: "3%",
             }}
           >
-            "React resposive carousel component w/ grid layout to easily create
-            a carousel like photo gallery, shopping product card or anything you
-            want "
+          "Get your Pro CV with our website"
           </p>
           <strong
             className="name"
@@ -48,7 +50,7 @@ const Slider = () => {
               marginLeft: "3%",
             }}
           >
-            Name
+            
           </strong>
         </Carousel.Item>
         <Carousel.Item>
@@ -56,7 +58,8 @@ const Slider = () => {
             className="mb-5 pb-5 pic"
             width="90%"
             height="300px"
-            src="https://picsum.photos/800/600?random=1"
+            src={istockphoto}
+            
           />
         </Carousel.Item>
         <Carousel.Item>
@@ -69,9 +72,7 @@ const Slider = () => {
               marginLeft: "3%",
             }}
           >
-            "React resposive carousel component w/ grid layout to easily create
-            a carousel like photo gallery, shopping product card or anything you
-            want "
+            "Get your job searches easier with pro CV templates "
           </p>
           <strong
             className="name"
@@ -81,7 +82,7 @@ const Slider = () => {
               marginLeft: "3%",
             }}
           >
-            Name
+          
           </strong>
         </Carousel.Item>
         <Carousel.Item>
@@ -89,7 +90,7 @@ const Slider = () => {
             className="mb-5 pb-5 pic"
             width="90%"
             height="300px"
-            src="https://picsum.photos/800/600?random=1"
+            src={istockphoto2}
           />
         </Carousel.Item>
         <Carousel.Item>
@@ -102,9 +103,7 @@ const Slider = () => {
               marginLeft: "3%",
             }}
           >
-            "React resposive carousel component w/ grid layout to easily create
-            a carousel like photo gallery, shopping product card or anything you
-            want"
+            "A professional CV is the beginning of the journey to a suitable job"
           </p>
           <strong
             className="name"
@@ -114,7 +113,7 @@ const Slider = () => {
               marginLeft: "3%",
             }}
           >
-            Name
+           
           </strong>
         </Carousel.Item>
         <Carousel.Item>
@@ -122,7 +121,7 @@ const Slider = () => {
             className="mb-5 pb-5 pic"
             width="90%"
             height="300px"
-            src="https://picsum.photos/800/600?random=1"
+            src={images}
           />
         </Carousel.Item>
       </Carousel>

@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getChoosenResume } from "../../actions/chooseResumeActions";
 import { Link } from "react-router-dom";
 import "./styles.css";
+import { getISMemeberUser } from "../../helpers";
 
 function ChooseTemplateScreen() {
   const [selectedImage, setSelectedImage] = useState("");
   const [choosenResume, setChoosenResume] = useState("");
   const [modalStatus, setModalStatus] = useState(false);
+  const [isMember] = useState(() => getISMemeberUser());
   const { width } = useWindowDimensions();
   const dispatch = useDispatch();
 
@@ -128,16 +130,29 @@ function ChooseTemplateScreen() {
               <button onClick={() => setModalStatus(true)} className="preview">
                 Preview
               </button>
-              <Link
-                to={{
-                  pathname: "/cvform",
-                  search: `?resume=${choosenResume}`,
+              {choosenResume === "One" ||
+              choosenResume === "Two" ||
+              isMember ? (
+                <Link
+                  to={{
+                    pathname: "/cvform",
+                    search: `?resume=${choosenResume}`,
 
-                  state: { fromDashboard: true },
-                }}
-              >
-                <button className="create">Create Resume</button>
-              </Link>
+                    state: { fromDashboard: true },
+                  }}
+                >
+                  <button className="create">Create Resume</button>
+                </Link>
+              ) : (
+                <Link
+                  to={{
+                    pathname: "/Payment",
+                    state: { fromDashboard: true },
+                  }}
+                >
+                  <button className="create">Go With Pro</button>
+                </Link>
+              )}
             </>
           )}
         </div>

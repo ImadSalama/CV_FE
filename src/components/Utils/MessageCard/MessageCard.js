@@ -3,7 +3,7 @@ import { Card, Divider, Button } from "antd";
 import "antd/dist/antd.css";
 import "../ContactCard/ContactCard.css";
 
-const MessageCard = ({ title, extra, uppertext, lowertext, btnText }) => {
+const MessageCard = ({ title, extra, uppertext, lowertext, btnText, btnProps }) => {
   return (
     <div className="site-card-wrapper" style={{ marginLeft: "2%" }}>
       <Card
@@ -37,6 +37,7 @@ const MessageCard = ({ title, extra, uppertext, lowertext, btnText }) => {
             marginLeft: "10%",
             marginBottom: "9%",
           }}
+          {...btnProps}
         >
           {btnText}
         </Button>

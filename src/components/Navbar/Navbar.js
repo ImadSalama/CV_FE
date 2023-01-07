@@ -2,7 +2,10 @@ import React from "react";
 import "./Navbar.css";
 import logo from "./../../Assets/images/logo.png";
 import { Link } from "react-router-dom";
+import { getIsLoggedIn, removeToken } from "../../helpers";
+
 export default function Navbar(props) {
+  const isLoggedIn = getIsLoggedIn();
   return (
     <>
       <nav
@@ -55,19 +58,34 @@ export default function Navbar(props) {
               </Link>
             </li>
             <li class="nav-item">
-              <Link to="/signin" id="loginButton" class="nav-link">
-                Login
-              </Link>
-            </li>
-            <li class="nav-item signUp">
-              <form>
-                <Link to="/register">
-                  <button class="signUpButton" type="submit">
-                    Sign up
-                  </button>
+              {!isLoggedIn ? (
+                <Link to="/signin" id="loginButton" class="nav-link">
+                  Login
                 </Link>
-              </form>
+              ) : (
+                <Link
+                  onClick={() => {
+                    removeToken();
+                    window.location.reload();
+                  }}
+                  id="loginButton"
+                  class="nav-link"
+                >
+                  Logout
+                </Link>
+              )}
             </li>
+            {!isLoggedIn ? (
+              <li class="nav-item signUp">
+                <form>
+                  <Link to="/register">
+                    <button class="signUpButton" type="submit">
+                      Sign up
+                    </button>
+                  </Link>
+                </form>
+              </li>
+            ) : null}
           </ul>
         </div>
       </nav>

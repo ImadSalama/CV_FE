@@ -1,8 +1,18 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Row, Col, Divider } from "antd";
 import PlanDetailPackageCard from "../PlanDetailPacakgeCard/PlanDetailPackageCard";
+import { MonthlyPlan, YearlyPlan, PlanLocalStorageKey } from "../../../../constants/global";
+import { PurchasePlanContext } from "../../../../Screens/PayPalScreen/PaypalScreen";
+
+
+
+
+
 
 const PlanDetailPackage = () => {
+        const {amount, updateamount} = useContext(PurchasePlanContext)
+  // console.log({otherPRops})
+  // console.log({otherPRops})
   return (
     <>
       <Row
@@ -10,12 +20,14 @@ const PlanDetailPackage = () => {
         style={{ marginLeft: "15%", fontFamily: "AvenirText" }}
       >
         <h5>
-          <>Your Plan details</>
+          <>Choose Your Plan:</>
         </h5>
       </Row>
       <Row justify="center">
         <Col xs={10} sm={10} md={7} lg={7} xl={8}>
           <PlanDetailPackageCard
+            onClick={() => updateamount(36)}
+            borderColor={amount === 36 ? "blue" : undefined}
             name={
               <h6
                 className="text-center"
@@ -26,7 +38,7 @@ const PlanDetailPackage = () => {
                   fontFamily: "AvenirText",
                 }}
               >
-                <>Pro Quartely</>
+                <>Pro Quarterly</>
               </h6>
             }
             price={
@@ -49,7 +61,7 @@ const PlanDetailPackage = () => {
                       fontFamily: "AvenirText",
                     }}
                   >
-                    /monthly
+                    /quarterly
                   </span>
                 </p>
               </>
@@ -65,7 +77,7 @@ const PlanDetailPackage = () => {
                   fontFamily: "AvenirText",
                 }}
               >
-                <>Billed Quartely</>
+                <>Billed Quarterly</>
               </p>
             }
           />
@@ -94,6 +106,7 @@ const PlanDetailPackage = () => {
               >
                 <>Pro Monthly</>
               </h6>
+               
             }
             price={
               <>
@@ -120,6 +133,8 @@ const PlanDetailPackage = () => {
                 </p>
               </>
             }
+            onClick={() => updateamount(18)}
+            borderColor={amount === 18 ? "blue" : undefined}
             bill={
               <p
                 style={{
@@ -131,7 +146,7 @@ const PlanDetailPackage = () => {
                   fontFamily: "AvenirText",
                 }}
               >
-                <>Billed Quartely</>
+                <>Billed Monthly</>
               </p>
             }
           />
@@ -141,4 +156,4 @@ const PlanDetailPackage = () => {
   );
 };
 
-export default PlanDetailPackage;
+export default (PlanDetailPackage);

@@ -4,7 +4,7 @@ const SecondFooter = () => {
     return (
         <div className="second-nav">
             <div>
-                <ul>
+                <ul className="second-nav2">
                     <li>
                         <a to="" className="policy">Copyright &#64; 2021 Website</a>
                     </li>
@@ -16,25 +16,7 @@ const SecondFooter = () => {
                     </li>
                 </ul>
             </div>
-            <div>
-                <ul id="social-list">
-                    <li>
-                        <a to="" className="policy">
-                            <i class="fab fa-facebook-f" />
-                        </a>
-                    </li>
-                    <li>
-                        <a to="" className="policy">
-                            <i class="fab fa-twitter" />
-                        </a>
-                    </li>
-                    <li>
-                        <a to="" className="policy">
-                            <i class="fab fa-aedin-in" />
-                        </a>
-                    </li>
-                </ul>
-            </div>
+           
 
         </div>
     );

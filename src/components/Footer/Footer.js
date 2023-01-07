@@ -14,40 +14,71 @@ export default function Footer({ bgColor, border }) {
         }}
         class="navbar navbar-expand-lg navbar-light"
       >
-        <a class="navbar-brand navbar-brand2" href="#">
+        <Link class="navbar-brand navbar-brand2" to="/">
           <img style={{ maxWidth: "60%" }} src={logo}></img>
-        </a>
+        </Link>
 
-        <div class="navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav">
+        <div
+          class="navbar-collapse footer"
+          id="navbarSupportedContent"
+          style={{
+            justifyContent: "flex-start",
+          }}
+        >
+          <ul class="navbar-nav ">
             <li class="nav-item nav-item1 active">
-              <a class="nav-link" href="#">
+              <Link class="nav-link footer" to="/">
                 Home
-              </a>
+              </Link>
             </li>
             <li class="nav-item nav-item1 longName1 active">
-              <a class="nav-link " href="#">
+              <Link class="nav-link " to="/chooseTemplate">
                 Create CV
-              </a>
+              </Link>
             </li>
-            <li class="nav-item nav-item1 longName1 active">
-              <a class="nav-link " href="#">
+            <li
+              class="nav-item nav-item1 longName1 active"
+              style={{
+                margin: "0%",
+              }}
+            >
+              <Link class="nav-link " to="/jobSearch">
                 Search Job
-              </a>
+              </Link>
             </li>
             <li class="nav-item nav-item1 active">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="/pricing">
                 Pricing
-              </a>
+              </Link>
             </li>
             <li class="nav-item nav-item1 active">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="/contact">
                 Contact
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="social2">
+          <ul id="social-list2">
+            <li>
+              <a to="" className="policy2">
+                <i class="fab fa-facebook-f" />
+              </a>
+            </li>
+            <li>
+              <a to="" className="policy2">
+                <i class="fab fa-twitter" />
+              </a>
+            </li>
+            <li>
+              <a to="" className="policy2">
+                <i class="fab fa-linkedin" />
               </a>
             </li>
           </ul>
         </div>
       </nav>
+
       <SecondFooter />
     </>
   );

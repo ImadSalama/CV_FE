@@ -39,6 +39,9 @@ const Work = ({
     let updatedList = [...workExperienceList];
     updatedList[index][name] = value;
     setWorkExperienceList(updatedList);
+   
+   
+    
   };
 
   const deleteWorkExperience = (index) => {
@@ -98,8 +101,10 @@ const Work = ({
                         name="Previous Jobs"
                         additional="If Any"
                       ></NameBadge>
-                    )}
-
+                      
+                    )
+                    }
+                     
                     <Row justify="space-between" style={{ marginTop: "5%" }}>
                       <Col span={11}>
                         <InputField
@@ -174,6 +179,7 @@ const Work = ({
                         <DateField
                           placeholder="End Date"
                           value={d.endDate}
+                          disabled={d.currentlyWorkHere}
                           onChange={(date, dateString) =>
                             updateWork(i, "endDate", dateString)
                           }
@@ -195,6 +201,7 @@ const Work = ({
                               )
                             }
                             checked={d.currentlyWorkHere}
+                           
                           >
                             I currently work here
                           </Checkbox>
@@ -215,6 +222,7 @@ const Work = ({
                               textArea={true}
                               minRows={3}
                             ></TextArea>
+                            
                           </Col>
                         </>
                       ) : (
@@ -232,7 +240,6 @@ const Work = ({
                             right: isMobile ? "-15px" : "-50px",
                             top: "-50px",
                           }}
-                          span={1}
                         >
                           <i class="far fa-trash-alt"></i>
                         </Col>
@@ -240,7 +247,8 @@ const Work = ({
                     </Row>
                   </>
                 );
-              })}
+              }
+              )}
               {inputIndex < 2 && (
                 <Row>
                   <Col style={{ marginTop: "5%" }} span={22}>

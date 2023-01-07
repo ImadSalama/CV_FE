@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./HomePage.css";
 import { Row, Col, Input } from "antd";
 import { useHistory } from "react-router-dom";
@@ -15,10 +15,18 @@ import PricingBanner from "./../../components/Pricing/PricingBanner/PricingBanne
 import FAQ from "./../../components/Utils/FAQ/FAQ";
 import QuestionIcon from "../../components/Questions/QuestionIcon/QuestionIcon";
 import PricingJoinNow from "./../../components/Pricing/PricingJoinNow/PricingJoinNow";
+import { Link } from "react-router-dom";
+import CreateCVPage from "./../CreateCVPage/CreateCVPage";
+import { getISMemeberUser } from "./../../helpers";
 
 const HomePage = () => {
   let history = useHistory();
-  const viewCvBtn = (image, name, description, type) => {
+  const [isMemeber] = useState(() => getISMemeberUser());
+  const viewCvBtn = (image, name, description, type, index) => {
+    if (!isMemeber && index >= 2) {
+      history.push("/Payment");
+      return;
+    }
     history.push("/viewCV", {
       image: image,
       name: name,
@@ -45,9 +53,7 @@ const HomePage = () => {
             <Row justify="start">
               <Col className="py-2" lg={11} md={20} sm={20} xs={20}>
                 <LoginWithGoogle
-                  style={{
-                    opacity: 0.5,
-                  }}
+                  style={{}}
                   className="LoginButtons"
                   name="Sign up with Google"
                 ></LoginWithGoogle>
@@ -127,12 +133,12 @@ const HomePage = () => {
                     <div className="view-templateDiv"></div>
                     <button
                       onClick={() =>
-                        viewCvBtn(d.image, d.name, d.description, d.type)
+                        viewCvBtn(d.image, d.name, d.description, d.type, index)
                       }
                       type="button"
                       className="view-template"
                     >
-                      View Template
+                      {isMemeber || index < 2 ? "View Template" : "Go With Pro"}
                     </button>
                   </div>
                   <h4 className="cvTitle">{d.name}</h4>
@@ -173,7 +179,24 @@ const HomePage = () => {
                 message or email
               </li>
             </ul>
-            <GlowButton name="Create CV Now" />
+
+            <Link
+              to="/chooseTemplate"
+              class="nav-link"
+              style={{
+                backgroundColor: "#fff",
+                fontSize: "12px",
+                padding: "2% 6%",
+                borderRadius: "5px",
+                color: "#0a2c66",
+                fontStyle: "AvenirText",
+                width: "fit-content",
+                boxShadow: "0 5px 15px rgba(255, 255, 255, .4)",
+              }}
+            >
+              {" "}
+              Create CV
+            </Link>
           </Col>
         </Row>
       </div>

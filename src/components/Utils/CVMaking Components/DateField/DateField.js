@@ -3,12 +3,13 @@ import "./../InputFields/InputField.css";
 import { DatePicker, Tooltip } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 
-const DateField = ({ placeholder, onChange }) => {
+const DateField = ({ placeholder, onChange, disabled }) => {
   const monthFormat = "MMM-YYYY";
   return (
     <div style={{ padding: "7px 12px" }} id="CVMakingInputField">
       <DatePicker
         onChange={onChange}
+        disabled={disabled}
         suffixIcon={
           <Tooltip title="Extra information">
             <span

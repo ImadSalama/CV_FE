@@ -9,6 +9,7 @@ import LoginWithGoogle from "../../components/LoginWithGoogle";
 import LoginWithLinkedIn from "../../components/LoginWithLinkedin";
 import InputField from "../../components/Utils/CVMaking Components/InputFields/InputField";
 import Navbar from "../../components/Navbar/Navbar";
+import { getIsLoggedIn } from "../../helpers";
 
 function SigninScreen(props) {
   const [email, setEmail] = useState("");
@@ -24,14 +25,14 @@ function SigninScreen(props) {
   };
 
   useEffect(() => {
-    if (userInfo) {
-      props.history.push("/generate");
+    if (userInfo || getIsLoggedIn()) {
+      props.history.push("/");
     }
   }, [props.history, userInfo]);
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="login">
         <div className="image-background">
           <div className="content">

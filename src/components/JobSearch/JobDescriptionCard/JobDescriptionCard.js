@@ -10,7 +10,7 @@ import JobDescription from "../JobDescription/JobDescription";
 const JobDescriptionCard = (props) => {
   return (
     <div >
-      <JobDescription
+      {/* <JobDescription
         color={props.color}
         desgination={
           <Row  >
@@ -61,7 +61,8 @@ const JobDescriptionCard = (props) => {
             </Col>
           </Row>
         }
-      /></div>
+      /> */}
+      </div>
   );
 };
 export default JobDescriptionCard;

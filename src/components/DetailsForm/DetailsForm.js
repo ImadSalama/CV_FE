@@ -257,6 +257,8 @@ function DetailsForm() {
     updatedList[index].workStatus = value;
     updatedList[index].endDate = "";
     setWorkExperienceList(updatedList);
+    
+    
   };
   const deleteWorkExperience = (index) => {
     let updatedList = [...workExperienceList];
@@ -658,6 +660,7 @@ function DetailsForm() {
                     onChange={(e) => updateGraduationEndDate(i, e.target.value)}
                     type="month"
                     placeholder="End Date :"
+                    className="end-date"
                   />
                 )}
                 <div className="check">
@@ -666,6 +669,7 @@ function DetailsForm() {
                     id={`study${i}`}
                     name="study"
                     type="checkbox"
+                    className="currently-work"
                   />
                   <label htmlFor={`study${i}`}>I currently study here</label>
                 </div>

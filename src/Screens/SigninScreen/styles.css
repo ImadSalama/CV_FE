@@ -3,67 +3,78 @@
   display: flex;
   justify-content: center;
   height: 100vh;
-  width: 100vw;
 }
+
 .login .image-background {
-  min-height: 95%;
-  min-width: 70%;
+  min-height: 100%;
+  min-width: 100%;
   background-image: url("../../images/CardBase.png");
-  background-size: cover;
+  background-size: 106%;
   background-position: center center;
   padding: 0;
   display: flex;
   align-items: center;
+  background-attachment: fixed;
   justify-content: flex-end;
 }
+
 .login .content {
   margin: 0 40px;
 }
+
 .login .form {
   max-width: 60rem;
   margin: 0 auto;
 }
+
 .login .form h1 {
   font-weight: 500;
 }
+
 .login .form .username {
   display: flex;
   flex-direction: column;
 }
+
 .login .form .password {
   display: flex;
   flex-direction: column;
 }
+
 .login .form label {
   margin: 8px 0;
   display: block;
   color: #0a2c66;
   font-family: "AvenirText";
 }
+
 .login .form input {
   padding: 5px 10px;
   font-size: 15px;
   outline: none;
-  border: 1px solid #ae9739;
   border-radius: 5px;
   -webkit-box-shadow: 0px 7px 30px -9px rgba(148, 140, 148, 0.94);
   -moz-box-shadow: 0px 7px 30px -9px rgba(148, 140, 148, 0.94);
   box-shadow: 0px 7px 30px -9px rgba(148, 140, 148, 0.94);
 }
+
 .login .form input:focus {
   border-color: rgb(157, 157, 223);
 }
+
 .login .form .forgot-pass {
   color: #0a2c66;
   font-size: 15px;
   font-family: "AvenirText";
 }
+
 .login .form-button {
   display: flex;
   flex-direction: column;
   font-family: "AvenirText";
 }
-.login .form-button > button {
+
+.login .form-button>button {
   padding: 8px 10px;
   font-size: 15px;
   outline: none;
@@ -74,19 +85,23 @@
   cursor: pointer;
   margin: 15px 0;
 }
+
 .login .form .confirm {
   display: flex;
   flex-direction: column;
 }
+
 .login .form p {
   color: #0a2c66;
   font-size: 15px;
   font-family: "AvenirText";
 }
+
 .login .form a {
   color: #000000;
   text-decoration: none;
 }
+
 /* Responsiveness */
 /* Max Screen Size = 1050px */
 @media only screen and (max-width: 1050px) {
@@ -95,11 +110,13 @@
     width: 90%;
   }
 }
+
 /* Max Screen Size = 850px */
 @media only screen and (max-width: 850px) {
   body {
     background-color: #f0f0f2;
   }
+
   .image-background {
     background-image: none;
     align-items: center;

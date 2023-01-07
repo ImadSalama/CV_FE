@@ -5,6 +5,7 @@ import ContactCard from "../ContactCard/ContactCard";
 import MessageCard from "../MessageCard/MessageCard";
 import img1 from "./../../../Assets/icons/Icon ionic-ios-call.png";
 import img2 from "./../../../Assets/icons/Icon feather-message-square.png";
+import ContactForm from "./../../../"
 
 const Help = () => {
   return (
@@ -60,6 +61,9 @@ const Help = () => {
                 </p>
               }
               btnText="Contact Form"
+              btnProps={{
+                href: "#contactForm"
+              }}
             />
           </Col>
         </Row>

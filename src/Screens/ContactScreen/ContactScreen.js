@@ -31,10 +31,10 @@ const ContactScreen = () => {
       <div style={{ marginTop: "5%" }}>
         <Help />
       </div>
-      <div style={{ marginTop: "5%" }}>
+      {/* <div style={{ marginTop: "5%" }}>
         <Questions />
-      </div>
-      <Row justify="center" style={{ backgroundColor: "#fafbfc" }}>
+      </div> */}
+      <Row justify="center" style={{ backgroundColor: "#fafbfc", borderTopStyle:"solid",borderWidth:"thin",borderColor:"rgb(105, 132, 174)" }}>
         <Col>
           <ContactForm />
         </Col>

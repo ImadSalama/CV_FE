@@ -11,7 +11,9 @@ const WorkFields = ({ checkBox = false, onClick }) => {
 
     function onChange(e) {
         console.log(`checked = ${e.target.checked}`);
-    }
+       
+      }
+   
 
     return (
         <>
@@ -50,12 +52,12 @@ const WorkFields = ({ checkBox = false, onClick }) => {
                 </Col>
                 <Col style={{ marginTop: "7%", marginBottom: "7%" }} span={2}>
                 </Col>
-                <Col style={{ marginTop: "7%", marginBottom: "7%" }} span={11}>
+                <Col id="endDate" style={{ marginTop: "7%", marginBottom: "7%" , display:"block"}} span={11}>
                     <DateField placeholder="End Date" />
                 </Col>
 
                 {checkBox && <Col offset={isTabletOrMobile ? isMobile ? 12 : 15 : 17} span={isTabletOrMobile ? isMobile ? 12 : 9 : 6}>
-                    <Checkbox style={{ color: "red", }} onChange={onChange}>I currently work here</Checkbox>
+                    <Checkbox   id="myCheck" style={{ color: "red", }} onChange={onChange}>I currently work here</Checkbox>
                 </Col>}
             </Row>
 

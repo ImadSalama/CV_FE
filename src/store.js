@@ -5,6 +5,7 @@ import { resumeDetailsReducer } from "./reducers/resumeDetailsReducer";
 import {
   userRegisterReducer,
   userSigninReducer,
+  userContactReducer,
 } from "./reducers/userReducers";
 
 const initialState = {
@@ -96,6 +97,7 @@ const reducer = combineReducers({
   choosenResume: chooseResumeReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
+  userContact: userContactReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -103,7 +105,7 @@ const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducer,
   initialState,
-  composeEnhancer(applyMiddleware(thunk)),
+  composeEnhancer(applyMiddleware(thunk))
 );
 
 export default store;
