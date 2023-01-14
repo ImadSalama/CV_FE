@@ -33,6 +33,23 @@ export const userSigninReducer = (state = {}, action) => {
     default:
       return state;
   }
+  
+  
+  export const userReviewReducer = (state = {}, action) => {
+    switch (action.type) {
+      case USER_REVIEW_REQUEST:
+        return { loading: true };
+      case USER_REVIEW_SUCCESS:
+        return {
+          loading: false,
+          userContactInfo: action.payload,
+        };
+      case USER_REVIEW_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
 };
 
 export const userRegisterReducer = (state = {}, action) => {
