@@ -10,6 +10,9 @@ import {
   USER_CONTACT_REQUEST,
   USER_CONTACT_SUCCESS,
   USER_CONTACT_FAIL,
+   USER_REVIEW_REQUEST ,
+   USER_REVIEW_SUCCESS ,
+   USER_REVIEW_FAIL ,
 } from "../constants/userConstants";
 import { setUserInfo } from "../helpers";
 import { apiUrl } from "../services/settings";
@@ -189,3 +192,33 @@ export const contact = (email, name, messages) => async (dispatch) => {
     });
   }
 };
+
+export const review = (rate, messages) => async (dispatch) => {
+    dispatch({
+      type: USER_CONTACT_REQUEST,
+      payload: {
+        rate,
+        messages,
+      },
+    });
+    try {
+      const { data } = await Axios.post(`${apiUrl}/rating`, {
+        rate,
+        message: messages,
+      });
+      dispatch({
+        type: USER_REVIEW_SUCCESS,
+        payload: data,
+      });
+  
+      localStorage.setItem("userReview", JSON.stringify(data));
+    } catch (err) {
+      dispatch({
+        type: USER_REVIEW_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };
