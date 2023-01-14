@@ -232,17 +232,44 @@ stars, I would give more than 1000!"
           })}
         </Row>
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className="addFeedback">
-          <Input.Search
-            placeholder="input search text"
-            allowClear
+
+ {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
+        {/* <div className="mt-5"> */}
+          {/* <Input.Search
+            // placeholder="input search text"
+            // allowClear
             className="addFeedbackBar"
-            enterButton="Add"
+            enterButton="Add your feedback" 
             size="large"
-          />
-        </div>
+          /> */}
+     <div className="mt-5">
+        <PricingJoinNow
+          qoute={"Add your feedback now"}
+          button={
+            <Link to="/feedback">
+            <MyButton
+              content="Add"
+              bgColor="#0a2c66"
+              color="white"
+              width="150px"
+              height="40px"
+            />
+            </Link>
+          }
+
+          
+
+          
+        />
+
+       
+
+
       </div>
+
+      
+         {/* </div> */}
+      {/* </div> */}
       {/* pricing Banner */}
       <div style={{ marginTop: "10%" }}>
         <PricingBanner
