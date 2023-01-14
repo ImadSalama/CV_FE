@@ -13,6 +13,8 @@ import ViewCV from "./../Screens/View CV/ViewCV";
 import BasicInfo from "./../Screens/CVMaking/BasicInfo/BasicInfo";
 import CvForm from "./../Screens/CVMaking/Main/main";
 import Extras from "./../Screens/CVMaking/Extras/Extras";
+import Feedback from "./../Screens/HomePage/Feedback";
+import ReviewForm from "./../components/Utils/ReviewForm/ReviewForm";
 
 import Work from "./../Screens/CVMaking/Work/Work";
 import Education from "./../Screens/CVMaking/Education/Education";
@@ -84,6 +86,8 @@ export default class Routers extends Component {
         <Route path="/viewCV" exact component={ViewCV} />
         <Route path="/basicInfo" exact component={BasicInfo} />
         <Route path="/extras" exact component={Extras} />
+        <Route path="/feedback" exact component={Feedback} />
+         <Route path="/reviewform" exact component={ReviewForm} />
 
         <Route path="/work" exact component={Work} />
         <Route path="/education" exact component={Education} />
