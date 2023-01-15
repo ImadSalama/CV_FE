@@ -37,6 +37,12 @@ const HomePage = () => {
       type: type,
     });
   };
+  
+   const[currentPage , setCurrentPage]=useState(1);
+  const[postPerPage , setpostPerPage]=useState(4);
+  const lastpostIndex = currentPage * postPerPage ;
+  const firstpostIndex = lastpostIndex - postPerPage ;
+  const currentPosts = data.slice(firstpostIndex , lastpostIndex);
 
   return (
     <div>
