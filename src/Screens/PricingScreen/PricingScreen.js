@@ -74,6 +74,7 @@ const PricingScreen = () => {
         <PricingJoinNow
           qoute={"Try Professional Resume Maker Now"}
           button={
+            <Link to="/register">
             <MyButton
               content="Join Now"
               bgColor="#0a2c66"
@@ -81,6 +82,7 @@ const PricingScreen = () => {
               width="150px"
               height="40px"
             />
+            </Link>
           }
         />
       </div>
