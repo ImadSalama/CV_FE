@@ -18,6 +18,9 @@ import PricingJoinNow from "./../../components/Pricing/PricingJoinNow/PricingJoi
 import { Link } from "react-router-dom";
 import CreateCVPage from "./../CreateCVPage/CreateCVPage";
 import { getISMemeberUser } from "./../../helpers";
+import videoBg from "./../../Assets/videoBg.mp4";
+import Pagination from "./Pagination";
+
 
 const HomePage = () => {
   let history = useHistory();
@@ -38,6 +41,11 @@ const HomePage = () => {
   return (
     <div>
       <Navbar></Navbar>
+    
+     <div className="vid">
+         <video src={videoBg} autoPlay loop muted/>
+        </div>
+
       {/* Title Headings Section */}
       <div class="title">
         <Row justify="center">
@@ -147,6 +155,11 @@ const HomePage = () => {
               );
             })}
           </Row>
+ <Pagination totalPosts={data.length} 
+          postPerPage={postPerPage}
+          setCurrentPage ={setCurrentPage} 
+          currentPage ={currentPage}
+          />
         </div>
       </div>
 
