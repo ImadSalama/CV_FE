@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./HomePage.css";
 import { Row, Col, Input } from "antd";
 import { useHistory } from "react-router-dom";
@@ -18,9 +18,11 @@ import PricingJoinNow from "./../../components/Pricing/PricingJoinNow/PricingJoi
 import { Link } from "react-router-dom";
 import CreateCVPage from "./../CreateCVPage/CreateCVPage";
 import { getISMemeberUser } from "./../../helpers";
+import MyButton from "./../../components/Pricing/MyButton/MyButton";
+import { fetchReview } from "../../actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
 import videoBg from "./../../Assets/videoBg.mp4";
 import Pagination from "./Pagination";
-
 
 const HomePage = () => {
   let history = useHistory();
@@ -37,22 +39,32 @@ const HomePage = () => {
       type: type,
     });
   };
-  
-   const[currentPage , setCurrentPage]=useState(1);
-  const[postPerPage , setpostPerPage]=useState(4);
-  const lastpostIndex = currentPage * postPerPage ;
-  const firstpostIndex = lastpostIndex - postPerPage ;
-  const currentPosts = data.slice(firstpostIndex , lastpostIndex);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setpostPerPage] = useState(4);
+  const lastpostIndex = currentPage * postPerPage;
+  const firstpostIndex = lastpostIndex - postPerPage;
+  const currentPosts = data.slice(firstpostIndex, lastpostIndex);
+
+  const dispatch = useDispatch();
+
+  const reviews = (
+    useSelector((state) => state.userReview.reviews) || []
+  ).slice(0, 4);
+
+  useEffect(() => {
+    dispatch(fetchReview());
+  }, []);
 
   return (
     <div>
       <Navbar></Navbar>
-    
-     <div className="vid">
-         <video src={videoBg} autoPlay loop muted/>
-        </div>
 
-      {/* Title Headings Section */}
+      <div className="vid">
+        <video className="videoCV" src={videoBg} autoPlay loop muted />
+      </div>
+
+      {/* Title Headings Section  */}
       <div class="title">
         <Row justify="center">
           <Col lg={9} md={9} sm={13} xs={13} className="headingsColumn">
@@ -65,14 +77,14 @@ const HomePage = () => {
               customizable template options
             </p>
             <Row justify="start">
-              <Col className="py-2" lg={11} md={20} sm={20} xs={20}>
+              {/* <Col className="py-2" lg={11} md={20} sm={20} xs={20}>
                 <LoginWithGoogle
                   style={{}}
                   className="LoginButtons"
                   name="Sign up with Google"
                 ></LoginWithGoogle>
-              </Col>
-              <Col
+              </Col> */}
+              {/* <Col
                 className="py-2 buttonSpacing"
                 lg={11}
                 md={20}
@@ -83,7 +95,7 @@ const HomePage = () => {
                   className="LoginButtons"
                   name="Sign up with LinkedIn"
                 ></LoginWithLinkedin>
-              </Col>
+              </Col> */}
             </Row>
           </Col>
 
@@ -161,10 +173,11 @@ const HomePage = () => {
               );
             })}
           </Row>
- <Pagination totalPosts={data.length} 
-          postPerPage={postPerPage}
-          setCurrentPage ={setCurrentPage} 
-          currentPage ={currentPage}
+          <Pagination
+            totalPosts={data.length}
+            // postPerPage={postPerPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
           />
         </div>
       </div>
@@ -234,17 +247,14 @@ const HomePage = () => {
           See what our customers have to say
         </h2>
         <Row justify="center">
-          {[1, 2, 3].map((d, index) => {
+          {(reviews || []).map((review, index) => {
             return (
               <Col lg={5} md={5} sm={13} xs={18}>
                 <ReviewsCard
-                  name="Jennifer"
-                  category="Student"
-                  review="An amazing app. Their templates are easy
-to use for an elegant and creative CV. Their
-support staff are so kind and friendly, I highly
-recommend it. If I could give more than 5
-stars, I would give more than 1000!"
+                  image={review.profile_picture}
+                  name={review.name}
+                  rate={review.rate}
+                  review={review.comment}
                 />
               </Col>
             );
@@ -252,42 +262,33 @@ stars, I would give more than 1000!"
         </Row>
       </div>
 
- {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
-        {/* <div className="mt-5"> */}
-          {/* <Input.Search
+      {/* <div style={{ display: "flex", justifyContent: "center" }}> */}
+      {/* <div className="mt-5"> */}
+      {/* <Input.Search
             // placeholder="input search text"
             // allowClear
             className="addFeedbackBar"
             enterButton="Add your feedback" 
             size="large"
           /> */}
-     <div className="mt-5">
+      <div className="mt-5">
         <PricingJoinNow
           qoute={"Add your feedback now"}
           button={
             <Link to="/feedback">
-            <MyButton
-              content="Add"
-              bgColor="#0a2c66"
-              color="white"
-              width="150px"
-              height="40px"
-            />
+              <MyButton
+                content="Add"
+                bgColor="#0a2c66"
+                color="white"
+                width="150px"
+                height="40px"
+              />
             </Link>
           }
-
-          
-
-          
         />
-
-       
-
-
       </div>
 
-      
-         {/* </div> */}
+      {/* </div> */}
       {/* </div> */}
       {/* pricing Banner */}
       <div style={{ marginTop: "10%" }}>

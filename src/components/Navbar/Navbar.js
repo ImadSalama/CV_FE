@@ -4,14 +4,16 @@ import logo from "./../../Assets/images/logo.png";
 import { Link } from "react-router-dom";
 import { getIsLoggedIn, removeToken } from "../../helpers";
 
-export default function Navbar(props) {
+export default function Navbar({ isCvForm = false, ...props }) {
   const isLoggedIn = getIsLoggedIn();
+  const extraStyles = isCvForm ? { width: "100%" } : {};
   return (
     <>
       <nav
         style={{
           backgroundColor: "#FFFFFF",
           borderBottom: props.border ? "1px solid #ECECEC" : "",
+          ...extraStyles,
         }}
         class="navbar navbar-expand-lg navbar-light"
       >
@@ -30,19 +32,23 @@ export default function Navbar(props) {
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav">
+        <div
+          class="collapse navbar-collapse"
+          id="navbarSupportedContent"
+          style={extraStyles}
+        >
+          <ul class="navbar-nav" style={extraStyles}>
             <li class="nav-item active">
               <Link to="/" class="nav-link">
                 Home
               </Link>
             </li>
-            <li class="nav-item longName">
+            <li class="nav-item">
               <Link to="/chooseTemplate" class="nav-link ">
                 Create CV
               </Link>
             </li>
-            <li class="nav-item longName">
+            <li class="nav-item">
               <Link to="/jobSearch" class="nav-link ">
                 Search Job
               </Link>
@@ -84,6 +90,11 @@ export default function Navbar(props) {
                     </button>
                   </Link>
                 </form>
+              </li>
+            ) : null}
+            {isCvForm ? (
+              <li class="nav-item translate">
+                <div id="google_translate_element"></div>
               </li>
             ) : null}
           </ul>

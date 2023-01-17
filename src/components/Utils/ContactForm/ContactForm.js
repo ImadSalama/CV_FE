@@ -34,17 +34,41 @@ function ContactForm(props) {
   const userContact = useSelector((state) => state.userContact);
   const { userContactInfo, loading, error } = userContact;
 
+  // const dispatch = useDispatch();
+  // const submitHandler = (e) => {
+  //   e.preventDefault();
+  //   dispatch(contact(email, name, messages));
+
+  //   messageApi.open({
+  //     type: "success",
+  //     content: "The message has been sent successfully",
+  //   });
+  //   // window.location.reload(true);
+  // };
+
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(contact(email, name, messages));
 
-    messageApi.open({
-      type: "success",
-      content: "The message has been sent successfully",
-    });
+    dispatch(
+      contact(email, name, messages, (err = false) => {
+        if (err) {
+          messageApi.open({
+            type: "error",
+            content: "Something Went Wrong!",
+          });
+          return;
+        }
+        messageApi.open({
+          type: "success",
+          content: "Your Message was sent successfully!",
+        });
+      })
+    );
+    setEmail("");
+    setMessages("");
+    setName("");
   };
-
   useEffect(() => {}, [props.history, userContactInfo]);
   return (
     <div
@@ -71,6 +95,7 @@ function ContactForm(props) {
             placeholder="Email Address"
             size="large"
             onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
           <div className="px-4 py-2" />
           <Input
@@ -79,6 +104,7 @@ function ContactForm(props) {
             placeholder="Name"
             size="large"
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
         </Item>
         {/* <Item>
@@ -92,6 +118,7 @@ function ContactForm(props) {
             size="large"
             style={{ height: 120 }}
             onChange={(e) => setMessages(e.target.value)}
+            value={messages}
           />
         </Item>
       </Form>

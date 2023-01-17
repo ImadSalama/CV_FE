@@ -93,16 +93,12 @@ export default class Routers extends Component {
         <Route path="/education" exact component={Education} />
         <Route path="/skills" exact component={Skills} />
         <RestrictedRoute path="/jobSearch" exact component={JobSearchScreen} />
-        {/* <Route path="/payment" exact component={PayPalScreen} /> */}
+        <Route path="/payment" exact component={PayPalScreen} />
         <Route path="/resumeone" exact component={ResumeOne} />
         <Route path="/resumeeight" exact component={ResumeEight} />
         <Route path="/resumefive" exact component={ResumeFive} />
         <Route path="/resumeeleven" exact component={ResumeEleven} />
-        <RestrictedRoute
-          path="/chooseTemplate"
-          exact
-          component={ChooseTemplateScreen}
-        />
+        <Route path="/chooseTemplate" exact component={ChooseTemplateScreen} />
         <RestrictedRoute path="/cvform" exact component={CvForm} />
 
         {/* <Route path="/create" exact component={MainScreen} /> */}

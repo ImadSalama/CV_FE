@@ -29,7 +29,7 @@ function SigninScreen(props) {
       props.history.push("/");
     }
   }, [props.history, userInfo]);
-
+  // AIzaSyAkQ8ZAzzzi7rCBlpaGxGRNfM7xTFdcKa8
   return (
     <>
       <Navbar />
@@ -42,7 +42,7 @@ function SigninScreen(props) {
                   Sign In
                 </h4>
               </div>
-              <LoginWithGoogle
+              {/* <LoginWithGoogle
                 name="Login with Google"
                 style={{
                   backgroundColor: "white",
@@ -51,8 +51,8 @@ function SigninScreen(props) {
                   borderRadius: "5px",
                   marginBottom: "10px",
                 }}
-              />
-              <LoginWithLinkedIn
+              /> */}
+              {/* <LoginWithLinkedIn
                 name="Login with LinkedIn"
                 style={{
                   backgroundColor: "white",
@@ -61,10 +61,10 @@ function SigninScreen(props) {
                   borderRadius: "5px",
                   marginBottom: "10px",
                 }}
-              />
-              <div className="text-center" style={{ fontFamily: "AvenirText" }}>
+              /> */}
+              {/* <div className="text-center" style={{ fontFamily: "AvenirText" }}>
                 <small>OR</small>
-              </div>
+              </div> */}
               {loading && <Loadingbox />}
               {error && <MessageBox variant="danger">{error}</MessageBox>}
 

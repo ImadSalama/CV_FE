@@ -5,7 +5,7 @@ import ContactCard from "../ContactCard/ContactCard";
 import MessageCard from "../MessageCard/MessageCard";
 import img1 from "./../../../Assets/icons/Icon ionic-ios-call.png";
 import img2 from "./../../../Assets/icons/Icon feather-message-square.png";
-import ContactForm from "./../../../"
+import ContactForm from "./../../../";
 
 const Help = () => {
   return (
@@ -30,39 +30,28 @@ const Help = () => {
             <ContactCard
               title="Call Now"
               extra={<img src={img1} />}
-              uppertext={
-                <p>
-                  Our friendly customer service team <br />
-                  can assist you
-                </p>
-              }
-              country="United States"
-              number="123-456-789"
-              waitingTime={<p>Average wait time: 2 minutes</p>}
-              opening="Opening Time"
-              time="10AM - 5PM CST"
+              uppertext={<p> If you need quick help, call with:</p>}
+              country="Mr.Faris Abutaya"
+              waitingTime={<p> Phone Number: +972 54-595-5291 </p>}
+              opening={<p></p>}
+              time=""
+              number="8:00AM To 5:00PM"
             />
           </Col>
           <Col xs={20} sm={20} md={12} lg={12} xl={12}>
             <MessageCard
               title="Send Message"
               extra={<img src={img2} />}
-              uppertext={
-                <p>
-                  Questions? Concerns? We're here to
-                  <br />
-                  listened and respond!
-                </p>
-              }
-              lowertext={
-                <p>
-                  Please allow us 2 working days to <br />
-                  get back to you
-                </p>
-              }
+              uppertext={<p>Questions? We're here to listened and respond!</p>}
+              // lowertext={
+              //   <p>
+              //     {/* Please allow us 2 working days to <br />
+              //     get back to you */}
+              //   </p>
+              // }
               btnText="Contact Form"
               btnProps={{
-                href: "#contactForm"
+                href: "#contactForm",
               }}
             />
           </Col>

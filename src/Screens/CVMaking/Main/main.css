@@ -1,6 +1,48 @@
 .k-stepper {
-  margin: 50px 0;
+  margin: 50px auto;
+  width: 100%;
+  max-width: unset;
 }
+
 .margin-auto {
   margin: 0 auto;
 }
+
+#google_translate_element select {
+  background: #3f51b5;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 6px 8px;
+  width: 170px;
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+
+.goog-te-gadget {
+  color: transparent !important;
+}
+
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* #google_translate_element {
+  max-width: 72%;
+  padding: 0 30px !important;
+  margin: 0 auto;
+} */
+
+/*  */

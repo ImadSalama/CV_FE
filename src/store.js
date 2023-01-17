@@ -6,6 +6,7 @@ import {
   userRegisterReducer,
   userSigninReducer,
   userContactReducer,
+  userReviewReducer,
 } from "./reducers/userReducers";
 
 const initialState = {
@@ -98,6 +99,7 @@ const reducer = combineReducers({
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
   userContact: userContactReducer,
+  userReview: userReviewReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

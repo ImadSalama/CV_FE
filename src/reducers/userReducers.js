@@ -9,9 +9,10 @@ import {
   USER_CONTACT_REQUEST,
   USER_CONTACT_SUCCESS,
   USER_CONTACT_FAIL,
-  USER_REVIEW_REQUEST ,
-   USER_REVIEW_SUCCESS ,
-   USER_REVIEW_FAIL ,
+  USER_REVIEW_REQUEST,
+  USER_REVIEW_SUCCESS,
+  USER_REVIEW_FAIL,
+  FETCH_USER_REVIEW_SUCCESS,
 } from "../constants/userConstants";
 import { setIsLoggedIn } from "../helpers";
 
@@ -33,23 +34,22 @@ export const userSigninReducer = (state = {}, action) => {
     default:
       return state;
   }
-  
-  
-  export const userReviewReducer = (state = {}, action) => {
-    switch (action.type) {
-      case USER_REVIEW_REQUEST:
-        return { loading: true };
-      case USER_REVIEW_SUCCESS:
-        return {
-          loading: false,
-          userContactInfo: action.payload,
-        };
-      case USER_REVIEW_FAIL:
-        return { loading: false, error: action.payload };
-      default:
-        return state;
-    }
-  };
+
+  // export const userReviewReducer = (state = {}, action) => {
+  //   switch (action.type) {
+  //     case USER_REVIEW_REQUEST:
+  //       return { loading: true };
+  //     case USER_REVIEW_SUCCESS:
+  //       return {
+  //         loading: false,
+  //         userContactInfo: action.payload,
+  //       };
+  //     case USER_REVIEW_FAIL:
+  //       return { loading: false, error: action.payload };
+  //     default:
+  //       return state;
+  //   }
+  // };
 };
 
 export const userRegisterReducer = (state = {}, action) => {
@@ -79,6 +79,24 @@ export const userContactReducer = (state = {}, action) => {
       };
     case USER_CONTACT_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_REVIEW_REQUEST:
+      return { loading: true };
+    case USER_REVIEW_SUCCESS:
+      return {
+        loading: false,
+        userReviewInfo: action.payload,
+      };
+    case USER_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+    case FETCH_USER_REVIEW_SUCCESS:
+      return { loading: false, error: false, reviews: action.payload };
     default:
       return state;
   }

@@ -5,22 +5,23 @@ import PlanDetailPackage from "../../components/Payment/PlanDetail/PlanDetailPac
 import PaymentForm from "../../components/Payment/PaymentDetail/PaymentForm/PaymentForm";
 import MoneyBackG from "../../components/Payment/PaymentDetail/MoneyBackG/MoneyBackG";
 
-
-export const PurchasePlanContext = React.createContext({amount: 0, updateamount: (amount) => {}});
-const PurchasePlanContextContainer = ({children}) => {
+export const PurchasePlanContext = React.createContext({
+  amount: 0,
+  updateamount: (amount) => {},
+});
+const PurchasePlanContextContainer = ({ children }) => {
   const [amountState, setAmount] = React.useState(0);
 
   const updateamount = (amount) => {
     setAmount(amount);
-  }
+  };
 
   return (
-  <PurchasePlanContext.Provider value={{amount: amountState, updateamount}}>
-    {children}
-  </PurchasePlanContext.Provider>
-  )
-
-}
+    <PurchasePlanContext.Provider value={{ amount: amountState, updateamount }}>
+      {children}
+    </PurchasePlanContext.Provider>
+  );
+};
 
 const PayPalScreen = () => {
   return (
@@ -30,7 +31,7 @@ const PayPalScreen = () => {
           className="pb-3 text-center"
           style={{ fontFamily: "RobotoHeadingMedium" }}
         >
-        Pay Now
+          Pay Now
         </h1>
       </Row>
       <Row justify="center">

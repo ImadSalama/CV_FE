@@ -10,7 +10,7 @@ import { PurchasePlanContext } from "../../../../Screens/PayPalScreen/PaypalScre
 const { Option } = Select;
 
 const cientId =
-  "ASa7pWWanjlCmoA9dypjO_f8QpCi-Qnzk3uRkIjC9MpQWc8R_dAI8lAy5HY7WCMyESaeCD5BtEUpFeuN";
+  "AQiPv70oBvPhU3PwEF2FDDVAmkBoCryMQAZZ08qQin6M8YDooPJV5sk2zoYMSEo8MI5ox84JqtDzH3jx";
 
 const FormData = () => {
   const { amount } = useContext(PurchasePlanContext);

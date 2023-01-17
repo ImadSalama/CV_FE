@@ -10,11 +10,13 @@ import {
   USER_CONTACT_REQUEST,
   USER_CONTACT_SUCCESS,
   USER_CONTACT_FAIL,
-   USER_REVIEW_REQUEST ,
-   USER_REVIEW_SUCCESS ,
-   USER_REVIEW_FAIL ,
+  USER_REVIEW_REQUEST,
+  USER_REVIEW_SUCCESS,
+  FETCH_USER_REVIEW_SUCCESS,
+  USER_REVIEW_FAIL,
+  FETCH_USER_REVIEW_ERROR,
 } from "../constants/userConstants";
-import { setUserInfo } from "../helpers";
+import { getIsLoggedIn, setUserInfo } from "../helpers";
 import { apiUrl } from "../services/settings";
 
 export const googleLogin = (email, name) => async (dispatch) => {
@@ -161,58 +163,85 @@ export const signout = () => (dispatch) => {
   dispatch({ type: USER_SIGNOUT });
 };
 
-export const contact = (email, name, messages) => async (dispatch) => {
-  dispatch({
-    type: USER_CONTACT_REQUEST,
-    payload: {
-      email,
-      name,
-      messages,
-    },
-  });
-  try {
-    const { data } = await Axios.post(`${apiUrl}/contactus`, {
-      email,
-      name,
-      message: messages,
-    });
-    dispatch({
-      type: USER_CONTACT_SUCCESS,
-      payload: data,
-    });
-
-    localStorage.setItem("userContactInfo", JSON.stringify(data));
-  } catch (err) {
-    dispatch({
-      type: USER_CONTACT_FAIL,
-      payload:
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : err.message,
-    });
-  }
-};
-
-export const review = (rate, messages) => async (dispatch) => {
+export const contact =
+  (email, name, messages, cb = (err) => {}) =>
+  async (dispatch) => {
     dispatch({
       type: USER_CONTACT_REQUEST,
       payload: {
-        rate,
+        email,
+        name,
         messages,
       },
     });
     try {
-      const { data } = await Axios.post(`${apiUrl}/rating`, {
-        rate,
+      const { data } = await Axios.post(`${apiUrl}/contactus`, {
+        email,
+        name,
         message: messages,
       });
+
+      if (cb && typeof cb === "function") {
+        cb();
+      }
+      dispatch({
+        type: USER_CONTACT_SUCCESS,
+        payload: data,
+      });
+    } catch (err) {
+      if (cb && typeof cb === "function") {
+        cb(true);
+      }
+
+      dispatch({
+        type: USER_CONTACT_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };
+
+export const review =
+  (rate, comment, email, cb = (err) => {}) =>
+  async (dispatch) => {
+    dispatch({
+      type: USER_REVIEW_REQUEST,
+      payload: {
+        rate,
+        email,
+        comment,
+      },
+    });
+    try {
+      const token = getIsLoggedIn();
+      const { data } = await Axios.post(
+        `${apiUrl}/rating`,
+        {
+          rate,
+          comment,
+          email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (cb && typeof cb === "function") {
+        cb();
+      }
       dispatch({
         type: USER_REVIEW_SUCCESS,
         payload: data,
       });
-  
+
       localStorage.setItem("userReview", JSON.stringify(data));
     } catch (err) {
+      if (cb && typeof cb === "function") {
+        cb(true);
+      }
       dispatch({
         type: USER_REVIEW_FAIL,
         payload:
@@ -222,3 +251,36 @@ export const review = (rate, messages) => async (dispatch) => {
       });
     }
   };
+
+export const fetchReview = () => async (dispatch) => {
+  try {
+    const { data } = await Axios.get(`${apiUrl}/rating`);
+    dispatch({
+      type: FETCH_USER_REVIEW_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    dispatch({
+      type: FETCH_USER_REVIEW_SUCCESS,
+      payload: [],
+    });
+  }
+
+  //   const response = await axios
+  //     .git(
+  //       `${apiUrl}/rating`
+  //         .then((response) => {
+  //           return response.data;
+  //         })
+  //         .then((data) => {
+  //           dispatch({
+  //             type: USER_REVIEW_SUCCESS,
+  //             payload: data,
+  //           });
+  //         })
+  //     )
+  //     .catch((error) => {
+  //       console.log("error111", error)
+  //       // throw error;
+  //     });
+};

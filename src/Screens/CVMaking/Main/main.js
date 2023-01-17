@@ -11,6 +11,7 @@ import WorkHistory from "../Work/Work";
 import Education from "../Education/Education";
 import Extras from "../Extras/Extras";
 import ImageModal from "../../../components/ImageModal/ImageModal";
+
 const stepPages = [
   BasicInfo,
   WorkHistory,
@@ -24,6 +25,7 @@ import ShowResume from "../../../components/ShowResume/ShowResume";
 import "./main.css";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 
 export default () => {
   const [step, setStep] = React.useState(0);
@@ -121,6 +123,30 @@ export default () => {
   const profileImageRef = useRef();
   const [formState, setFormState] = React.useState({});
 
+  const googleTranslateElementInit = () => {
+    console.log(
+      "window.google.translate",
+      window.google.translate.TranslateElement.InlineLayout
+    );
+    new window.google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        autoDisplay: false,
+        includedLanguages: "iw,en",
+      },
+      "google_translate_element"
+    );
+    document.getElementById();
+  };
+  useEffect(() => {
+    var addScript = document.createElement("script");
+    addScript.setAttribute(
+      "src",
+      "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    );
+    document.body.appendChild(addScript);
+    window.googleTranslateElementInit = googleTranslateElementInit;
+  }, []);
   const closeModal = () => {
     setPreviewResume(false);
   };
@@ -219,7 +245,7 @@ export default () => {
           profileImage={profileImage && URL.createObjectURL(profileImage)}
         />
       )}
-      <Navbar />
+      <Navbar isCvForm={true} />
       <div
         style={{
           display: "flex",
@@ -232,6 +258,7 @@ export default () => {
           items={steps}
           onChange={(e) => setStep(e.value)}
         />
+
         <Form
           initialValues={formState}
           onSubmitClick={onStepSubmit}
