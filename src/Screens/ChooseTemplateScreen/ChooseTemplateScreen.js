@@ -132,6 +132,7 @@ function ChooseTemplateScreen() {
               </button>
               {choosenResume === "One" ||
               choosenResume === "Two" ||
+              choosenResume === "Three" ||
               isMember ? (
                 <Link
                   to={{

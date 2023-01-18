@@ -28,7 +28,7 @@ const HomePage = () => {
   let history = useHistory();
   const [isMemeber] = useState(() => getISMemeberUser());
   const viewCvBtn = (image, name, description, type, index) => {
-    if (!isMemeber && index >= 2) {
+    if (!isMemeber && index >= 3) {
       history.push("/Payment");
       return;
     }
@@ -124,7 +124,8 @@ const HomePage = () => {
                 profession and career
               </p>
             </Col>
-            <Col md={8} sm={20} xs={20}>
+            <Col></Col>
+            {/* <Col md={8} sm={20} xs={20}>
               <div className="dropDown">
                 <p className="mt-2" style={{ width: "90%", fontSize: "12px" }}>
                   All CV Templates
@@ -134,7 +135,7 @@ const HomePage = () => {
                   style={{ fontSize: "12px", color: "#FF4309" }}
                 />
               </div>
-            </Col>
+            </Col> */}
           </Row>
         </div>
         <div>
@@ -164,7 +165,7 @@ const HomePage = () => {
                       type="button"
                       className="view-template"
                     >
-                      {isMemeber || index < 2 ? "View Template" : "Go With Pro"}
+                      {isMemeber || index < 3 ? "View Template" : "Go With Pro"}
                     </button>
                   </div>
                   <h4 className="cvTitle">{d.name}</h4>
@@ -175,7 +176,7 @@ const HomePage = () => {
           </Row>
           <Pagination
             totalPosts={data.length}
-            // postPerPage={postPerPage}
+            postPerPage={postPerPage}
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
           />
