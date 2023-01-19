@@ -11,6 +11,7 @@ import Navbar from "./../../components/Navbar/Navbar";
 import Footer from "./../../components/Footer/Footer";
 import MyButton from "../../components/Pricing/MyButton/MyButton";
 import Slider from "../../components/Pricing/Slider/Slider";
+import { Link } from "react-router-dom";
 
 const PricingScreen = () => {
   return (
@@ -39,10 +40,10 @@ const PricingScreen = () => {
         checkPage="pricing"
       />
       <br />
-      <div className="text-center mt-5">
+      {/* <div className="text-center mt-5">
         <p>Discover all Pro Features</p>
-      </div>
-      <div
+      </div> */}
+      {/* <div
         style={{
           backgroundColor: "#e6e6e6",
           width: "40px",
@@ -55,8 +56,8 @@ const PricingScreen = () => {
         <img
           src={downwardIcon}
           style={{ paddingTop: "12px", cursor: "pointer" }}
-        />
-      </div>
+        /> 
+      </div> */}
       <div className="container" style={{ marginTop: "10%" }}>
         <MoneyBack />
       </div>
@@ -72,18 +73,18 @@ const PricingScreen = () => {
       </div> */}
       <div className="mt-5">
         <PricingJoinNow
-          qoute={"Try Professional Resume Maker Now"}
-          button={
-            <Link to="/register">
-            <MyButton
-              content="Join Now"
-              bgColor="#0a2c66"
-              color="white"
-              width="150px"
-              height="40px"
-            />
-            </Link>
-          }
+          qoute={"Try Professional Resume Maker Now, Join Now"}
+
+          // button={
+          //   <Link to="/register">
+          //     <MyButton
+          //       content="Join Now"
+          //       bgColor="#0a2c66"
+          //       color="white"
+          //       width="150px"
+          //       height="40px"
+          //     />
+          //   </Link>
         />
       </div>
       <Footer />

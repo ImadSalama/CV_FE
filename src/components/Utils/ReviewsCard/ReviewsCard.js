@@ -32,9 +32,9 @@ const ReviewsCard = (props) => {
           />
         </div>
         <p class="cardtext py-3">"{props.review}"</p>
-        <a href="More Srories" class="reviewLink">
+        {/* <a href="More Srories" class="reviewLink">
           See More Stories
-        </a>
+        </a> */}
       </div>
     </div>
   );
