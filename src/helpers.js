@@ -51,6 +51,64 @@ export const getUserInfo = () => {
 };
 
 export const getISMemeberUser = () => {
-  const { user } = getUserInfo();
-  return new Date(user.exp_date).valueOf() >= Date.now();
+  const userInfo = getUserInfo();
+  if (!userInfo || !userInfo.user) {
+    return false;
+  }
+  return new Date(userInfo.user.exp_date).valueOf() >= Date.now();
+};
+
+export const ModelMapperDir = {
+  FromUiToApi: "fromUiToApi",
+  FromApiToUi: "fromApiToUi",
+};
+
+const modelMapper = {
+  work: {
+    fromApiToUi: {
+      company_name: "employer",
+      job_title: "title",
+      from: "startDate",
+      to: "endDate",
+      description: "description",
+    },
+    fromUiToApi: {
+      employer: "company_name",
+      title: "job_title",
+      startDate: "from",
+      endDate: "to",
+      description: "description",
+    },
+  },
+  education: {
+    fromApiToUi: {
+      university_name: "instituteName",
+      specialization: "studyField",
+      from: "graduationStartDate",
+      to: "graduationEndDate",
+      description: "description",
+    },
+    fromUiToApi: {
+      instituteName: "university_name",
+      studyField: "specialization",
+      graduationStartDate: "from",
+      graduationEndDate: "to",
+      description: "description",
+    },
+  },
+  hobbies: {},
+};
+
+export const mapModel = (model, modelType, direction) => {
+  let fields = modelMapper[modelType][direction];
+  const currentFields = Object.keys(fields);
+  let newData = [];
+  model.forEach((m) => {
+    let item = {};
+    currentFields.forEach((field) => {
+      item[fields[field]] = m[field];
+    });
+    newData.push(item);
+  });
+  return newData;
 };

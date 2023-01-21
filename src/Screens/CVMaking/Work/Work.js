@@ -39,9 +39,6 @@ const Work = ({
     let updatedList = [...workExperienceList];
     updatedList[index][name] = value;
     setWorkExperienceList(updatedList);
-   
-   
-    
   };
 
   const deleteWorkExperience = (index) => {
@@ -101,10 +98,8 @@ const Work = ({
                         name="Previous Jobs"
                         additional="If Any"
                       ></NameBadge>
-                      
-                    )
-                    }
-                     
+                    )}
+
                     <Row justify="space-between" style={{ marginTop: "5%" }}>
                       <Col span={11}>
                         <InputField
@@ -197,11 +192,10 @@ const Work = ({
                               updateWork(
                                 i,
                                 "currentlyWorkHere",
-                                e.target.checked,
+                                e.target.checked
                               )
                             }
                             checked={d.currentlyWorkHere}
-                           
                           >
                             I currently work here
                           </Checkbox>
@@ -221,8 +215,8 @@ const Work = ({
                               suffix
                               textArea={true}
                               minRows={3}
+                              value={d.description}
                             ></TextArea>
-                            
                           </Col>
                         </>
                       ) : (
@@ -247,8 +241,7 @@ const Work = ({
                     </Row>
                   </>
                 );
-              }
-              )}
+              })}
               {inputIndex < 2 && (
                 <Row>
                   <Col style={{ marginTop: "5%" }} span={22}>

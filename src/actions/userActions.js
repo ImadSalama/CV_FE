@@ -284,3 +284,25 @@ export const fetchReview = () => async (dispatch) => {
   //       // throw error;
   //     });
 };
+
+export const updateUserProfile = (body) => async (dispatch) => {
+  try {
+    const token = getIsLoggedIn();
+    const { data } = await Axios.put(`${apiUrl}/users/profile`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {}
+};
+export const getUserProfile = () => async (dispatch) => {
+  try {
+    const token = getIsLoggedIn();
+    const userProfile = await Axios.get(`${apiUrl}/users/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log({ userProfile });
+  } catch (err) {}
+};

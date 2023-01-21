@@ -345,10 +345,11 @@ const BasicInfo = ({
               marginBottom: "125px",
             }}
           >
-             <h6 className="fieldsMessage">
-                Please make sure to fill all <span style={{ color: "red" }}>*</span> 
-                mandatory fields
-              </h6>
+            <h6 className="fieldsMessage">
+              Please make sure to fill all{" "}
+              <span style={{ color: "red" }}>*</span>
+              mandatory fields
+            </h6>
             {/* <div>
                             <CVMakingButton to="" name="Back" />
                         </div> */}

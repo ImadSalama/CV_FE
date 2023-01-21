@@ -23,13 +23,24 @@ const stepPages = [
 import { useQuery } from "../../../services/urlQueryService";
 import ShowResume from "../../../components/ShowResume/ShowResume";
 import "./main.css";
-import { getISMemeberUser } from "../../../helpers";
+import {
+  getISMemeberUser,
+  getUserInfo,
+  mapModel,
+  ModelMapperDir,
+} from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
+import {
+  getUserProfile,
+  updateUserProfile,
+} from "../../../actions/userActions";
+import { useDispatch } from "react-redux";
 
 export default () => {
   const [step, setStep] = React.useState(0);
   const [isMember] = React.useState(() => getISMemeberUser());
+  const dispatch = useDispatch();
 
   const [personalInfo, setPersonalInfo] = useState({});
   const [extraFields, setExtraFields] = useState({
@@ -136,7 +147,6 @@ export default () => {
       },
       "google_translate_element"
     );
-    document.getElementById();
   };
   useEffect(() => {
     var addScript = document.createElement("script");
@@ -224,6 +234,78 @@ export default () => {
       history.push("/Payment");
     }
   }, [isMember, resumeNumber]);
+
+  React.useEffect(() => {
+    // dispatch(getUserProfile());
+    const userInfo = getUserInfo();
+    if (!userInfo || !userInfo.user) {
+      return;
+    }
+    const {
+      user: {
+        firstname,
+        lastname,
+        email,
+        phone_number,
+        education,
+        hobbies,
+        work_experience,
+      },
+    } = userInfo;
+
+    setWorkExperienceList(
+      mapModel(work_experience, "work", ModelMapperDir.FromApiToUi) || []
+    );
+    setHobbyName({
+      hobbiesData: (hobbies || []).map((name) => ({ name })) || [],
+    });
+    setPersonalInfo({
+      firstName: firstname,
+      lastName: lastname,
+      phone: phone_number,
+      email,
+    });
+    setEducationDetailsList(
+      mapModel(education, "education", ModelMapperDir.FromApiToUi) || []
+    );
+  }, []);
+
+  const handleSubmit = () => {
+    const userInfo = getUserInfo();
+    if (!userInfo || !userInfo.user) {
+      return;
+    }
+    dispatch(
+      updateUserProfile({
+        // education: educationDetailsList.map((ed) => ({
+        //   university_name: ed.instituteName,
+        //   specialization: ed.studyField,
+        //   from: ed.graduationStartDate,
+        //   to: ed.graduationEndDate,
+        //   description: ed.description,
+        // })),
+        // work_experience: workExperienceList.map((w) => ({
+        //   company_name: w.employer,
+        //   job_title: w.title,
+        //   from: w.startDate,
+        //   to: w.endDate,
+        //   description: w.description,
+        // })),
+        // hobbies: hobbyName.hobbiesData.map((h) => h.name),
+        education: mapModel(
+          educationDetailsList,
+          "education",
+          ModelMapperDir.FromUiToApi
+        ),
+        work_experience: mapModel(
+          workExperienceList,
+          "work",
+          ModelMapperDir.FromUiToApi
+        ),
+        hobbies: hobbyName.hobbiesData.map((h) => h.name),
+      })
+    );
+  };
 
   if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
     return null;
@@ -333,7 +415,12 @@ export default () => {
                     <Button
                       primary={true}
                       disabled={isLastStep ? !isPreviousStepsValid : false}
-                      onClick={formRenderProps.onSubmit}
+                      onClick={(e) => {
+                        // if (isLastStep) {
+                        handleSubmit();
+                        // }
+                        formRenderProps.onSubmit(e);
+                      }}
                       style={{
                         marginRight: "16px",
 
