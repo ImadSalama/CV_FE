@@ -139,8 +139,9 @@ const HomePage = () => {
           </Row>
         </div>
         <div>
+          
           <Row>
-            {data.map((d, index) => {
+            {currentPosts.map((d, index) => {
               return (
                 <Col
                   key={index}
@@ -160,12 +161,12 @@ const HomePage = () => {
                     <div className="view-templateDiv"></div>
                     <button
                       onClick={() =>
-                        viewCvBtn(d.image, d.name, d.description, d.type, index)
+                        viewCvBtn(d.image, d.name, d.description, d.type)
                       }
                       type="button"
                       className="view-template"
                     >
-                      {isMemeber || index < 3 ? "View Template" : "Go With Pro"}
+                      View Template
                     </button>
                   </div>
                   <h4 className="cvTitle">{d.name}</h4>
@@ -174,11 +175,10 @@ const HomePage = () => {
               );
             })}
           </Row>
-          <Pagination
-            totalPosts={data.length}
-            postPerPage={postPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
+          <Pagination totalPosts={data.length} 
+          postPerPage={postPerPage}
+          setCurrentPage ={setCurrentPage} 
+          currentPage ={currentPage}
           />
         </div>
       </div>
