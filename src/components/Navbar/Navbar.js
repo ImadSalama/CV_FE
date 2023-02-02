@@ -1,6 +1,6 @@
 import React from "react";
 import "./Navbar.css";
-import logo from "./../../Assets/images/logo.png";
+import logo from "./../../Assets/images/logo2.png";
 import { Link } from "react-router-dom";
 import { getIsLoggedIn, removeToken } from "../../helpers";
 
@@ -38,27 +38,27 @@ export default function Navbar({ isCvForm = false, ...props }) {
           style={extraStyles}
         >
           <ul class="navbar-nav" style={extraStyles}>
-            <li class="nav-item active">
+            <li class="nav-item  active">
               <Link to="/" class="nav-link">
                 Home
               </Link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ">
               <Link to="/chooseTemplate" class="nav-link ">
                 Create CV
               </Link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item  ">
               <Link to="/jobSearch" class="nav-link ">
                 Search Job
               </Link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ">
               <Link to="/pricing" class="nav-link">
                 Pricing
               </Link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ">
               <Link to="/contact" class="nav-link">
                 Contact
               </Link>
