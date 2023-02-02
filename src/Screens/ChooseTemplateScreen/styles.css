@@ -164,7 +164,7 @@
     cursor: pointer;
 }
 .gallery .column.selected{
-    border: 3px solid #A99A77;
+    border: 10px solid #A99A77;
 }
 .gallery .column.selected img{
     opacity: 1;
