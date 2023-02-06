@@ -10,10 +10,34 @@
 .ant-input::placeholder {
   color: black;
   font-size: 12px;
+
 }
 
 .ant-input:focus {
   border-color: red;
   -webkit-box-shadow: 0 0 0 2px #e9e5e5(40, 72, 229, 0.2);
   box-shadow: 10px 10px 10px 10px #e9e5e5(40, 72, 229, 0.2);
+}
+
+Input.Email {
+
+  background-image: url("../../../images/email.png");
+  background-repeat: no-repeat;
+  background-position: 10px 10px;
+}
+
+Input.Name {
+
+  background-image: url("../../../images/user.png");
+  background-repeat: no-repeat;
+  background-position: 10px 10px;
+}
+
+
+
+Input.Messages {
+
+  background-image: url("../../../images/Messages.png");
+  background-repeat: no-repeat;
+  background-position: 10px 50px;
 }

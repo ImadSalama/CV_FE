@@ -6,6 +6,10 @@ import { Line } from "react-chartjs-2";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { getISMemeberUser } from "../../../helpers";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
+
 const SkillBar = withStyles({
   root: {
     color: "#0B1D79",
@@ -198,6 +202,16 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const history = useHistory();
+  const [isMember] = useState(() => getISMemeberUser());
+  const handleSubmit = () => {
+    if (isMember) {
+      handlePrint();
+      return;
+    }
+
+    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+  };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
 
@@ -220,10 +234,10 @@ export default ({
         <button
           type="button"
           className="bg-gray-500 border border-gray-500 p-2 mb-4"
-          onClick={handlePrint}
+          onClick={handleSubmit}
         >
           {" "}
-          Download Resume{" "}
+          {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
       </div>
       <PDFExport

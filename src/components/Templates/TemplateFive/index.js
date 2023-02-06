@@ -6,6 +6,9 @@ import { Line } from "react-chartjs-2";
 import "react-circular-progressbar/dist/styles.css";
 import { useReactToPrint } from "react-to-print";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { getISMemeberUser } from "../../../helpers";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -243,10 +246,19 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const history = useHistory();
+  const [isMember] = useState(() => getISMemeberUser());
+  const handleSubmit = () => {
+    if (isMember) {
+      handlePrint();
+      return;
+    }
 
+    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+  };
   const jobsTitles = workExperienceList.map((work) => work.title);
   const data = workExperienceList.map((work) =>
-    new Date(work.startDate).getMonth(),
+    new Date(work.startDate).getMonth()
   );
 
   const state = {
@@ -286,10 +298,10 @@ export default ({
         <button
           type="button"
           className="bg-gray-500 border border-gray-500 p-2 mb-4"
-          onClick={handlePrint}
+          onClick={handleSubmit}
         >
           {" "}
-          Download Resume{" "}
+          {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
       </div>
       <PDFExport

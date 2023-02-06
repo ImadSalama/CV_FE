@@ -87,7 +87,7 @@ export default class Routers extends Component {
         <Route path="/basicInfo" exact component={BasicInfo} />
         <Route path="/extras" exact component={Extras} />
         <Route path="/feedback" exact component={Feedback} />
-         <Route path="/reviewform" exact component={ReviewForm} />
+        <Route path="/reviewform" exact component={ReviewForm} />
 
         <Route path="/work" exact component={Work} />
         <Route path="/education" exact component={Education} />

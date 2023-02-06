@@ -291,7 +291,6 @@ const BasicInfo = ({
                         right: isMobile ? "-23px" : "-50px",
                         top: "-35px",
                       }}
-                      span={1}
                     >
                       <i class="far fa-trash-alt"></i>
                     </Col>

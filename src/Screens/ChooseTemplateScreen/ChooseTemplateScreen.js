@@ -130,30 +130,30 @@ function ChooseTemplateScreen() {
               <button onClick={() => setModalStatus(true)} className="preview">
                 Preview
               </button>
-              {choosenResume === "One" ||
+              {/* {choosenResume === "One" ||
               choosenResume === "Two" ||
               choosenResume === "Three" ||
-              isMember ? (
-                <Link
-                  to={{
-                    pathname: "/cvform",
-                    search: `?resume=${choosenResume}`,
+              isMember ? ( */}
+              <Link
+                to={{
+                  pathname: "/cvform",
+                  search: `?resume=${choosenResume}`,
 
-                    state: { fromDashboard: true },
-                  }}
-                >
-                  <button className="create">Create Resume</button>
-                </Link>
-              ) : (
-                <Link
-                  to={{
-                    pathname: "/Payment",
-                    state: { fromDashboard: true },
-                  }}
-                >
-                  <button className="create">Go With Pro</button>
-                </Link>
-              )}
+                  state: { fromDashboard: true },
+                }}
+              >
+                <button className="create">Create Resume</button>
+              </Link>
+              {/* } ) : ( 
+              <Link
+                to={{
+                  pathname: "/Payment",
+                  state: { fromDashboard: true },
+                }}
+              >
+                <button className="create">Go With Pro</button>
+              </Link>
+               )} */}
             </>
           )}
         </div>

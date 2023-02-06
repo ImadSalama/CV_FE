@@ -17,7 +17,7 @@ import QuestionIcon from "../../components/Questions/QuestionIcon/QuestionIcon";
 import PricingJoinNow from "./../../components/Pricing/PricingJoinNow/PricingJoinNow";
 import { Link } from "react-router-dom";
 import CreateCVPage from "./../CreateCVPage/CreateCVPage";
-import { getISMemeberUser } from "./../../helpers";
+import { getISMemeberUser, getIsLoggedIn } from "./../../helpers";
 import MyButton from "./../../components/Pricing/MyButton/MyButton";
 import { fetchReview } from "../../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +45,7 @@ const HomePage = () => {
   const lastpostIndex = currentPage * postPerPage;
   const firstpostIndex = lastpostIndex - postPerPage;
   const currentPosts = data.slice(firstpostIndex, lastpostIndex);
+  const [isMember] = useState(() => getIsLoggedIn());
 
   const dispatch = useDispatch();
 
@@ -139,7 +140,6 @@ const HomePage = () => {
           </Row>
         </div>
         <div>
-          
           <Row>
             {currentPosts.map((d, index) => {
               return (
@@ -175,10 +175,11 @@ const HomePage = () => {
               );
             })}
           </Row>
-          <Pagination totalPosts={data.length} 
-          postPerPage={postPerPage}
-          setCurrentPage ={setCurrentPage} 
-          currentPage ={currentPage}
+          <Pagination
+            totalPosts={data.length}
+            postPerPage={postPerPage}
+            setCurrentPage={setCurrentPage}
+            currentPage={currentPage}
           />
         </div>
       </div>
@@ -273,20 +274,24 @@ const HomePage = () => {
             size="large"
           /> */}
       <div className="mt-5">
-        <PricingJoinNow
-          qoute={"Add your feedback now"}
-          button={
-            <Link to="/feedback">
-              <MyButton
-                content="Add"
-                bgColor="#0a2c66"
-                color="white"
-                width="150px"
-                height="40px"
-              />
-            </Link>
-          }
-        />
+        {isMember ? (
+          <PricingJoinNow
+            qoute={"Add your feedback now"}
+            button={
+              <Link to="/feedback">
+                <MyButton
+                  content="Add"
+                  bgColor="#0a2c66"
+                  color="white"
+                  width="150px"
+                  height="40px"
+                />
+              </Link>
+            }
+          />
+        ) : (
+          <PricingJoinNow></PricingJoinNow>
+        )}
       </div>
 
       {/* </div> */}

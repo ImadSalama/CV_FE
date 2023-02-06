@@ -5,6 +5,10 @@ import ReactStars from "react-rating-stars-component";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useReactToPrint } from "react-to-print";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import { getISMemeberUser } from "../../../helpers";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
+
 const Container = styled.div`
   height: auto;
   width: 100%;
@@ -307,7 +311,16 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const history = useHistory();
+  const [isMember] = useState(() => getISMemeberUser());
+  const handleSubmit = () => {
+    if (isMember) {
+      handlePrint();
+      return;
+    }
 
+    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+  };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
 
@@ -330,10 +343,10 @@ export default ({
         <button
           type="button"
           className="bg-gray-500 border border-gray-500 p-2 mb-4"
-          onClick={handlePrint}
+          onClick={handleSubmit}
         >
           {" "}
-          Download Resume{" "}
+          {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
       </div>
       <PDFExport

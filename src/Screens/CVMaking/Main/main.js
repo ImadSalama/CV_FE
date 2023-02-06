@@ -229,11 +229,11 @@ export default () => {
 
   const history = useHistory();
 
-  React.useEffect(() => {
-    if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
-      history.push("/Payment");
-    }
-  }, [isMember, resumeNumber]);
+  // React.useEffect(() => {
+  //   if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
+  //     history.push("/Payment");
+  //   }
+  // }, [isMember, resumeNumber]);
 
   React.useEffect(() => {
     // dispatch(getUserProfile());
@@ -307,9 +307,9 @@ export default () => {
     );
   };
 
-  if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
-    return null;
-  }
+  // if (!isMember && resumeNumber !== "One" && resumeNumber !== "Two") {
+  //   return null;
+  // }
 
   return (
     <>

@@ -58,9 +58,9 @@ const PricingScreen = () => {
           style={{ paddingTop: "12px", cursor: "pointer" }}
         /> 
       </div> */}
-      <div className="container" style={{ marginTop: "10%" }}>
+      {/* <div className="container" style={{ marginTop: "10%" }}>
         <MoneyBack />
-      </div>
+      </div> */}
 
       {/* <div className="container" style={{ marginTop: "10%" }}>
         <PricingCard />
@@ -68,24 +68,11 @@ const PricingScreen = () => {
       <div className="mt-5">
         <Slider />
       </div>
-      {/* <div style={{ marginTop: "10%" }} className="mt-5">
+      <div style={{ marginTop: "10%" }} className="mt-5">
         <Questions />
-      </div> */}
+      </div>
       <div className="mt-5">
-        <PricingJoinNow
-          qoute={"Try Professional Resume Maker Now, Join Now"}
-
-          // button={
-          //   <Link to="/register">
-          //     <MyButton
-          //       content="Join Now"
-          //       bgColor="#0a2c66"
-          //       color="white"
-          //       width="150px"
-          //       height="40px"
-          //     />
-          //   </Link>
-        />
+        <PricingJoinNow qoute={"Try Professional Resume Maker Now, Join Now"} />
       </div>
       <Footer />
     </>

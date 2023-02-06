@@ -6,6 +6,8 @@ import "./FormData.css";
 import { LANGUAGES_INFO } from "./../../../../constants/resumeDetailsConstants";
 import { PlanLocalStorageKey, MonthlyPlan } from "../../../../constants/global";
 import { PurchasePlanContext } from "../../../../Screens/PayPalScreen/PaypalScreen";
+import { useQuery } from "../../../../services/urlQueryService";
+import { useHistory } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -14,7 +16,9 @@ const cientId =
 
 const FormData = () => {
   const { amount } = useContext(PurchasePlanContext);
-  console.log({ amount });
+  const query = useQuery();
+  const history = useHistory();
+
   const getAmount = React.useRef(() => {
     return amount;
   });
@@ -83,7 +87,11 @@ const FormData = () => {
                 });
               }}
               onApprove={(data) => {
-                console.log({ data });
+                // console.log({ data });
+                if (!query.get("returnUrl")) {
+                  return;
+                }
+                history.push(`/${query.get("returnUrl")}`);
               }}
               fundingSource="paypal"
               className="paypal-btn"
@@ -106,7 +114,7 @@ const FormData = () => {
                 });
               }}
               onApprove={(data) => {
-                console.log({ data });
+                // console.log({ data });
               }}
               fundingSource="card"
               className="card-btn"

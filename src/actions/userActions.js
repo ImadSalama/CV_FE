@@ -140,10 +140,10 @@ export const register =
         type: USER_REGISTER_SUCCESS,
         payload: data,
       });
-      dispatch({
-        type: USER_SIGNIN_SUCCESS,
-        payload: data,
-      });
+      // dispatch({
+      //   type: USER_REGISTER_SUCCESS,
+      //   payload: data,
+      // });
       setUserInfo(JSON.stringify(data));
     } catch (err) {
       dispatch({

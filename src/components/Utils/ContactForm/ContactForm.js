@@ -122,7 +122,18 @@ function ContactForm(props) {
       >
         Contact Form
       </h1>
-      <Form {...layout} style={{ fontFamily: "AvenirTextBlack" }}>
+      <Form
+        className="contactFormAndImg"
+        {...layout}
+        style={{ fontFamily: "AvenirTextBlack" }}
+      >
+        {/* <img
+          className="mb-5 pb-5 pic"
+          width="80%"
+          height="300px"
+          src={contactimg}
+        /> */}
+
         <Item>
           <Form.Item
             validateStatus={emailError ? "error" : ""}
@@ -131,17 +142,20 @@ function ContactForm(props) {
               xl: 24,
             }}
           >
+            {/* <i class="fa-solid fa-envelopes"></i> */}
             <Input
               type="email"
-              className="px-5 col-xl-12"
-              placeholder="Email Address"
+              className="px-5 col-xl-12 Email"
+              placeholder=" Email Address"
               size="large"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
               required
             />
           </Form.Item>
-          <div className="px-4 py-2" />
+        </Item>
+        <Item>
+          {/* <div className="px-4 py-2" /> */}
           <Form.Item
             validateStatus={nameError ? "error" : ""}
             help={nameError}
@@ -151,7 +165,7 @@ function ContactForm(props) {
           >
             <Input
               type="text"
-              className="px-5"
+              className="px-5 Name"
               placeholder="Name"
               size="large"
               onChange={(e) => setName(e.target.value)}
@@ -173,7 +187,7 @@ function ContactForm(props) {
             }}
           >
             <Input
-              className="mb-2"
+              className="px-5 Messages"
               type="text"
               placeholder="Let us know how we can help you!"
               size="large"
@@ -185,6 +199,7 @@ function ContactForm(props) {
           </Form.Item>
         </Item>
       </Form>
+
       <div className="text-center">
         <button
           type="button"
