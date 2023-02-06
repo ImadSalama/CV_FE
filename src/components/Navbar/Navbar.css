@@ -7,28 +7,32 @@
 
 nav {
   max-width: 72%;
-  padding: 0 30px;
+  padding: 0 30px !important;
   margin: 0 auto;
-  z-index: 50;
+
 }
+
 
 .nav-item {
-  margin: 0 8px;
-  font-size: 13px;
+  margin: 0% 1%;
+  font-size: 18px;
   color: #333333;
   font-family: AvenirTextBlack;
-}
+} 
 
-.navbar-collapse {
+
+
+
+/* .navbar-collapse {
   justify-content: center;
-}
+} */
 
 .navbar-nav {
   justify-content: end;
 }
 
-.longName {
-  min-width: 20%;
+.longName1 {
+  min-width: 90%;
 }
 
 .signUp {

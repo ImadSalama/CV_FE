@@ -12,13 +12,13 @@ nav {
 
 }
 
-/* 
+
 .nav-item {
-  margin: 0% 3%;
-  font-size: 13px;
+  margin: 0% 1%;
+  font-size: 18px;
   color: #333333;
   font-family: AvenirTextBlack;
-} */
+} 
 
 
 .nav-link-footer {
@@ -39,7 +39,7 @@ nav {
 }
 
 .longName1 {
-  min-width: 25%;
+  min-width: 35%;
 }
 
 .signUp {

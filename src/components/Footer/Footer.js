@@ -42,7 +42,7 @@ export default function Footer({ bgColor, border }) {
                 margin: "0%",
               }}
             >
-              <Link class="nav-link " to="/jobSearch">
+              <Link class="nav-link longName1" to="/jobSearch">
                 Search Job
               </Link>
             </li>
