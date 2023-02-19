@@ -24,6 +24,7 @@ import { useQuery } from "../../../services/urlQueryService";
 import ShowResume from "../../../components/ShowResume/ShowResume";
 import "./main.css";
 import {
+  getFormattedDate,
   getISMemeberUser,
   getUserInfo,
   mapModel,
@@ -130,9 +131,20 @@ export default () => {
   const [previewResume, setPreviewResume] = useState(false);
   const query = useQuery();
   const resumeNumber = query.get("resume");
-
+  const isFromPayment = query.get("fromPayment");
   const profileImageRef = useRef();
   const [formState, setFormState] = React.useState({});
+
+  React.useEffect(() => {
+    window.addEventListener("storage", () => {
+      setPreviewResume(isFromPayment && getISMemeberUser());
+    });
+    return () => {
+      window.removeEventListener("storage", () => {
+        setPreviewResume(isFromPayment && getISMemeberUser());
+      });
+    };
+  }, []);
 
   const googleTranslateElementInit = () => {
     console.log(
@@ -236,7 +248,7 @@ export default () => {
   // }, [isMember, resumeNumber]);
 
   React.useEffect(() => {
-    // dispatch(getUserProfile());
+    dispatch(getUserProfile());
     const userInfo = getUserInfo();
     if (!userInfo || !userInfo.user) {
       return;
@@ -249,6 +261,8 @@ export default () => {
         phone_number,
         education,
         hobbies,
+        languages,
+        software,
         work_experience,
       },
     } = userInfo;
@@ -256,6 +270,14 @@ export default () => {
     setWorkExperienceList(
       mapModel(work_experience, "work", ModelMapperDir.FromApiToUi) || []
     );
+    setSkillsInfo({
+      ...skillsInfo,
+      language: languages.map((lang) => lang.name),
+      softwareSkills: software.map(({ programming_language, percentage }) => ({
+        skillName: programming_language,
+        rating: percentage * 100,
+      })),
+    });
     setHobbyName({
       hobbiesData: (hobbies || []).map((name) => ({ name })) || [],
     });
@@ -264,6 +286,7 @@ export default () => {
       lastName: lastname,
       phone: phone_number,
       email,
+      proffession: work_experience[0]?.job_title,
     });
     setEducationDetailsList(
       mapModel(education, "education", ModelMapperDir.FromApiToUi) || []
@@ -292,6 +315,11 @@ export default () => {
         //   description: w.description,
         // })),
         // hobbies: hobbyName.hobbiesData.map((h) => h.name),
+        firstname: personalInfo.firstName,
+        lastname: personalInfo.lastName,
+        phone_number: personalInfo.phone,
+        email: personalInfo.email,
+
         education: mapModel(
           educationDetailsList,
           "education",
@@ -303,6 +331,11 @@ export default () => {
           ModelMapperDir.FromUiToApi
         ),
         hobbies: hobbyName.hobbiesData.map((h) => h.name),
+        languages: skillsInfo.language?.map((name) => ({ name })),
+        software: skillsInfo.softwareSkills?.map(({ rating, skillName }) => ({
+          programming_language: skillName,
+          percentage: rating * 0.01,
+        })),
       })
     );
   };

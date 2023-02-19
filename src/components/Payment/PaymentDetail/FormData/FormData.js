@@ -8,6 +8,8 @@ import { PlanLocalStorageKey, MonthlyPlan } from "../../../../constants/global";
 import { PurchasePlanContext } from "../../../../Screens/PayPalScreen/PaypalScreen";
 import { useQuery } from "../../../../services/urlQueryService";
 import { useHistory } from "react-router-dom";
+import { savePayment } from "../../../../actions/userActions";
+import { useDispatch } from "react-redux";
 
 const { Option } = Select;
 
@@ -18,7 +20,7 @@ const FormData = () => {
   const { amount } = useContext(PurchasePlanContext);
   const query = useQuery();
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const getAmount = React.useRef(() => {
     return amount;
   });
@@ -88,10 +90,11 @@ const FormData = () => {
               }}
               onApprove={(data) => {
                 // console.log({ data });
+                dispatch(savePayment(getAmount.current()));
                 if (!query.get("returnUrl")) {
                   return;
                 }
-                history.push(`/${query.get("returnUrl")}`);
+                history.push(`/${query.get("returnUrl")}&fromPayment=true`);
               }}
               fundingSource="paypal"
               className="paypal-btn"

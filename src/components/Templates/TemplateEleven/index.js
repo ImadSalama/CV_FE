@@ -254,7 +254,7 @@ export default ({
                   <img src={images.mobile} alt="" />
                   <ContactText>{personalInfo?.phone}</ContactText>
                 </DetailBox>
-                {personalInfo.socialLinks.map((data) => {
+                {personalInfo.socialLinks?.map((data) => {
                   return (
                     <DetailBox>
                       <img src={images[data.socialSite]} alt="" />

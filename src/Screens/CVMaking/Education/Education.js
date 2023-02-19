@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Checkbox } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { EyeOutlined } from "@ant-design/icons";
-import TextArea from "./../../../components/Utils/CVMaking Components/TextArea/TextArea";
+import { Col, Row } from "antd";
+import React, { useState } from "react";
 import DateField from "./../../../components/Utils/CVMaking Components/DateField/DateField";
+import TextArea from "./../../../components/Utils/CVMaking Components/TextArea/TextArea";
 import "./../BasicInfo/BasicInfo.css";
-import { getEducationInfo } from "./../../../actions/resumeDetailsActions";
 
-import Navbar from "./../../../components/Navbar/Navbar";
-import seven from "./../../ChooseTemplateScreen/images/ten.jpg";
-import image from "./../BasicInfo/image.png";
+import moment from "moment";
 import { useMediaQuery } from "react-responsive";
-import Tab from "./../../../components/Utils/CVMaking Components/ActivityBar/Tab";
-import NameBadge from "./../../../components/Utils/CVMaking Components/NameBadges/NameBadge";
-import InputField from "./../../../components/Utils/CVMaking Components/InputFields/InputField";
-import CVMakingButton from "./../../../components/Utils/CVMaking Components/Buttons/CVMakingButton";
-import Footer from "./../../../components/Footer/Footer";
+import ViewCVButton from "../../../components/Utils/CVMaking Components/viewCVButton/viewCVButton";
 import { useQuery } from "../../../services/urlQueryService";
 import resumeImages from "../../ChooseTemplateScreen/images";
 import UploadButton from "../uploadButton/uploadButton";
-import ViewCVButton from "../../../components/Utils/CVMaking Components/viewCVButton/viewCVButton";
+import InputField from "./../../../components/Utils/CVMaking Components/InputFields/InputField";
+import NameBadge from "./../../../components/Utils/CVMaking Components/NameBadges/NameBadge";
 
 const Education = ({
   educationDetailsList,
@@ -136,7 +128,7 @@ const Education = ({
                                 updateEducation(
                                   i,
                                   "degreeProgram",
-                                  e.target.value,
+                                  e.target.value
                                 )
                               }
                             />
@@ -149,12 +141,16 @@ const Education = ({
                       <Col span={11}>
                         <DateField
                           placeholder="Start Date"
-                          value={d.graduationStartDate}
+                          value={
+                            d.graduationStartDate
+                              ? moment(d.graduationStartDate || "")
+                              : moment()
+                          }
                           onChange={(date, dateString) =>
                             updateEducation(
                               i,
                               "graduationStartDate",
-                              dateString,
+                              dateString
                             )
                           }
                         />
@@ -162,7 +158,11 @@ const Education = ({
                       <Col span={11}>
                         <DateField
                           placeholder="End Date"
-                          value={d.graduationEndDate}
+                          value={
+                            d.graduationEndDate
+                              ? moment(d.graduationEndDate || "")
+                              : moment()
+                          }
                           onChange={(date, dateString) =>
                             updateEducation(i, "graduationEndDate", dateString)
                           }

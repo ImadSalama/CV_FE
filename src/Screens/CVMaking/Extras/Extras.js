@@ -497,7 +497,7 @@ const ExtraFields = ({
                     {extraFields.trainings.map((d, i) => {
                       return (
                         <>
-                          <Col span={10}>
+                          <Col>
                             <InputField
                               placeholder="Trainings Name"
                               name="trainings"
@@ -510,41 +510,26 @@ const ExtraFields = ({
                             />
                           </Col>
 
-                          <Col span={10}>
+                          <Col>
                             <InputField
-                              placeholder="Trainings Year"
+                              placeholder="From"
                               name="trainings"
                               suffix={false}
                               type="date"
                               value={d.trainingYear}
-                              onChange={(e) =>
-                                handleReference(i, e, "trainingYear")
-                              }
+                              onChange={(e) => handleReference(i, e, "From")}
                             />
                           </Col>
-                          <Col span={1}></Col>
-                          <Col span={10}>
+                          {/* <Col span={1}></Col> */}
+
+                          <Col>
                             <InputField
-                              placeholder="Course Name"
+                              placeholder="To"
                               name="trainings"
                               suffix={false}
-                              type="text"
-                              value={d.courseName}
-                              onChange={(e) =>
-                                handleReference(i, e, "courseName")
-                              }
-                            />
-                          </Col>
-                          <Col span={10}>
-                            <InputField
-                              placeholder="Duration"
-                              name="trainings"
-                              suffix={false}
-                              type="text"
+                              type="date"
                               value={d.duration}
-                              onChange={(e) =>
-                                handleReference(i, e, "duration")
-                              }
+                              onChange={(e) => handleReference(i, e, "To")}
                             />
                           </Col>
                           <Col span={1} style={{ marginTop: "2%" }}>
@@ -606,7 +591,7 @@ const ExtraFields = ({
                             />
                           </Col>
 
-                          <Col span={10}>
+                          {/* <Col span={10}>
                             <InputField
                               placeholder="Projects Number"
                               name="projects"
@@ -617,7 +602,7 @@ const ExtraFields = ({
                                 handleReference(i, e, "projectNumber")
                               }
                             />
-                          </Col>
+                          </Col> */}
 
                           <Col span={1} style={{ marginTop: "2%" }}>
                             <span
@@ -645,7 +630,7 @@ const ExtraFields = ({
                 ) : (
                   ""
                 )}
-                {queryName == "Five" || queryName == "Three" ? (
+                {/* {queryName == "Five" || queryName == "Three" ? (
                   <>
                     <Col span={22}>
                       <NameBadge name="Add Data"></NameBadge>
@@ -695,9 +680,9 @@ const ExtraFields = ({
                   </>
                 ) : (
                   ""
-                )}
+                )} */}
 
-                {extraFields.interestedLanguage.map((d, i) => {
+                {/* {extraFields.interestedLanguage.map((d, i) => {
                   return (
                     <>
                       {queryName == "Four" ? (
@@ -760,7 +745,7 @@ const ExtraFields = ({
                       )}
                     </>
                   );
-                })}
+                })} */}
               </Row>
               {/* Biography fields */}
 

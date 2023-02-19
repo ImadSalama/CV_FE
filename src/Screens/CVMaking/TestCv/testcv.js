@@ -124,7 +124,6 @@ const BasicInfo = () => {
     <>
       {/* <Navbar border={true} /> */}
       {/* Tabs */}
-     
 
       {/* Heading and UploadButton */}
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -276,7 +275,7 @@ const BasicInfo = () => {
                         right: isMobile ? "-23px" : "-50px",
                         top: "-35px",
                       }}
-                      span={1}
+                      // span={1}
                     >
                       <i class="far fa-trash-alt"></i>
                     </Col>
@@ -333,7 +332,6 @@ const BasicInfo = () => {
             {/* <div>
                             <CVMakingButton to="" name="Back" />
                         </div> */}
-          
           </div>
         </div>
       </div>

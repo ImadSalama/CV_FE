@@ -260,7 +260,7 @@ export default ({
                       {personalInfo?.address} , {personalInfo.city}
                     </span>
                   </SocialDetail>
-                  {personalInfo.socialLinks.map((data) => {
+                  {personalInfo.socialLinks?.map((data) => {
                     return (
                       <SocialDetail>
                         <img src={images[data.socialSite]} alt="" />
@@ -367,7 +367,7 @@ export default ({
                 </div>
                 <div className="col-4">
                   <TitleHeading>Social Links</TitleHeading>
-                  {personalInfo.socialLinks.map((data) => {
+                  {personalInfo.socialLinks?.map((data) => {
                     return (
                       <FlexBox>
                         <img src={images[data.socialSite]} alt="" />

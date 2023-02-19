@@ -42,8 +42,11 @@ export const forceLogout = () => {
   }
 };
 
-export const setUserInfo = (userInfo) => {
+export const setUserInfo = (userInfo, dispatchEvent = false) => {
   localStorage.setItem("userInfo", userInfo);
+  if (dispatchEvent) {
+    window.dispatchEvent(new Event("storage"));
+  }
 };
 
 export const getUserInfo = () => {
@@ -56,6 +59,15 @@ export const getISMemeberUser = () => {
     return false;
   }
   return new Date(userInfo.user.exp_date).valueOf() >= Date.now();
+};
+
+export const setIsMember = () => {
+  const userInfo = getUserInfo();
+  if (!userInfo || !userInfo.user) {
+    return;
+  }
+  userInfo.user.exp_date = new Date().setHours(new Date().getHours() + 1);
+  localStorage.setItem("userInfo", userInfo);
 };
 
 export const ModelMapperDir = {
@@ -111,4 +123,28 @@ export const mapModel = (model, modelType, direction) => {
     newData.push(item);
   });
   return newData;
+};
+
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+export const getFormattedDate = (date) => {
+  if (!date) {
+    return;
+  }
+  const dateObj = new Date(date);
+  const month = months[dateObj.getMonth()];
+  return `${month}-${dateObj.getFullYear()}`;
 };

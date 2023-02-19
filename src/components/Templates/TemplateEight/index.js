@@ -8,6 +8,7 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import { useQuery } from "../../../services/urlQueryService";
 
 const Container = styled.div`
   margin-left: auto;
@@ -165,7 +166,8 @@ export default ({
   });
 
   const history = useHistory();
-  const [isMember] = useState(() => getISMemeberUser());
+  const query = useQuery();
+  const [isMember, setIsMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
       handlePrint();
@@ -174,6 +176,13 @@ export default ({
 
     history.push(`/Payment?returnUrl=cvform?resume=Four`);
   };
+
+  // React.useEffect(() => {
+  //   if (query.get("fromPayment") === "true") {
+  //     setIsMember(true);
+  //   }
+  // }, [query.get("fromPayment")]);
+
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
 
@@ -218,7 +227,7 @@ export default ({
             <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
 
             <SocialLinks>
-              {personalInfo.socialLinks.map((data) => {
+              {personalInfo.socialLinks?.map((data) => {
                 return (
                   <Anchor>
                     <img src={images[data.socialSite]} alt="" />

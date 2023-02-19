@@ -367,7 +367,7 @@ export default ({
           </MainBox>
           <Footer>
             <div className="my-row">
-              {personalInfo.socialLinks.map((data) => {
+              {personalInfo.socialLinks?.map((data) => {
                 return (
                   <div className="col-4">
                     <SocialFooter>

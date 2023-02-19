@@ -20,6 +20,7 @@ import ViewCVButton from "../../../components/Utils/CVMaking Components/viewCVBu
 import { useQuery } from "../../../services/urlQueryService";
 import resumeImages from "../../ChooseTemplateScreen/images";
 import UploadButton from "../uploadButton/uploadButton";
+import moment from "moment";
 
 const Work = ({
   workExperienceList,
@@ -164,7 +165,9 @@ const Work = ({
                       <Col span={11}>
                         <DateField
                           placeholder="Start Date"
-                          value={d.startDate}
+                          value={
+                            d.startDate ? moment(d.startDate || "") : moment()
+                          }
                           onChange={(date, dateString) =>
                             updateWork(i, "startDate", dateString)
                           }
@@ -173,7 +176,7 @@ const Work = ({
                       <Col span={11}>
                         <DateField
                           placeholder="End Date"
-                          value={d.endDate}
+                          value={d.endDate ? moment(d.endDate || "") : moment()}
                           disabled={d.currentlyWorkHere}
                           onChange={(date, dateString) =>
                             updateWork(i, "endDate", dateString)

@@ -298,11 +298,32 @@ export const updateUserProfile = (body) => async (dispatch) => {
 export const getUserProfile = () => async (dispatch) => {
   try {
     const token = getIsLoggedIn();
-    const userProfile = await Axios.get(`${apiUrl}/users/profile`, {
+    const { data } = await Axios.get(`${apiUrl}/users/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log({ userProfile });
+    setUserInfo(JSON.stringify(data), true);
+  } catch (err) {
+    console.log("getUserProfile", err);
+  }
+};
+
+export const savePayment = (paid, type) => async (dispatch) => {
+  try {
+    const token = getIsLoggedIn();
+    const { data } = await Axios.post(
+      `${apiUrl}/payment`,
+      {
+        paid,
+        type: paid == 18 ? "Monthly" : "Quarterly",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch(getUserProfile());
   } catch (err) {}
 };

@@ -156,7 +156,7 @@ const Education = ({
                         <>
                           {queryName == "Four" ? (
                             <>
-                              <NameBadge name="Add Professional Skills"></NameBadge>
+                              {/* <NameBadge name="Add Professional Skills"></NameBadge>
 
                               <select
                                 type="text"
@@ -174,8 +174,8 @@ const Education = ({
                                   Design Integration
                                 </option>
                                 <option value="Linux">Linux</option>
-                              </select>
-                              <Col span={22}>
+                              </select> */}
+                              {/* <Col span={22}>
                                 <InputField
                                   placeholder="Skill Experience"
                                   suffix={true}
@@ -198,7 +198,7 @@ const Education = ({
                                     handleChange(i, e, "skillsName")
                                   }
                                 />
-                              </Col>
+                              </Col> */}
                             </>
                           ) : (
                             <>
@@ -229,7 +229,7 @@ const Education = ({
                               )}
                             </>
                           )}
-                          {queryName != "One" ? (
+                          {/* {queryName != "One" ? (
                             <Col
                               offset={1}
                               style={{ marginTop: "7%" }}
@@ -247,11 +247,11 @@ const Education = ({
                             </Col>
                           ) : (
                             ""
-                          )}
+                          )} */}
                         </>
                       );
                     })}
-                    {queryName != "One" ? (
+                    {/* {queryName != "One" ? (
                       <AddMore
                         onClick={() =>
                           handleAddNew("professionalSkills", {
@@ -262,7 +262,7 @@ const Education = ({
                       />
                     ) : (
                       ""
-                    )}
+                    )} */}
                   </Row>
                   <Row>
                     <Col span={22}>

@@ -390,7 +390,7 @@ export default ({
           </Bio>
           <Footer>
             <FooterContent>
-              {personalInfo.socialLinks.map((data) => {
+              {personalInfo.socialLinks?.map((data) => {
                 return (
                   <FooterBox>
                     <FooterImg>

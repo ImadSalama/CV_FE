@@ -308,7 +308,7 @@ export default ({
                     <Icon src={images.location}></Icon>
                     <ContentDetails>{personalInfo?.address}</ContentDetails>
                   </NameImg>
-                  {personalInfo.socialLinks.map((data) => {
+                  {personalInfo.socialLinks?.map((data) => {
                     return (
                       <NameImg>
                         <Icon src={images[data.socialSite]}></Icon>
