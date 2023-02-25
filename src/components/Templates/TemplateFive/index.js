@@ -9,6 +9,8 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import moment from "moment";
+import jsPDF from "jspdf";
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -188,7 +190,7 @@ const ContentDetails = styled.p`
   padding-bottom: 10px;
 `;
 const TitleSpan = styled.span`
-  font-size: 11px;
+  font-size: 8px;
   font-weight: 600;
   padding: 5px 10px;
   border-radius: 5px;
@@ -246,15 +248,26 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.4 },
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Five`);
   };
   const jobsTitles = workExperienceList.map((work) => work.title);
   const data = workExperienceList.map((work) =>
@@ -303,223 +316,228 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <MainBox>
-            <ProfileDetail>
-              <ProfileDetails>
-                <ProfileName>
-                  {personalInfo.firstName
-                    ? `${personalInfo.firstName} ${personalInfo.lastName}`
-                    : "Ana Jones"}
-                </ProfileName>
-                <ProfileDesg>
-                  {personalInfo.profession
-                    ? `${personalInfo.profession}`
-                    : "Engineer"}
-                </ProfileDesg>
-              </ProfileDetails>
-              <ProfileDetails>
-                <div className="d-flex align-items-center">
-                  <img src={images.email} alt="" />
-                  <ContentDetail>
-                    {personalInfo.email
-                      ? `${personalInfo.email}`
-                      : "xyz@website.com"}
-                  </ContentDetail>
-                </div>
-                <div className="d-flex align-items-center">
-                  <img src={images.phone} alt="" />
-                  <ContentDetail>
-                    {personalInfo.phone
-                      ? `${personalInfo.phone}`
-                      : "+12 445678"}
-                  </ContentDetail>
-                </div>
-                <div className="d-flex align-items-center">
-                  <img src={images.location} alt="" />
-                  <ContentDetail>
-                    {personalInfo.address
-                      ? `${personalInfo.address} , ${personalInfo.city}`
-                      : "Address"}
-                  </ContentDetail>
-                </div>
-              </ProfileDetails>
-            </ProfileDetail>
-            <WhiteBox>
-              <TitleName>Brief Summary</TitleName>
-              <Description>
-                {personalInfo.history
-                  ? `${personalInfo.history}`
-                  : ` Ana is a graphic designer who works in a web designing company.
+      > */}
+      <Container ref={componentRef}>
+        <MainBox>
+          <ProfileDetail>
+            <ProfileDetails>
+              <ProfileName>
+                {personalInfo.firstName
+                  ? `${personalInfo.firstName} ${personalInfo.lastName}`
+                  : "Ana Jones"}
+              </ProfileName>
+              <ProfileDesg>
+                {personalInfo.profession
+                  ? `${personalInfo.profession}`
+                  : "Engineer"}
+              </ProfileDesg>
+            </ProfileDetails>
+            <ProfileDetails>
+              <div className="d-flex align-items-center">
+                <img src={images.email} alt="" />
+                <ContentDetail>
+                  {personalInfo.email
+                    ? `${personalInfo.email}`
+                    : "xyz@website.com"}
+                </ContentDetail>
+              </div>
+              <div className="d-flex align-items-center">
+                <img src={images.phone} alt="" />
+                <ContentDetail>
+                  {personalInfo.phone ? `${personalInfo.phone}` : "+12 445678"}
+                </ContentDetail>
+              </div>
+              <div className="d-flex align-items-center">
+                <img src={images.location} alt="" />
+                <ContentDetail>
+                  {personalInfo.address
+                    ? `${personalInfo.address} , ${personalInfo.city}`
+                    : "Address"}
+                </ContentDetail>
+              </div>
+            </ProfileDetails>
+          </ProfileDetail>
+          <WhiteBox>
+            <TitleName>Brief Summary</TitleName>
+            <Description>
+              {personalInfo.history
+                ? `${personalInfo.history}`
+                : ` Ana is a graphic designer who works in a web designing company.
               They often ask for quick designs and she would like to have the
               help of ready-made graphics, which you can later modify to fit
               your needs. She likes her job a lot but what her passion is
               traveling and meeting people. Whenever she can, she hangs out with
               her friends and always says love to travel.`}
-              </Description>
-            </WhiteBox>
-            <div className="my-row">
-              <div className="col-2">
-                {extraFields.pye.map((data) => {
-                  return (
-                    <>
-                      <BorderBox>
-                        <Number>+{data.projectsCompleted}</Number>
-                        <Name>Projects</Name>
-                      </BorderBox>
-                      <BorderBox style={{ backgroundColor: "#B9375E" }}>
-                        <Number>+{data.customer}</Number>
-                        <Name>Customers</Name>
-                      </BorderBox>
-                      <BorderBox style={{ backgroundColor: "#E05780" }}>
-                        <Number>+{data.experience}</Number>
-                        <Name>Years Experience</Name>
-                      </BorderBox>
-                    </>
-                  );
-                })}
-                <Leasure>
-                  <LeasureBox>
-                    {hobbyName.hobbiesData.map((data) => {
-                      return (
-                        <>
-                          <img
-                            src={data.icon}
-                            alt=""
-                            className="imagebgcustom"
+            </Description>
+          </WhiteBox>
+          <div className="my-row">
+            <div className="col-2">
+              {extraFields.pye.map((data) => {
+                return (
+                  <>
+                    <BorderBox>
+                      <Number>+{data.projectsCompleted}</Number>
+                      <Name>Projects</Name>
+                    </BorderBox>
+                    <BorderBox style={{ backgroundColor: "#B9375E" }}>
+                      <Number>+{data.customer}</Number>
+                      <Name>Customers</Name>
+                    </BorderBox>
+                    <BorderBox style={{ backgroundColor: "#E05780" }}>
+                      <Number>+{data.experience}</Number>
+                      <Name>Years Experience</Name>
+                    </BorderBox>
+                  </>
+                );
+              })}
+              <Leasure>
+                <LeasureBox>
+                  {hobbyName.hobbiesData.map((data) => {
+                    return (
+                      <>
+                        <img src={data.icon} alt="" className="imagebgcustom" />
+                        <Title>{data.name}</Title>
+                      </>
+                    );
+                  })}
+                </LeasureBox>
+              </Leasure>
+            </div>
+            <div className="col-10">
+              <div className="my-row">
+                <div className="col-6">
+                  <WhiteBox className="m-0">
+                    <TitleName>Experience</TitleName>
+
+                    <PersonalBox>
+                      {workExperienceList.map((data) => {
+                        return (
+                          <DetailBox className="mb-1">
+                            <Label>
+                              {moment(data?.startDate).format("MM/YYYY")}
+                            </Label>
+                            <ContentMain>
+                              <TitleDark>
+                                {data?.title} - {data?.employer}
+                                <TitleSpan className="pink-span">
+                                  {data.currentlyWorkHere == true
+                                    ? "Current Job"
+                                    : `${moment(data?.endDate).format(
+                                        "MM/YYYY"
+                                      )}`}
+                                </TitleSpan>
+                              </TitleDark>
+
+                              <ContentDetails>
+                                {data?.description}
+                              </ContentDetails>
+                            </ContentMain>
+                          </DetailBox>
+                        );
+                      })}
+                    </PersonalBox>
+                  </WhiteBox>
+                </div>
+                <div className="col-6">
+                  <WhiteBox className="m-0">
+                    <TitleName>Education</TitleName>
+
+                    <PersonalBox>
+                      {educationDetailsList.map((data) => {
+                        return (
+                          <DetailBox className="mb-1">
+                            <Label>
+                              {moment(data?.graduationStartDate).format(
+                                "MM/DD/YYYY"
+                              )}
+                            </Label>
+                            <ContentMain>
+                              <TitleDark>
+                                {data?.studyField} - {data?.instituteName}
+                                <TitleSpan className="pink-span">
+                                  {moment(data?.graduationEndDate).format(
+                                    "MM/DD/YYYY"
+                                  )}
+                                </TitleSpan>
+                              </TitleDark>
+
+                              <ContentDetails>
+                                {data?.description}
+                              </ContentDetails>
+                            </ContentMain>
+                          </DetailBox>
+                        );
+                      })}
+                    </PersonalBox>
+                  </WhiteBox>
+                </div>
+                <div className="col-12">
+                  <WhiteBox>
+                    <TitleName>Software Skills</TitleName>
+                    <Skills>
+                      {skillsInfo.professionalSkills.map((data) => {
+                        return (
+                          <CircularProgressbar
+                            styles={{
+                              root: {
+                                height: 133,
+                                width: 133,
+                              },
+                              path: {
+                                stroke: "#FF7AA2",
+                              },
+                              text: {
+                                fontSize: 10,
+                              },
+                            }}
+                            value={data.rating ? `${data.rating}` : 50}
+                            text={data?.name}
                           />
-                          <Title>{data.name}</Title>
-                        </>
-                      );
-                    })}
-                  </LeasureBox>
-                </Leasure>
-              </div>
-              <div className="col-10">
-                <div className="my-row">
-                  <div className="col-6">
-                    <WhiteBox className="m-0">
-                      <TitleName>Experience</TitleName>
-
-                      <PersonalBox>
-                        {workExperienceList.map((data) => {
-                          return (
-                            <DetailBox className="mb-1">
-                              <Label>{data?.startDate}</Label>
-                              <ContentMain>
-                                <TitleDark>
-                                  {data?.title} - {data?.employer}
-                                  <TitleSpan className="pink-span">
-                                    {data.currentlyWorkHere == true
-                                      ? "Current Job"
-                                      : `${data?.endDate}`}
-                                  </TitleSpan>
-                                </TitleDark>
-
-                                <ContentDetails>
-                                  {data?.description}
-                                </ContentDetails>
-                              </ContentMain>
-                            </DetailBox>
-                          );
-                        })}
-                      </PersonalBox>
-                    </WhiteBox>
-                  </div>
-                  <div className="col-6">
-                    <WhiteBox className="m-0">
-                      <TitleName>Education</TitleName>
-
-                      <PersonalBox>
-                        {educationDetailsList.map((data) => {
-                          return (
-                            <DetailBox className="mb-1">
-                              <Label>{data?.graduationStartDate}</Label>
-                              <ContentMain>
-                                <TitleDark>
-                                  {data?.studyField} - {data?.instituteName}
-                                  <TitleSpan className="pink-span">
-                                    {data?.graduationEndDate}
-                                  </TitleSpan>
-                                </TitleDark>
-
-                                <ContentDetails>
-                                  {data?.description}
-                                </ContentDetails>
-                              </ContentMain>
-                            </DetailBox>
-                          );
-                        })}
-                      </PersonalBox>
-                    </WhiteBox>
-                  </div>
-                  <div className="col-12">
-                    <WhiteBox>
-                      <TitleName>Software Skills</TitleName>
-                      <Skills>
-                        {skillsInfo.professionalSkills.map((data) => {
-                          return (
-                            <CircularProgressbar
-                              styles={{
-                                root: {
-                                  height: 133,
-                                  width: 133,
-                                },
-                                path: {
-                                  stroke: "#FF7AA2",
-                                },
-                                text: {
-                                  fontSize: 10,
-                                },
-                              }}
-                              value={data.rating ? `${data.rating}` : 50}
-                              text={data?.name}
-                            />
-                          );
-                        })}
-                      </Skills>
-                    </WhiteBox>
-                  </div>
+                        );
+                      })}
+                    </Skills>
+                  </WhiteBox>
                 </div>
               </div>
             </div>
-            <WhiteBox>
-              <TitleName>Professional Goals</TitleName>
-              <Line
-                data={state}
-                options={{
-                  legend: {
-                    display: false,
-                    position: "right",
-                  },
-                }}
-              />
-            </WhiteBox>
-          </MainBox>
+          </div>
+          <WhiteBox>
+            <TitleName>Professional Goals</TitleName>
+            <Line
+              data={state}
+              options={{
+                legend: {
+                  display: false,
+                  position: "right",
+                },
+              }}
+            />
+          </WhiteBox>
+        </MainBox>
 
-          <Footer>
-            <div className="my-row">
-              {personalInfo.socialLinks?.map((data) => {
-                return (
-                  <div className="col-4">
-                    <SocialFooter>
-                      <img src={images[data.socialSite]} alt="" />
-                    </SocialFooter>
-                    <ContentDetail>{data.socialLink}</ContentDetail>
-                  </div>
-                );
-              })}
-            </div>
-          </Footer>
-        </Container>
-      </PDFExport>
+        <Footer>
+          <div className="my-row">
+            {personalInfo.socialLinks?.map((data) => {
+              return (
+                <div className="col-4">
+                  <SocialFooter>
+                    <img src={images[data.socialSite]} alt="" />
+                  </SocialFooter>
+                  <ContentDetail>{data.socialLink}</ContentDetail>
+                </div>
+              );
+            })}
+          </div>
+        </Footer>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

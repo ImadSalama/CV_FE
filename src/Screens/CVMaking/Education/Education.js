@@ -32,7 +32,6 @@ const Education = ({
     updatedList[index][name] = value;
     setEducationDetailsList(updatedList);
   };
-  console.log(educationDetailsList);
   const deleteEducation = (index) => {
     let updatedList = [...educationDetailsList];
     let removedItem = updatedList.splice(index, 1);
@@ -101,7 +100,7 @@ const Education = ({
                       queryName == "Ten" ||
                       queryName == "Nine" ? (
                         <>
-                          <Col span={11}>
+                          {/* <Col span={11}>
                             <InputField
                               placeholder="GPA"
                               suffix={true}
@@ -111,14 +110,14 @@ const Education = ({
                                 updateEducation(i, "gpa", e.target.value)
                               }
                             />
-                          </Col>
+                          </Col> */}
                         </>
                       ) : (
                         ""
                       )}
                       {queryName == "Eleven" ? (
                         <>
-                          <Col span={11}>
+                          {/* <Col span={11}>
                             <InputField
                               placeholder="Degree Program"
                               suffix={true}
@@ -132,7 +131,7 @@ const Education = ({
                                 )
                               }
                             />
-                          </Col>
+                          </Col> */}
                         </>
                       ) : (
                         ""
@@ -195,7 +194,6 @@ const Education = ({
                             right: isMobile ? "-15px" : "-50px",
                             top: "-50px",
                           }}
-                          span={1}
                         >
                           <i class="far fa-trash-alt"></i>
                         </Col>

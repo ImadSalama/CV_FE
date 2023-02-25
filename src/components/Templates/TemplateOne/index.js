@@ -3,6 +3,8 @@ import styled from "styled-components";
 import icons from "./assets";
 import { useReactToPrint } from "react-to-print";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import moment from "moment";
+import jsPDF from "jspdf";
 
 const Container = styled.div`
   /* width: 850px; */
@@ -26,25 +28,8 @@ const BlockQuote = styled.blockquote`
     background-repeat: no-repeat;
     background-size: 20px 20px; */
   :before {
-    font-family: FontAwesome;
-    position: absolute;
-    color: #edb910;
-    font-size: 2.125em;
-    content: "\f10d";
-    top: -12px;
-    margin-right: -20px;
-    right: 100%;
   }
   :after {
-    font-family: FontAwesome;
-    position: absolute;
-    color: #edb910;
-    font-size: 2.125em;
-    content: "\f10e";
-    margin-left: -20px;
-    left: 100%;
-    top: auto;
-    bottom: -20px;
   }
 `;
 
@@ -121,6 +106,11 @@ const DetailText = styled.p`
   display: inline;
 `;
 
+const DetailsImg = styled.img`
+  width: 1.2rem;
+  height: 1.2rem;
+`;
+
 const NatureContianer = styled.div``;
 
 const MotivationsContainer = styled.div`
@@ -191,7 +181,6 @@ export default ({
   educationDetailsList,
   skillsInfo,
 }) => {
-  console.log("PROfile", profileImage);
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -204,6 +193,23 @@ export default ({
       pdfExportComponent.current.save();
     }
   };
+
+  const reportTemplateRef = useRef(null);
+
+  const handleGeneratePdf = () => {
+    const doc = new jsPDF({
+      format: "a4",
+      unit: "px",
+    });
+
+    doc.html(componentRef.current, {
+      async callback(doc) {
+        await doc.save("CVPDF");
+      },
+      html2canvas: { scale: 0.4 },
+    });
+  };
+
   return (
     <div className="custom_container">
       <div className="d-flex justify-content-between">
@@ -218,155 +224,157 @@ export default ({
         <button
           type="button"
           className="bg-gray-500 border border-gray-500 p-2 mb-4"
-          onClick={handlePrint}
+          onClick={handleGeneratePdf}
         >
           {" "}
           Download Resume{" "}
         </button>
+
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <div className="my-row">
-            <div className="col-4">
-              <ProfileImage>
-                <img
-                  src={profileImage || "https://picsum.photos/600"}
-                  height={600}
-                />
-              </ProfileImage>
-              <PersonalInfo>
-                <FullName>{`${personalInfo?.firstName} ${personalInfo?.lastName}`}</FullName>
-                <Occupation>Software Engineer</Occupation>
-                <UserDetails>
-                  <Detail>
-                    <div className="col-2 my-row justify-content-center">
-                      <DetailIcon src={icons.cake} />
-                    </div>
-                    <div className="col-10">
-                      <DetailText>{personalInfo?.dob}</DetailText>
-                    </div>
-                  </Detail>
-                  <Detail>
-                    <div className="col-2 my-row justify-content-center">
-                      <DetailIcon src={icons.heart} />
-                    </div>
-                    <div className="col-10">
-                      <DetailText>{extraFields?.status}</DetailText>
-                    </div>
-                  </Detail>
-                  <Detail>
-                    <div className="col-2 my-row justify-content-center">
-                      <DetailIcon src={icons.destination} />
-                    </div>
-                    <div className="col-10 ">
-                      <DetailText>{extraFields?.nationality}</DetailText>
-                    </div>
-                  </Detail>
-                  <Detail>
-                    <div className="col-2 my-row justify-content-center">
-                      <DetailIcon src={icons.bear} />
-                    </div>
-                    <div className="col-10">
-                      <DetailText>{extraFields.kids}</DetailText>
-                    </div>
-                  </Detail>
-                  <Detail>
-                    <div className="col-2 my-row justify-content-center">
-                      <DetailIcon src={icons.graduation} />
-                    </div>
-                    <div className="col-10">
-                      <DetailText>{personalInfo?.profession} </DetailText>
-                    </div>
-                  </Detail>
-                </UserDetails>
-              </PersonalInfo>
-              <References>
-                <RefText> References and Influences</RefText>
-                <div className="my-row pt-5">
-                  {hobbyName.hobbiesData.map((data) => {
-                    return (
-                      <Influences className="col-6">
-                        <InfluenceIcon src={data.icon} />
-                        <div>{data.name}</div>
-                      </Influences>
-                    );
-                  })}
-                </div>
-              </References>
-            </div>
-            <div className="col-8">
-              <BlockQuote>
-                {extraFields?.quote}
-                <cite>
-                  {" "}
-                  - {personalInfo?.firstName} {personalInfo?.lastName}
-                </cite>
-              </BlockQuote>
-              <BiographyContainer>
-                <BiographyTitle>Biography</BiographyTitle>
-                <Biography>{personalInfo?.history}</Biography>
-              </BiographyContainer>
-              <PersonalityContainer>
-                <PersonalityTitle>Personality</PersonalityTitle>
-                <Personality>
-                  {extraFields.personality.map((data) => {
-                    return (
-                      <PersonalityDiv> {data.personality} </PersonalityDiv>
-                    );
-                  })}
-                </Personality>
-                <div className="row mt-4">
-                  <NatureContianer className="col-6">
-                    <MotivationsContainer>
-                      <GreenStraightLine></GreenStraightLine>
-                      <Motivations className="ml-4">
-                        <div>
-                          <i className="fa fa-thumbs-up"></i>
-                          <strong className="ml-2">Motivations</strong>
-                        </div>
-                        <div>
-                          <div>
-                            {extraFields.facts.map((data) => {
-                              return <div>-{data.factName}</div>;
-                            })}
-                          </div>
-                        </div>
-                      </Motivations>
-                    </MotivationsContainer>
-                  </NatureContianer>
-                  <NatureContianer className="col-6">
-                    <MotivationsContainer>
-                      <RedStraightLine></RedStraightLine>
-                      <Motivations className="ml-4">
-                        <div>
-                          <i className="fa fa-thumbs-down"></i>
-                          <strong className="ml-2">Frustration</strong>
-                        </div>
-                        <div>
-                          <div>
-                            {extraFields.frustration.map((data) => {
-                              return <div>- {data.frustrationName}.</div>;
-                            })}
-                          </div>
-                        </div>
-                      </Motivations>
-                    </MotivationsContainer>
-                  </NatureContianer>
-                </div>
-              </PersonalityContainer>
-              <ScenerioContainer>
-                <ScenerioTitle>Scenerio</ScenerioTitle>
-                <Scenerio>{extraFields.scanarios}</Scenerio>
-              </ScenerioContainer>
-            </div>
+      > */}
+      <Container ref={componentRef}>
+        <div className="my-row">
+          <div className="col-4">
+            <ProfileImage>
+              <img
+                src={profileImage || "https://picsum.photos/600"}
+                height={600}
+              />
+            </ProfileImage>
+            <PersonalInfo>
+              <FullName>{`${personalInfo?.firstName} ${personalInfo?.lastName}`}</FullName>
+              <Occupation>Software Engineer</Occupation>
+              <UserDetails>
+                <Detail>
+                  <div className="col-2 my-row justify-content-center">
+                    <DetailIcon src={icons.cake} />
+                  </div>
+                  <div className="col-10">
+                    <DetailText>{personalInfo?.dob}</DetailText>
+                  </div>
+                </Detail>
+                <Detail>
+                  <div className="col-2 my-row justify-content-center">
+                    <DetailIcon src={icons.heart} />
+                  </div>
+                  <div className="col-10">
+                    <DetailText>{extraFields?.status}</DetailText>
+                  </div>
+                </Detail>
+                <Detail>
+                  <div className="col-2 my-row justify-content-center">
+                    <DetailIcon src={icons.destination} />
+                  </div>
+                  <div className="col-10 ">
+                    <DetailText>{extraFields?.nationality}</DetailText>
+                  </div>
+                </Detail>
+                <Detail>
+                  <div className="col-2 my-row justify-content-center">
+                    <DetailIcon src={icons.bear} />
+                  </div>
+                  <div className="col-10">
+                    <DetailText>{extraFields.kids}</DetailText>
+                  </div>
+                </Detail>
+                <Detail>
+                  <div className="col-2 my-row justify-content-center">
+                    <DetailIcon src={icons.graduation} />
+                  </div>
+                  <div className="col-10">
+                    <DetailText>{personalInfo?.profession} </DetailText>
+                  </div>
+                </Detail>
+              </UserDetails>
+            </PersonalInfo>
+            <References>
+              <RefText> References and Influences</RefText>
+              <div className="my-row pt-5">
+                {hobbyName.hobbiesData.map((data) => {
+                  return (
+                    <Influences className="col-6">
+                      <InfluenceIcon src={data.icon} />
+                      <div>{data.name}</div>
+                    </Influences>
+                  );
+                })}
+              </div>
+            </References>
           </div>
-        </Container>
-      </PDFExport>
+          <div className="col-8">
+            <BlockQuote>
+              {extraFields?.quote}
+              <cite>
+                {" "}
+                - {personalInfo?.firstName} {personalInfo?.lastName}
+              </cite>
+            </BlockQuote>
+            <BiographyContainer>
+              <BiographyTitle>Biography</BiographyTitle>
+              <Biography>{personalInfo?.history}</Biography>
+            </BiographyContainer>
+            <PersonalityContainer>
+              <PersonalityTitle>Personality</PersonalityTitle>
+              <Personality>
+                {extraFields.personality.map((data) => {
+                  return <PersonalityDiv> {data.personality} </PersonalityDiv>;
+                })}
+              </Personality>
+              <div className="row mt-4">
+                <NatureContianer className="col-6">
+                  <MotivationsContainer>
+                    <GreenStraightLine></GreenStraightLine>
+                    <Motivations className="ml-4">
+                      <div>
+                        {/* <i className="fa fa-thumbs-up"></i> */}
+
+                        <DetailsImg src={icons.like} />
+                        <strong className="ml-2">Motivations</strong>
+                      </div>
+                      <div>
+                        <div>
+                          {extraFields.facts.map((data) => {
+                            return <div>-{data.factName}</div>;
+                          })}
+                        </div>
+                      </div>
+                    </Motivations>
+                  </MotivationsContainer>
+                </NatureContianer>
+                <NatureContianer className="col-6">
+                  <MotivationsContainer>
+                    <RedStraightLine></RedStraightLine>
+                    <Motivations className="ml-4">
+                      <div>
+                        <DetailsImg src={icons.dislike} />
+                        <strong className="ml-2">Frustration</strong>
+                      </div>
+                      <div>
+                        <div>
+                          {extraFields.frustration.map((data) => {
+                            return <div>- {data.frustrationName}.</div>;
+                          })}
+                        </div>
+                      </div>
+                    </Motivations>
+                  </MotivationsContainer>
+                </NatureContianer>
+              </div>
+            </PersonalityContainer>
+            <ScenerioContainer>
+              <ScenerioTitle>Scenerio</ScenerioTitle>
+              <Scenerio>{extraFields.scanarios}</Scenerio>
+            </ScenerioContainer>
+          </div>
+        </div>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

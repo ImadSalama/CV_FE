@@ -9,6 +9,10 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import moment from "moment";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 const Container = styled.div`
   height: auto;
   width: 100%;
@@ -88,6 +92,7 @@ const Descriptions = styled.p`
   color: #90325a;
   font-weight: 400;
 `;
+
 const Hobbiesbox = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -160,20 +165,20 @@ const FooterBox = styled.div`
   justify-content: center;
   flex-direction: column;
 `;
-const FooterImg = styled.div`
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  background-color: #3f2f36;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  img {
-    height: 25px;
-    width: 25px;
-    object-fit: contain;
-  }
-`;
+// const FooterImg = styled.div`
+//   height: 50px;
+//   width: 50px;
+//   border-radius: 50%;
+//   background-color: #3f2f36;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   img {
+//     height: 25px;
+//     width: 25px;
+//     object-fit: contain;
+//   }
+// `;
 const FooterText = styled.h5`
   color: white;
   font-size: 0.9em;
@@ -198,16 +203,26 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.52 },
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Thitreen`);
   };
 
   const container = React.useRef(null);
@@ -237,181 +252,190 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport ref={pdfExportComponent} fileName={`Resume`} paperSize="auto">
-        <Container ref={componentRef}>
-          <TopBar></TopBar>
-          <ProfileBox>
-            <ProfileContent>
-              <ProfileName>
-                {personalInfo.firstName || "Ana"}{" "}
-                {personalInfo.lastName || " Jones"}
-              </ProfileName>
-              <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
-            </ProfileContent>
-            <ProfileImg>
-              <img src={profileImage || images.profile} alt="" />
-            </ProfileImg>
-          </ProfileBox>
-          <ProfileDescription>{personalInfo?.history}</ProfileDescription>
-          <Bio>
-            <div className="my-row">
-              <div className="col-4 p-0">
-                <WhiteBox>
-                  <Title>Personal</Title>
-                  <FlexBox>
-                    <TitleSmall>Name</TitleSmall>
-                    <Descriptions className="ml-5">
-                      {personalInfo.firstName || "Ana"}{" "}
-                      {personalInfo.lastName || " Jones"}
-                    </Descriptions>
-                  </FlexBox>
-                  <FlexBox>
-                    <TitleSmall>Birthday</TitleSmall>
-                    <Descriptions className="ml-5">
-                      {personalInfo?.dob}
-                    </Descriptions>
-                  </FlexBox>
-                  <FlexBox>
-                    <TitleSmall>Relationship</TitleSmall>
-                    <Descriptions className="ml-5">
-                      {extraFields?.relation}
-                    </Descriptions>
-                  </FlexBox>
-                  <FlexBox>
-                    <TitleSmall>Nationality</TitleSmall>
-                    <Descriptions className="ml-5">
-                      {extraFields?.nationality}
-                    </Descriptions>
-                  </FlexBox>
-                  <FlexBox>
-                    <TitleSmall>Languages</TitleSmall>
-                    {skillsInfo.language.map((data) => {
-                      return <Descriptions>{data + ","}</Descriptions>;
-                    })}
-                  </FlexBox>
-                  <FlexBox>
-                    <TitleSmall>Telephone</TitleSmall>
-                    <Descriptions className="ml-5">
-                      {personalInfo?.phone}
-                    </Descriptions>
-                  </FlexBox>
-                  <Title>Software</Title>
-                  {skillsInfo.softwareSkills.map((data) => {
+      {/* <PDFExport ref={pdfExportComponent} fileName={`Resume`} paperSize="auto"> */}
+      <Container ref={componentRef}>
+        <TopBar></TopBar>
+        <ProfileBox>
+          <ProfileContent>
+            <ProfileName>
+              {personalInfo.firstName || "Ana"}{" "}
+              {personalInfo.lastName || " Jones"}
+            </ProfileName>
+            <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
+          </ProfileContent>
+          <ProfileImg>
+            <img src={profileImage || images.profile} alt="" />
+          </ProfileImg>
+        </ProfileBox>
+        <ProfileDescription>{personalInfo?.history}</ProfileDescription>
+        <Bio>
+          <div className="my-row">
+            <div className="col-4 p-0">
+              <WhiteBox>
+                <Title>Personal</Title>
+                <FlexBox>
+                  <TitleSmall>Name: </TitleSmall>
+                  <Descriptions className="ml-5">
+                    {personalInfo.firstName || "Ana"}{" "}
+                    {personalInfo.lastName || " Jones"}
+                  </Descriptions>
+                </FlexBox>
+                <FlexBox>
+                  <TitleSmall>Birthday: </TitleSmall>
+                  <Descriptions className="ml-5">
+                    {personalInfo?.dob}
+                  </Descriptions>
+                </FlexBox>
+                <FlexBox>
+                  <TitleSmall>Relationship: </TitleSmall>
+                  <Descriptions className="ml-5">
+                    {extraFields?.relation}
+                  </Descriptions>
+                </FlexBox>
+                <FlexBox>
+                  <TitleSmall>Nationality: </TitleSmall>
+                  <Descriptions className="ml-5">
+                    {extraFields?.nationality}
+                  </Descriptions>
+                </FlexBox>
+                <FlexBox>
+                  <TitleSmall>Languages: </TitleSmall>
+                  <Descriptions className="ml-5">
+                    {skillsInfo.language.map((data) => (
+                      <p>{data}</p>
+                    ))}
+                  </Descriptions>
+                </FlexBox>
+                <FlexBox>
+                  <TitleSmall>Telephone: </TitleSmall>
+                  <Descriptions className="ml-5">
+                    {personalInfo?.phone}
+                  </Descriptions>
+                </FlexBox>
+                <Title>Software</Title>
+                {skillsInfo.softwareSkills.map((data) => {
+                  return (
+                    <FlexBox>
+                      <TitleSmall>{data.skillName}</TitleSmall>
+                      <ProgressBar
+                        completed={data.rating}
+                        bgColor="#8f0c3a"
+                        height="5px"
+                        isLabelVisible={false}
+                        baseBgColor="#e2dfe2"
+                        className="w-60"
+                        margin="0 30px"
+                      />
+                    </FlexBox>
+                  );
+                })}
+
+                <Title>Hobbies</Title>
+                <Hobbiesbox>
+                  {hobbyName.hobbiesData.map((data) => {
                     return (
-                      <FlexBox>
-                        <TitleSmall>{data.skillName}</TitleSmall>
-                        <ProgressBar
-                          completed={data.rating}
-                          bgColor="#8f0c3a"
-                          height="5px"
-                          isLabelVisible={false}
-                          baseBgColor="#e2dfe2"
-                          className="w-60"
-                          margin="0 30px"
-                        />
-                      </FlexBox>
+                      <HobbyImg>
+                        <img src={data.icon} alt="" />
+                      </HobbyImg>
                     );
                   })}
-
-                  <Title>Hobbies</Title>
-                  <Hobbiesbox>
-                    {hobbyName.hobbiesData.map((data) => {
-                      return (
-                        <HobbyImg>
-                          <img src={data.icon} alt="" />
-                        </HobbyImg>
-                      );
-                    })}
-                  </Hobbiesbox>
-                </WhiteBox>
-              </div>
-              <div className="col-8">
-                <RightSide>
-                  <Title>Work</Title>
-                  <Work>
-                    {workExperienceList.map((data) => {
-                      return (
-                        <WorkBox>
-                          <WorkText>
-                            <TitleSmall>
-                              {data.title} @ {data.employer}
-                            </TitleSmall>
-                            <Descriptions>{data.description}</Descriptions>
-                          </WorkText>
-                          <TitleSmall>{data.startDate}</TitleSmall>
-                        </WorkBox>
-                      );
-                    })}
-                  </Work>
-                  <Title>Prfessional Skills</Title>
-                  <CircleProgress>
-                    {skillsInfo.professionalSkills.map((data) => {
-                      return (
-                        <CircularProgressbar
-                          styles={{
-                            root: {
-                              height: 100,
-                              width: 100,
-                            },
-                            path: {
-                              stroke: "#57444d",
-                            },
-                            text: {
-                              fontSize: 12,
-                              fill: "#57444d",
-                            },
-                          }}
-                          value={data.rating}
-                          text={data.name}
-                        />
-                      );
-                    })}
-                  </CircleProgress>
-                  <Title>Education</Title>
-                  <Work>
-                    {educationDetailsList.map((data) => {
-                      return (
-                        <WorkBox>
-                          <WorkText>
-                            <TitleSmall>
-                              {data.studyField} @ {data.instituteName}
-                            </TitleSmall>
-                            <Descriptions>{data.description}</Descriptions>
-                          </WorkText>
-                          <TitleSmall>{data.graduationStartDate}</TitleSmall>
-                        </WorkBox>
-                      );
-                    })}
-                  </Work>
-                </RightSide>
-              </div>
+                </Hobbiesbox>
+              </WhiteBox>
             </div>
-          </Bio>
-          <Footer>
-            <FooterContent>
-              {personalInfo.socialLinks?.map((data) => {
-                return (
-                  <FooterBox>
-                    <FooterImg>
+            <div className="col-8">
+              <RightSide>
+                <Title>Work</Title>
+                <Work>
+                  {workExperienceList.map((data) => {
+                    return (
+                      <WorkBox>
+                        <WorkText>
+                          <TitleSmall>
+                            {data.title} @ {data.employer}
+                          </TitleSmall>
+                          <Descriptions>{data.description}</Descriptions>
+                        </WorkText>
+                        <TitleSmall>
+                          {moment(data.startDate).format("MM/DD/YYYY")}
+                        </TitleSmall>
+                      </WorkBox>
+                    );
+                  })}
+                </Work>
+                <Title>Prfessional Skills</Title>
+                <CircleProgress>
+                  {skillsInfo.professionalSkills.map((data) => {
+                    return (
+                      <CircularProgressbar
+                        styles={{
+                          root: {
+                            height: 100,
+                            width: 100,
+                          },
+                          path: {
+                            stroke: "#57444d",
+                          },
+                          text: {
+                            fontSize: 12,
+                            fill: "#57444d",
+                          },
+                        }}
+                        value={data.rating}
+                        text={data.name}
+                      />
+                    );
+                  })}
+                </CircleProgress>
+                <Title>Education</Title>
+                <Work>
+                  {educationDetailsList.map((data) => {
+                    return (
+                      <WorkBox>
+                        <WorkText>
+                          <TitleSmall>
+                            {data.studyField} @ {data.instituteName}
+                          </TitleSmall>
+                          <Descriptions>{data.description}</Descriptions>
+                        </WorkText>
+                        <TitleSmall>
+                          {moment(data.graduationStartDate).format(
+                            "MM/DD/YYYY"
+                          )}
+                        </TitleSmall>
+                      </WorkBox>
+                    );
+                  })}
+                </Work>
+              </RightSide>
+            </div>
+          </div>
+        </Bio>
+        <Footer>
+          <FooterContent>
+            {personalInfo.socialLinks?.map((data) => {
+              return (
+                <FooterBox>
+                  {/* <FooterImg>
                       <img src={images[data.socialSite]} alt="" />
-                    </FooterImg>
-                    <FooterText>{data.socialLink}</FooterText>
-                  </FooterBox>
-                );
-              })}
-            </FooterContent>
-          </Footer>
-          <BottomFooter>
-            <FooterText>
-              {personalInfo?.address} {personalInfo?.city}. Call:{" "}
-              {personalInfo?.phone}
-              Email: {personalInfo?.email}
-            </FooterText>
-            <FooterText>{extraFields?.website}</FooterText>
-          </BottomFooter>
-        </Container>
-      </PDFExport>
+                    </FooterImg> */}
+                  <FooterText>{data.socialLink}</FooterText>
+                </FooterBox>
+              );
+            })}
+          </FooterContent>
+        </Footer>
+        <BottomFooter>
+          <FooterText>
+            {personalInfo?.address} {personalInfo?.city}. Call:{" "}
+            {personalInfo?.phone}
+            Email: {personalInfo?.email}
+          </FooterText>
+          <FooterText>{extraFields?.website}</FooterText>
+        </BottomFooter>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

@@ -22,6 +22,29 @@ import UploadButton from "../uploadButton/uploadButton";
 import { useQuery } from "../../../services/urlQueryService";
 import resumeImages from "../../ChooseTemplateScreen/images";
 import DateField from "../../../components/Utils/CVMaking Components/DateField/DateField";
+import moment from "moment";
+
+const facebook = { value: "facebook", label: "Facebook" };
+const twitter = { value: "twitter", label: "Twitter" };
+const linkedIn = { value: "ln", label: "LinkedIn" };
+const drible = { value: "drible", label: "Dribble" };
+const behance = { value: "behance", label: "Behance" };
+
+const socialLinks = {
+  One: [linkedIn, behance, twitter],
+  Two: [linkedIn, behance, twitter],
+  Three: [linkedIn, behance, drible],
+  Four: [linkedIn, behance, twitter],
+  Five: [linkedIn, behance, twitter],
+  Six: [linkedIn, behance, facebook, twitter],
+  Seven: [linkedIn, behance, twitter],
+  Eight: [linkedIn, facebook, twitter],
+  Nine: [linkedIn, behance, twitter],
+  Ten: [linkedIn, behance, twitter],
+  Eleven: [],
+  Twelve: [behance, facebook, twitter],
+  Thirteen: [linkedIn, behance, twitter],
+};
 
 const BasicInfo = ({
   personalInfo,
@@ -33,14 +56,12 @@ const BasicInfo = ({
   previewResume,
 }) => {
   const query = useQuery();
-  console.log("extra Fields", extraFields);
   const resumeImagePath = resumeImages[query.get("resume")];
   const queryName = query.get("resume");
   const handleChange = ({ target: { value, name, props } }) => {
     if (!name) name = props.name;
     setPersonalInfo({ ...personalInfo, [name]: value });
   };
-  console.log(personalInfo);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   let dispatch = useDispatch();
   const isMobile = useMediaQuery({ maxWidth: 600 });
@@ -64,7 +85,6 @@ const BasicInfo = ({
   const updateWork = (name, value) => {
     setPersonalInfo({ ...personalInfo, [name]: value });
   };
-  console.log("preview Resume", previewResume);
   useEffect(() => {
     setPersonalInfo({ ...personalInfo, socialLinks: socialLinksList });
   }, [socialLinksList]);
@@ -201,9 +221,11 @@ const BasicInfo = ({
                   <>
                     <Col span={11}>
                       <DateField
-                        placeholder="DOB"
+                        placeholder="Birth Date"
                         name="dob"
-                        value={personalInfo.dob}
+                        value={
+                          personalInfo.dob ? moment(personalInfo.dob || "") : ""
+                        }
                         onChange={(date, dateString) =>
                           updateWork("dob", dateString)
                         }
@@ -230,95 +252,110 @@ const BasicInfo = ({
                 </Col>
               </Row>
               {/* SocialLinks */}
-              <NameBadge name="Add Social Links"></NameBadge>
-              {socialLinksList.map((d, i) => {
-                return (
-                  <Row justify="space-between" style={{}}>
-                    <Col span={11}>
-                      <select
-                        type="text"
-                        value={d.socialSite}
-                        name="socialimage"
-                        className="form-control mt-4"
-                        onChange={(e) =>
-                          updateSocialLinks(i, "socialSite", e.target.value)
-                        }
-                      >
-                        {queryName == "Six" ||
-                        queryName == "Eight" ||
-                        queryName == "Twelve" ? (
-                          <>
-                            <option value="ln">LinkedIn</option>
-                            <option value="behance">Behance</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="twitter">Twitter</option>
-                          </>
-                        ) : (
-                          <>
-                            <option value="ln">LinkedIn</option>
-                            <option value="behance">Behance</option>
-                            {queryName == "Three" ? (
+              {socialLinks[queryName] && socialLinks[queryName].length > 0 && (
+                <>
+                  <NameBadge name="Add Social Links"></NameBadge>
+                  {socialLinksList.map((d, i) => {
+                    return (
+                      <Row justify="space-between" style={{}}>
+                        <Col span={11}>
+                          <select
+                            type="text"
+                            value={d.socialSite}
+                            name="socialimage"
+                            className="form-control mt-4"
+                            onChange={(e) =>
+                              updateSocialLinks(i, "socialSite", e.target.value)
+                            }
+                          >
+                            <option value="">Select Site</option>
+                            {socialLinks[queryName].map((option) => (
+                              <option value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                            {/* {queryName == "Six" ||
+                            queryName == "Eight" ||
+                            queryName == "Twelve" ? (
                               <>
-                                <option value="drible">Dribble</option>
+                                <option value="">Select Site</option>
+                                <option value="ln">LinkedIn</option>
+                                <option value="behance">Behance</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="twitter">Twitter</option>
                               </>
                             ) : (
                               <>
-                                <option value="twitter">Twitter</option>
+                                <option value="">Select Site</option>
+                                <option value="ln">LinkedIn</option>
+                                <option value="behance">Behance</option>
+                                {queryName == "Three" ? (
+                                  <>
+                                    <option value="drible">Dribble</option>
+                                  </>
+                                ) : (
+                                  <>
+                                    <option value="twitter">Twitter</option>
+                                  </>
+                                )}
                               </>
-                            )}
-                          </>
-                        )}
-                      </select>
-                    </Col>
-                    <Col span={11}>
-                      <InputField
-                        placeholder="Social Links"
-                        type="text"
-                        value={d.socialLink}
-                        onChange={(e) =>
-                          updateSocialLinks(i, "socialLink", e.target.value)
-                        }
-                      />
-                    </Col>
-                    <Col
-                      offset={23}
-                      span={1}
-                      onClick={() => deleteSocialLinks(i)}
-                      style={{
-                        cursor: "pointer",
-                        zIndex: "1000",
-                        position: "relative",
-                        right: isMobile ? "-23px" : "-50px",
-                        top: "-35px",
-                      }}
-                    >
-                      <i class="far fa-trash-alt"></i>
-                    </Col>
-                  </Row>
-                );
-              })}
-              {inputIndex < 4 && (
-                <Row>
-                  <Col style={{}} span={22}>
-                    <p
-                      onClick={() => {
-                        setInputIndex(inputIndex + 1);
-                        setSocialLinksList([
-                          ...socialLinksList,
-                          { socialSite: "ln", socialLink: "" },
-                        ]);
-                      }}
-                      style={{
-                        fontFamily: "AvenirTextBlack",
-                        color: "#FF4309",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Add More{" "}
-                      <i style={{ color: "#0A2C66" }} class="fas fa-plus"></i>
-                    </p>
-                  </Col>
-                </Row>
+                            )} */}
+                          </select>
+                        </Col>
+                        <Col span={11}>
+                          <InputField
+                            placeholder="Social Links"
+                            type="text"
+                            value={d.socialLink}
+                            onChange={(e) =>
+                              updateSocialLinks(i, "socialLink", e.target.value)
+                            }
+                          />
+                        </Col>
+                        <Col
+                          offset={23}
+                          span={1}
+                          onClick={() => deleteSocialLinks(i)}
+                          style={{
+                            cursor: "pointer",
+                            zIndex: "1000",
+                            position: "relative",
+                            right: isMobile ? "-23px" : "-50px",
+                            top: "-35px",
+                          }}
+                        >
+                          <i class="far fa-trash-alt"></i>
+                        </Col>
+                      </Row>
+                    );
+                  })}
+                  {inputIndex < 4 && (
+                    <Row>
+                      <Col style={{}} span={22}>
+                        <p
+                          onClick={() => {
+                            setInputIndex(inputIndex + 1);
+                            setSocialLinksList([
+                              ...socialLinksList,
+                              { socialSite: "", socialLink: "" },
+                            ]);
+                          }}
+                          style={{
+                            fontFamily: "AvenirTextBlack",
+                            color: "#FF4309",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Add More{" "}
+                          <i
+                            style={{ color: "#0A2C66" }}
+                            class="fas fa-plus"
+                          ></i>
+                        </p>
+                      </Col>
+                    </Row>
+                  )}
+                </>
               )}
             </Col>
             <Col span={2} />

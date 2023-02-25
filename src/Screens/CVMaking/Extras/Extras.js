@@ -97,7 +97,6 @@ const ExtraFields = ({
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   let dispatch = useDispatch();
   const isMobile = useMediaQuery({ maxWidth: 600 });
-  console.log(extraFields);
   // General Initialisations
 
   return (

@@ -9,6 +9,8 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import moment from "moment";
+import jsPDF from "jspdf";
 const Container = styled.div`
   height: auto;
   width: 100%;
@@ -193,15 +195,26 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.4 },
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Eleven`);
   };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
@@ -230,165 +243,172 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <div className="my-row align-items-center">
-            <div className="col-4">
-              <ProfileName>
-                {personalInfo.firstName || "Ana"}
-                <br></br>
-                <span>{personalInfo.lastName || " Jones"}</span>
-              </ProfileName>
-              <Desg>{personalInfo?.profession}</Desg>
-              <ProfileDivider></ProfileDivider>
-            </div>
-            <div className="col-8">
-              <ContactDetails>
-                <DetailBox>
-                  <img src={images.mobile} alt="" />
-                  <ContactText>{personalInfo?.phone}</ContactText>
-                </DetailBox>
-                {personalInfo.socialLinks?.map((data) => {
+      > */}
+      <Container ref={componentRef}>
+        <div className="my-row align-items-center">
+          <div className="col-4">
+            <ProfileName>
+              {personalInfo.firstName || "Ana"}
+              <br></br>
+              <span>{personalInfo.lastName || " Jones"}</span>
+            </ProfileName>
+            <Desg>{personalInfo?.profession}</Desg>
+            <ProfileDivider></ProfileDivider>
+          </div>
+          <div className="col-8">
+            <ContactDetails>
+              <DetailBox>
+                <img src={images.mobile} alt="" />
+                <ContactText>{personalInfo?.phone}</ContactText>
+              </DetailBox>
+              {personalInfo.socialLinks?.map((data) => {
+                return (
+                  <DetailBox>
+                    <img src={images[data.socialSite]} alt="" />
+                    <ContactText>{data.socialLink}</ContactText>
+                  </DetailBox>
+                );
+              })}
+
+              <DetailBox>
+                <img src={images.envelope} alt="" />
+                <ContactText>{personalInfo?.email}</ContactText>
+              </DetailBox>
+              <DetailBox>
+                <img src={images.compass} alt="" />
+                <ContactText>
+                  {personalInfo?.address} , {personalInfo?.city}
+                </ContactText>
+              </DetailBox>
+            </ContactDetails>
+          </div>
+        </div>
+        <Bio>
+          <div className="my-row">
+            <div className="col-6">
+              <Education>
+                <BioTitle>Education</BioTitle>
+                {educationDetailsList.map((data) => {
                   return (
-                    <DetailBox>
-                      <img src={images[data.socialSite]} alt="" />
-                      <ContactText>{data.socialLink}</ContactText>
-                    </DetailBox>
+                    <BioDetails>
+                      <Year>
+                        <BioText>
+                          {moment(data.graduationStartDate).format(
+                            "MM/DD/YYYY"
+                          )}
+                        </BioText>
+                      </Year>
+                      <BioDivider>
+                        <BioText>{data.degreeProgram}</BioText>
+                      </BioDivider>
+                      <BioContent>
+                        <BioHeading>{data.studyField}</BioHeading>
+                        <BioHeading>{data.instituteName}</BioHeading>
+                        <BioText>{data.description}</BioText>
+                        <BioText>CGPA-{data.gpa}</BioText>
+                      </BioContent>
+                    </BioDetails>
                   );
                 })}
+              </Education>
+              <Skills>
+                <BioTitle>Skills</BioTitle>
+                {skillsInfo.professionalSkills.map((data) => {
+                  return (
+                    <SkillsBox>
+                      <BioText>{data.name}</BioText>
+                      <DotBar>
+                        <ReactStars
+                          count={5}
+                          onChange={ratingChanged}
+                          size={14}
+                          value={data?.rating / 20}
+                          edit={false}
+                          activeColor="#6715f8"
+                          isHalf={false}
+                          emptyIcon={<i className="fas fa-circle" />}
+                          halfIcon={<i className="fas fa-circle" />}
+                          filledIcon={<i className="fas fa-circle" />}
+                        />
+                      </DotBar>
+                    </SkillsBox>
+                  );
+                })}
+              </Skills>
+              <BioTitle>Interests</BioTitle>
+              <Interest>
+                {hobbyName.hobbiesData.map((data) => {
+                  return (
+                    <InterestBox>
+                      <ImgCircle>
+                        <img src={data.icon} alt="" />
+                      </ImgCircle>
+                      <BioText>{data.name}</BioText>
+                    </InterestBox>
+                  );
+                })}
+              </Interest>
+            </div>
+            <div className="col-6">
+              <About>
+                <BioTitle>ABOUT Me</BioTitle>
+                <BioText>{personalInfo?.history}</BioText>
+              </About>
+              <ExperienceBox>
+                <BioTitle>Experience</BioTitle>
+                {workExperienceList.map((data) => {
+                  return (
+                    <BioDetails>
+                      <Year>
+                        <BioHeading>
+                          {moment(data.startDate).format("MM/DD/YYYY")}
+                        </BioHeading>
+                      </Year>
 
-                <DetailBox>
-                  <img src={images.envelope} alt="" />
-                  <ContactText>{personalInfo?.email}</ContactText>
-                </DetailBox>
-                <DetailBox>
-                  <img src={images.compass} alt="" />
-                  <ContactText>
-                    {personalInfo?.address} , {personalInfo?.city}
-                  </ContactText>
-                </DetailBox>
-              </ContactDetails>
+                      <BioContent className="before-icon">
+                        <BioHeading>
+                          {data.currentlyWorkHere == true
+                            ? "Present"
+                            : moment(data.endDate).format("MM/DD/YYYY")}
+                        </BioHeading>
+                        <BioHeading>{data.title}</BioHeading>
+                        <BioHeading>{data.employer}</BioHeading>
+                        <BioText>{data.description}</BioText>
+                      </BioContent>
+                    </BioDetails>
+                  );
+                })}
+              </ExperienceBox>
+              <ExperienceBox>
+                <BioTitle>Training</BioTitle>
+                {extraFields.trainings.map((data) => {
+                  return (
+                    <BioDetails>
+                      <Year>
+                        <BioHeading>{data.trainingYear}</BioHeading>
+                      </Year>
+
+                      <BioContent>
+                        <BioHeading>{data.trainingName}</BioHeading>
+                        <BioHeading>{data.courseName}</BioHeading>
+                        <BioText>Duration - {data.duration}</BioText>
+                      </BioContent>
+                    </BioDetails>
+                  );
+                })}
+              </ExperienceBox>
             </div>
           </div>
-          <Bio>
-            <div className="my-row">
-              <div className="col-6">
-                <Education>
-                  <BioTitle>Education</BioTitle>
-                  {educationDetailsList.map((data) => {
-                    return (
-                      <BioDetails>
-                        <Year>
-                          <BioText>{data.graduationStartDate}</BioText>
-                        </Year>
-                        <BioDivider>
-                          <BioText>{data.degreeProgram}</BioText>
-                        </BioDivider>
-                        <BioContent>
-                          <BioHeading>{data.studyField}</BioHeading>
-                          <BioHeading>{data.instituteName}</BioHeading>
-                          <BioText>{data.description}</BioText>
-                          <BioText>CGPA-{data.gpa}</BioText>
-                        </BioContent>
-                      </BioDetails>
-                    );
-                  })}
-                </Education>
-                <Skills>
-                  <BioTitle>Skills</BioTitle>
-                  {skillsInfo.professionalSkills.map((data) => {
-                    return (
-                      <SkillsBox>
-                        <BioText>{data.name}</BioText>
-                        <DotBar>
-                          <ReactStars
-                            count={5}
-                            onChange={ratingChanged}
-                            size={14}
-                            value={data?.rating / 20}
-                            edit={false}
-                            activeColor="#6715f8"
-                            isHalf={false}
-                            emptyIcon={<i className="fas fa-circle" />}
-                            halfIcon={<i className="fas fa-circle" />}
-                            filledIcon={<i className="fas fa-circle" />}
-                          />
-                        </DotBar>
-                      </SkillsBox>
-                    );
-                  })}
-                </Skills>
-                <BioTitle>Interests</BioTitle>
-                <Interest>
-                  {hobbyName.hobbiesData.map((data) => {
-                    return (
-                      <InterestBox>
-                        <ImgCircle>
-                          <img src={data.icon} alt="" />
-                        </ImgCircle>
-                        <BioText>{data.name}</BioText>
-                      </InterestBox>
-                    );
-                  })}
-                </Interest>
-              </div>
-              <div className="col-6">
-                <About>
-                  <BioTitle>ABOUT Me</BioTitle>
-                  <BioText>{personalInfo?.history}</BioText>
-                </About>
-                <ExperienceBox>
-                  <BioTitle>Experience</BioTitle>
-                  {workExperienceList.map((data) => {
-                    return (
-                      <BioDetails>
-                        <Year>
-                          <BioHeading>{data.startDate}</BioHeading>
-                        </Year>
-
-                        <BioContent className="before-icon">
-                          <BioHeading>
-                            {data.currentlyWorkHere == true
-                              ? "Present"
-                              : data.endDate}
-                          </BioHeading>
-                          <BioHeading>{data.title}</BioHeading>
-                          <BioHeading>{data.employer}</BioHeading>
-                          <BioText>{data.description}</BioText>
-                        </BioContent>
-                      </BioDetails>
-                    );
-                  })}
-                </ExperienceBox>
-                <ExperienceBox>
-                  <BioTitle>Training</BioTitle>
-                  {extraFields.trainings.map((data) => {
-                    return (
-                      <BioDetails>
-                        <Year>
-                          <BioHeading>{data.trainingYear}</BioHeading>
-                        </Year>
-
-                        <BioContent>
-                          <BioHeading>{data.trainingName}</BioHeading>
-                          <BioHeading>{data.courseName}</BioHeading>
-                          <BioText>Duration - {data.duration}</BioText>
-                        </BioContent>
-                      </BioDetails>
-                    );
-                  })}
-                </ExperienceBox>
-              </div>
-            </div>
-          </Bio>
-        </Container>
-      </PDFExport>
+        </Bio>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

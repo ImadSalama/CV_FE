@@ -7,7 +7,8 @@ import { useReactToPrint } from "react-to-print";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { useHistory, useLocation } from "react-router-dom";
 import { getISMemeberUser } from "../../../helpers";
-
+import moment from "moment";
+import jsPDF from "jspdf";
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -150,11 +151,22 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.4 },
+      });
       return;
     }
 
@@ -188,185 +200,188 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`ResumeSeven`}></div>
       </div>
-      <PDFExport ref={pdfExportComponent} fileName={`Resume`} paperSize="auto">
-        <Container ref={componentRef}>
-          <ProfileName>
-            {personalInfo.firstName
-              ? `${personalInfo.firstName} ${personalInfo.lastName}`
-              : "Ana Jones"}
-          </ProfileName>
-          <ProfileDesg>
-            {personalInfo.profession ? personalInfo.profession : "Web Designer"}
-          </ProfileDesg>
-          <Divider></Divider>
-          <Box>
-            <div className="my-row">
-              <div className="col-6">
-                <Summary>
-                  <Title>Summary</Title>
-                  <Content>{personalInfo?.history}</Content>
-                </Summary>
-              </div>
-              <div className="col-6">
-                <Profile>
-                  <Title>Profile</Title>
-                  <ProfileContent>
-                    <img src={images.name} alt="" />
-                    <ProfileDetail>
-                      {" "}
-                      {personalInfo.firstName
-                        ? `${personalInfo.firstName} ${personalInfo.lastName}`
-                        : "Ana Jones"}
-                    </ProfileDetail>
-                  </ProfileContent>
-                  <ProfileContent>
-                    <img src={images.dob} alt="" />
-                    <ProfileDetail>{personalInfo?.dob}</ProfileDetail>
-                  </ProfileContent>
-                  <ProfileContent>
-                    <img src={images.address} alt="" />
-                    <ProfileDetail>
-                      {personalInfo.address
-                        ? `${personalInfo.address} , ${personalInfo.city} `
-                        : "108 W Skillet Ave, Dayton, 50530"}
-                    </ProfileDetail>
-                  </ProfileContent>
-                  <ProfileContent>
-                    <img src={images.phone} alt="" />
-                    <ProfileDetail>
-                      {personalInfo.phone
-                        ? personalInfo.phone
-                        : "(609) 5 5555 454 "}
-                    </ProfileDetail>
-                  </ProfileContent>
-                  <ProfileContent>
-                    <img src={images.mail} alt="" />
-                    <ProfileDetail>
-                      {personalInfo.email
-                        ? personalInfo.email
-                        : "youremailid@gmail.com"}
-                    </ProfileDetail>
-                  </ProfileContent>
-                  <ProfileContent>
-                    <img src={images.website} alt="" />
-                    <ProfileDetail>{extraFields?.website}</ProfileDetail>
-                  </ProfileContent>
-                </Profile>
-              </div>
-            </div>
-          </Box>
-          <Box>
-            <Title>Experience</Title>
-            <Experience>
-              <div className="my-row">
-                {workExperienceList.map((data) => {
-                  return (
-                    <div className="col-4 p-0">
-                      <TitleSmall>{data.title}</TitleSmall>
-                      <Content>
-                        {data.employer} | {data.startDate} -{" "}
-                        {data.currentlyWorkHere == true
-                          ? "Present"
-                          : data.endDate}
-                      </Content>
-                      <TitleSmall>Major Job Responsibilities:</TitleSmall>
-                      <ul>
-                        <NumberBullet>{data.description}</NumberBullet>
-                      </ul>
-                    </div>
-                  );
-                })}
-              </div>
-            </Experience>
-          </Box>
-          <Box>
-            <Title>Education</Title>
-            <Experience>
-              <div className="my-row">
-                {educationDetailsList.map((data) => {
-                  return (
-                    <div className="col-4 p-0">
-                      <TitleSmall>{data.studyField}</TitleSmall>
-                      <Content className="font-weight-bold">
-                        {data.instituteName}
-                      </Content>
-                      <Content>
-                        {data.graduationStartDate} - {data.graduationEndDate} |
-                        GPA {data.gpa}
-                      </Content>
-                    </div>
-                  );
-                })}
-              </div>
-            </Experience>
-          </Box>
+      {/* <PDFExport ref={pdfExportComponent} fileName={`Resume`} paperSize="auto"> */}
+      <Container ref={componentRef}>
+        <ProfileName>
+          {personalInfo.firstName
+            ? `${personalInfo.firstName} ${personalInfo.lastName}`
+            : "Ana Jones"}
+        </ProfileName>
+        <ProfileDesg>
+          {personalInfo.profession ? personalInfo.profession : "Web Designer"}
+        </ProfileDesg>
+        <Divider></Divider>
+        <Box>
           <div className="my-row">
-            <div className="col-4 p-0">
-              <Box className="mr-5">
-                <Title>Skills</Title>
-                {skillsInfo.professionalSkills.map((data) => {
-                  return (
-                    <SkillsBox>
-                      <Span>{data.name}</Span>
-                      <ProgressBar
-                        completed={data.rating}
-                        bgColor="#626db7"
-                        height="3px"
-                        isLabelVisible={false}
-                        baseBgColor="#EBF0F1"
-                        className="w-100"
-                      />
-                      <Span>{data.rating}%</Span>
-                    </SkillsBox>
-                  );
-                })}
-              </Box>
+            <div className="col-6">
+              <Summary>
+                <Title>Summary</Title>
+                <Content>{personalInfo?.history}</Content>
+              </Summary>
             </div>
-            <div className="col-4 p-0">
-              <Box className="mr-5">
-                <Title>Hobbies</Title>
-                <Hobbies>
-                  {hobbyName.hobbiesData.map((data) => {
-                    return (
-                      <HobbiesBox>
-                        <img src={data.icon} alt="" />
-                        <Content className="font-weight-bold">
-                          {data.name}
-                        </Content>
-                      </HobbiesBox>
-                    );
-                  })}
-                </Hobbies>
-              </Box>
-            </div>
-            <div className="col-4 p-0">
-              <Box className="mr-5">
-                <Title>References</Title>
-                {extraFields.references.map((data) => {
-                  return (
-                    <>
-                      <Content className="font-weight-bold m-0">
-                        {data.referenceName}
-                      </Content>
-                      <Content className="font-weight-bold m-0">
-                        {data.referenceDesg}
-                      </Content>
-                      <Content className="m-0">{data.referenceAddress}</Content>
-                      <Content className="font-weight-bold m-0">
-                        Email: <Span>{data.referenceEmail}</Span>
-                      </Content>
-                      <Content className="font-weight-bold">
-                        Phone: <Span>{data.referencePhone}</Span>
-                      </Content>
-                    </>
-                  );
-                })}
-              </Box>
+            <div className="col-6">
+              <Profile>
+                <Title>Profile</Title>
+                <ProfileContent>
+                  <img src={images.name} alt="" />
+                  <ProfileDetail>
+                    {" "}
+                    {personalInfo.firstName
+                      ? `${personalInfo.firstName} ${personalInfo.lastName}`
+                      : "Ana Jones"}
+                  </ProfileDetail>
+                </ProfileContent>
+                <ProfileContent>
+                  <img src={images.dob} alt="" />
+                  <ProfileDetail>{personalInfo?.dob}</ProfileDetail>
+                </ProfileContent>
+                <ProfileContent>
+                  <img src={images.address} alt="" />
+                  <ProfileDetail>
+                    {personalInfo.address
+                      ? `${personalInfo.address} , ${personalInfo.city} `
+                      : "108 W Skillet Ave, Dayton, 50530"}
+                  </ProfileDetail>
+                </ProfileContent>
+                <ProfileContent>
+                  <img src={images.phone} alt="" />
+                  <ProfileDetail>
+                    {personalInfo.phone
+                      ? personalInfo.phone
+                      : "(609) 5 5555 454 "}
+                  </ProfileDetail>
+                </ProfileContent>
+                <ProfileContent>
+                  <img src={images.mail} alt="" />
+                  <ProfileDetail>
+                    {personalInfo.email
+                      ? personalInfo.email
+                      : "youremailid@gmail.com"}
+                  </ProfileDetail>
+                </ProfileContent>
+                <ProfileContent>
+                  <img src={images.website} alt="" />
+                  <ProfileDetail>{extraFields?.website}</ProfileDetail>
+                </ProfileContent>
+              </Profile>
             </div>
           </div>
-        </Container>
-      </PDFExport>
+        </Box>
+        <Box>
+          <Title>Experience</Title>
+          <Experience>
+            <div className="my-row">
+              {workExperienceList.map((data) => {
+                return (
+                  <div className="col-4 p-0">
+                    <TitleSmall>{data.title}</TitleSmall>
+                    <Content>
+                      {data.employer} |{" "}
+                      {moment(data.startDate).format("MM/YYYY")} {" - "}
+                      {data.currentlyWorkHere == true
+                        ? "Present"
+                        : moment(data.endDate).format("MM/YYYY")}
+                    </Content>
+                    <TitleSmall>Major Job Responsibilities:</TitleSmall>
+                    <ul>
+                      <NumberBullet>{data.description}</NumberBullet>
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          </Experience>
+        </Box>
+        <Box>
+          <Title>Education</Title>
+          <Experience>
+            <div className="my-row">
+              {educationDetailsList.map((data) => {
+                return (
+                  <div className="col-4 p-0">
+                    <TitleSmall>{data.studyField}</TitleSmall>
+                    <Content className="font-weight-bold">
+                      {data.instituteName}
+                    </Content>
+                    <Content>
+                      {moment(data.graduationStartDate).format("MM/DD/YYYY")} -{" "}
+                      {moment(data.graduationEndDate).format("MM/DD/YYYY")} |
+                      GPA {data.gpa}
+                    </Content>
+                  </div>
+                );
+              })}
+            </div>
+          </Experience>
+        </Box>
+        <div className="my-row">
+          <div className="col-4 p-0">
+            <Box className="mr-5">
+              <Title>Skills</Title>
+              {skillsInfo.professionalSkills.map((data) => {
+                return (
+                  <SkillsBox>
+                    <Span>{data.name}</Span>
+                    <ProgressBar
+                      completed={data.rating}
+                      bgColor="#626db7"
+                      height="3px"
+                      isLabelVisible={false}
+                      baseBgColor="#EBF0F1"
+                      className="w-100"
+                    />
+                    <Span>{data.rating}%</Span>
+                  </SkillsBox>
+                );
+              })}
+            </Box>
+          </div>
+          <div className="col-4 p-0">
+            <Box className="mr-5">
+              <Title>Hobbies</Title>
+              <Hobbies>
+                {hobbyName.hobbiesData.map((data) => {
+                  return (
+                    <HobbiesBox>
+                      <img src={data.icon} alt="" />
+                      <Content className="font-weight-bold">
+                        {data.name}
+                      </Content>
+                    </HobbiesBox>
+                  );
+                })}
+              </Hobbies>
+            </Box>
+          </div>
+          <div className="col-4 p-0">
+            <Box className="mr-5">
+              <Title>References</Title>
+              {extraFields.references.map((data) => {
+                return (
+                  <>
+                    <Content className="font-weight-bold m-0">
+                      {data.referenceName}
+                    </Content>
+                    <Content className="font-weight-bold m-0">
+                      {data.referenceDesg}
+                    </Content>
+                    <Content className="m-0">{data.referenceAddress}</Content>
+                    <Content className="font-weight-bold m-0">
+                      Email: <Span>{data.referenceEmail}</Span>
+                    </Content>
+                    <Content className="font-weight-bold">
+                      Phone: <Span>{data.referencePhone}</Span>
+                    </Content>
+                  </>
+                );
+              })}
+            </Box>
+          </div>
+        </div>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

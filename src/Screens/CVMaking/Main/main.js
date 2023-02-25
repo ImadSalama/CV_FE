@@ -147,10 +147,6 @@ export default () => {
   }, []);
 
   const googleTranslateElementInit = () => {
-    console.log(
-      "window.google.translate",
-      window.google.translate.TranslateElement.InlineLayout
-    );
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
@@ -278,9 +274,9 @@ export default () => {
         rating: percentage * 100,
       })),
     });
-    setHobbyName({
-      hobbiesData: (hobbies || []).map((name) => ({ name })) || [],
-    });
+    // setHobbyName({
+    //   hobbiesData: (hobbies || []).map((name) => ({ name })) || [],
+    // });
     setPersonalInfo({
       firstName: firstname,
       lastName: lastname,
@@ -326,7 +322,15 @@ export default () => {
           ModelMapperDir.FromUiToApi
         ),
         work_experience: mapModel(
-          workExperienceList,
+          workExperienceList.map((work) => {
+            if (work.currentlyWorkHere) {
+              return {
+                ...work,
+                endDate: null,
+              };
+            }
+            return work;
+          }),
           "work",
           ModelMapperDir.FromUiToApi
         ),

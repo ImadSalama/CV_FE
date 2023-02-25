@@ -89,7 +89,6 @@ const FormData = () => {
                 });
               }}
               onApprove={(data) => {
-                // console.log({ data });
                 dispatch(savePayment(getAmount.current()));
                 if (!query.get("returnUrl")) {
                   return;
@@ -105,7 +104,6 @@ const FormData = () => {
           <PayPalScriptProvider options={{ "client-id": cientId }}>
             <PayPalButtons
               createOrder={(data, actions) => {
-                console.log("amounttttt", getAmount.current());
                 return actions.order.create({
                   purchase_units: [
                     {
@@ -117,7 +115,11 @@ const FormData = () => {
                 });
               }}
               onApprove={(data) => {
-                // console.log({ data });
+                dispatch(savePayment(getAmount.current()));
+                if (!query.get("returnUrl")) {
+                  return;
+                }
+                history.push(`/${query.get("returnUrl")}&fromPayment=true`);
               }}
               fundingSource="card"
               className="card-btn"

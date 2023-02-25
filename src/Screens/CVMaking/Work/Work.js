@@ -49,7 +49,6 @@ const Work = ({
     setWorkExperienceList(updatedList);
     setInputIndex(inputIndex - 1);
   };
-  console.log(workExperienceList);
   return (
     <div className="transitionfade">
       {/* <Navbar border={true} /> */}

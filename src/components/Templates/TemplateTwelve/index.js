@@ -8,7 +8,8 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
-
+import jsPDF from "jspdf";
+import moment from "moment";
 const Container = styled.div`
   height: auto;
   width: 100%;
@@ -222,8 +223,8 @@ const ContentSmall = styled.h3`
   text-align: center;
 `;
 const CallIcon = styled.div`
-  height: 40px;
-  width: 40px;
+  height: 25px;
+  width: 25px;
   border: 1px solid #98559d;
   border-radius: 50%;
   position: absolute;
@@ -311,15 +312,26 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.4 },
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Twelve`);
   };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
@@ -348,141 +360,145 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`ResumeSeven`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <TopBar></TopBar>
-          <MainBody>
-            <ProfileImg>
-              <img src={profileImage || images.bg} alt="" />
-            </ProfileImg>
-            <ProfileName>
-              {personalInfo.firstName || "Ana"}
-              {personalInfo.lastName || " Jones"}
-            </ProfileName>
-            <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
-          </MainBody>
-          <Bio>
-            <div className="my-row">
-              <div className="col-6 p-0">
-                <About>
-                  <TitleSmall>About Me</TitleSmall>
-                  <Content>{personalInfo?.history}</Content>
-                </About>
-              </div>
-              <div className="col-3 p-0">
-                <ContactDetails>
-                  <ContactBox>
-                    <img src={images.website} alt="" />
-                    <Content>{extraFields.website}</Content>
-                  </ContactBox>
-                  <ContactBox>
-                    <img src={images.email} alt="" />
-                    <Content>{personalInfo?.email}</Content>
-                  </ContactBox>
-                  <ContactBox>
-                    <img src={images.phone} alt="" />
-                    <Content>{personalInfo?.phone}</Content>
-                  </ContactBox>
-                  <ContactBox>
-                    <img src={images.location} alt="" />
-                    <Content>
-                      {personalInfo?.address} , {personalInfo?.city}
-                    </Content>
-                  </ContactBox>
-                </ContactDetails>
-              </div>
-              <div className="Col-3 p-0">
-                <Social>
-                  {personalInfo.socialLinks.map((data) => {
-                    return (
-                      <ContactBox>
-                        <img src={images[data.socialSite]} alt="" />
-                        <Content>{data.socialLink}</Content>
-                      </ContactBox>
-                    );
-                  })}
-                </Social>
-              </div>
+      > */}
+      <Container ref={componentRef}>
+        <TopBar></TopBar>
+        <MainBody>
+          <ProfileImg>
+            <img src={profileImage || images.bg} alt="" />
+          </ProfileImg>
+          <ProfileName>
+            {personalInfo.firstName || "Ana"}
+            {personalInfo.lastName || " Jones"}
+          </ProfileName>
+          <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
+        </MainBody>
+        <Bio>
+          <div className="my-row">
+            <div className="col-6 p-0">
+              <About>
+                <TitleSmall>About Me</TitleSmall>
+                <Content>{personalInfo?.history}</Content>
+              </About>
             </div>
-          </Bio>
-          <Body>
-            <Experience>
-              <Title>Experience</Title>
-              <ProgressBar
-                completed={30}
-                bgColor="#98559d"
-                height="5px"
-                isLabelVisible={false}
-                baseBgColor="#e2dfe2"
-                className="w-100"
-                margin="20px 0 10px"
-              />
-              <div className="my-row">
-                {workExperienceList.map((data) => {
+            <div className="col-3 p-0">
+              <ContactDetails>
+                <ContactBox>
+                  <img src={images.website} alt="" />
+                  <Content>{extraFields.website}</Content>
+                </ContactBox>
+                <ContactBox>
+                  <img src={images.email} alt="" />
+                  <Content>{personalInfo?.email}</Content>
+                </ContactBox>
+                <ContactBox>
+                  <img src={images.phone} alt="" />
+                  <Content>{personalInfo?.phone}</Content>
+                </ContactBox>
+                <ContactBox>
+                  <img src={images.location} alt="" />
+                  <Content>
+                    {personalInfo?.address} , {personalInfo?.city}
+                  </Content>
+                </ContactBox>
+              </ContactDetails>
+            </div>
+            <div className="Col-3 p-0">
+              <Social>
+                {personalInfo.socialLinks?.map((data) => {
                   return (
-                    <div className="col-4">
-                      <TitleSmall>{data.employer}</TitleSmall>
-                      <Description className="p-0">
-                        {data.title} |{" "}
-                        <span>
-                          {data.startDate}-{data.endDate}{" "}
-                        </span>
-                      </Description>
-                      <Content>{data.description}</Content>
-                    </div>
+                    <ContactBox>
+                      <img src={images[data.socialSite]} alt="" />
+                      <Content>{data.socialLink}</Content>
+                    </ContactBox>
                   );
                 })}
-              </div>
-            </Experience>
-            <div className="my-row mt-3">
-              <div className="col-4">
-                <Education>
-                  <Header>
-                    <Title>Education</Title>
-                  </Header>
+              </Social>
+            </div>
+          </div>
+        </Bio>
+        <Body>
+          <Experience>
+            <Title>Experience</Title>
+            <ProgressBar
+              completed={30}
+              bgColor="#98559d"
+              height="5px"
+              isLabelVisible={false}
+              baseBgColor="#e2dfe2"
+              className="w-100"
+              margin="20px 0 10px"
+            />
+            <div className="my-row">
+              {workExperienceList.map((data) => {
+                return (
+                  <div className="col-4">
+                    <TitleSmall>{data.employer}</TitleSmall>
+                    <Description className="p-0">
+                      {data.title} |{" "}
+                      <span>
+                        {moment(data.startDate).format("MM/YYYY")} {" - "}
+                        {data.currentlyWorkHere == true
+                          ? "Present"
+                          : moment(data.endDate).format("MM/YYYY")}
+                      </span>
+                    </Description>
+                    <Content>{data.description}</Content>
+                  </div>
+                );
+              })}
+            </div>
+          </Experience>
+          <div className="my-row mt-3">
+            <div className="col-4">
+              <Education>
+                <Header>
+                  <Title>Education</Title>
+                </Header>
 
-                  <EducationBody>
-                    {educationDetailsList.map((data) => {
-                      return (
-                        <>
-                          {" "}
-                          <TitleSmall>
-                            {data.studyField} |{" "}
-                            <span>
-                              {data.graduationStartDate}-
-                              {data.graduationEndDate}
-                            </span>
-                          </TitleSmall>
-                          <Content>{data.instituteName}</Content>
-                        </>
-                      );
-                    })}
+                <EducationBody>
+                  {educationDetailsList.map((data) => {
+                    return (
+                      <>
+                        {" "}
+                        <TitleSmall>
+                          {data.studyField} |{" "}
+                          <span>
+                            {moment(data.graduationStartDate).format("MM/YYY")}-
+                            {moment(data.graduationEndDate).format("MM/YYY")}
+                          </span>
+                        </TitleSmall>
+                        <Content>{data.instituteName}</Content>
+                      </>
+                    );
+                  })}
 
-                    <Title className="mt-5">Trainings</Title>
-                    <TitleSmall className="font-weight-normal">
-                      {extraFields?.website}
-                    </TitleSmall>
-                    {extraFields.trainings.map((data) => {
-                      return <Trainings>{data.trainingName}</Trainings>;
-                    })}
-                  </EducationBody>
-                </Education>
-              </div>
-              <div className="col-4">
-                <Languages>
-                  <Title>Languages</Title>
-                  <LanguageFlex>
-                    {skillsInfo.language.map((data) => {
-                      return <LanguageBox>{data}</LanguageBox>;
-                    })}
-                  </LanguageFlex>
-                  {/* <StarsRating>
+                  <Title className="mt-5">Trainings</Title>
+                  <TitleSmall className="font-weight-normal">
+                    {extraFields?.website}
+                  </TitleSmall>
+                  {extraFields.trainings.map((data) => {
+                    return <Trainings>{data.trainingName}</Trainings>;
+                  })}
+                </EducationBody>
+              </Education>
+            </div>
+            <div className="col-4">
+              <Languages>
+                <Title>Languages</Title>
+                <LanguageFlex>
+                  {skillsInfo.language.map((data) => {
+                    return <LanguageBox>{data}</LanguageBox>;
+                  })}
+                </LanguageFlex>
+                {/* <StarsRating>
                   <ReactStars
                     count={5}
                     onChange={ratingChanged}
@@ -508,74 +524,80 @@ export default ({
                     activeColor="#dcd9dd"
                   />
                 </StarsRating> */}
-                </Languages>
-                <Reference>
-                  <Title>Reference</Title>
-                  {extraFields.references.map((data) => {
-                    return (
-                      <UserBox>
-                        <img src={images.user} alt="" />
-                        <UserContent>
-                          <Content>{data.referenceName}</Content>
-                          <Content>
-                            T: {data.referencePhone} | E: {data.referenceEmail}
-                          </Content>
-                        </UserContent>
-                      </UserBox>
-                    );
-                  })}
-                </Reference>
-                <CallBox>
-                  <TitleSmall>
-                    Thank you for your time
-                    <CallIcon>
-                      <img src={images.phoneicon} alt="" />
-                    </CallIcon>
-                  </TitleSmall>
+              </Languages>
+              <Reference>
+                <Title>Reference</Title>
+                {extraFields.references.map((data) => {
+                  return (
+                    <UserBox>
+                      <img src={images.user} alt="" />
+                      <UserContent>
+                        <Content>{data.referenceName}</Content>
+                        <Content>
+                          T: {data.referencePhone} | E: {data.referenceEmail}
+                        </Content>
+                      </UserContent>
+                    </UserBox>
+                  );
+                })}
+              </Reference>
+              <CallBox>
+                <TitleSmall>
+                  Thank you for your time
+                  <img
+                    style={{
+                      marginLeft: "22px",
+                      width: "25px",
+                      height: "25px",
+                    }}
+                    src={images.phoneicon}
+                    alt=""
+                  />
+                </TitleSmall>
 
-                  <Content>
-                    Please contact me if you need more information about my
-                    background and qualifications. Your Sincerely,{" "}
-                  </Content>
-                  <ContentSmall>
-                    {personalInfo?.firstName} {personalInfo?.lastName}
-                  </ContentSmall>
-                </CallBox>
-              </div>
-              <div className="col-3">
-                <Skills>
-                  <Title>Skills</Title>
-                </Skills>
-                <SkillsBox>
-                  {skillsInfo.professionalSkills.map((data) => {
-                    return <TitleSmall>{data.name}</TitleSmall>;
-                  })}
-                </SkillsBox>
-                <CreativeSkills>
-                  <TitleSmall>Creative Skills</TitleSmall>
-                  {skillsInfo.softwareSkills.map((data) => {
-                    return <Content>{data.name}</Content>;
-                  })}
-                </CreativeSkills>
-              </div>
-              <div className="col-1">
-                <Setting>
-                  <HeadIcon>
-                    <img src={images.setting} alt="" />
-                  </HeadIcon>
-                  {hobbyName.hobbiesData.map((data) => {
-                    return (
-                      <ImgBox>
-                        <img src={data.icon} alt="" />
-                      </ImgBox>
-                    );
-                  })}
-                </Setting>
-              </div>
+                <Content>
+                  Please contact me if you need more information about my
+                  background and qualifications. Your Sincerely,{" "}
+                </Content>
+                <ContentSmall>
+                  {personalInfo?.firstName} {personalInfo?.lastName}
+                </ContentSmall>
+              </CallBox>
             </div>
-          </Body>
-        </Container>
-      </PDFExport>
+            <div className="col-3">
+              <Skills>
+                <Title>Skills</Title>
+              </Skills>
+              <SkillsBox>
+                {skillsInfo.professionalSkills.map((data) => {
+                  return <TitleSmall>{data.name}</TitleSmall>;
+                })}
+              </SkillsBox>
+              <CreativeSkills>
+                <TitleSmall>Creative Skills</TitleSmall>
+                {skillsInfo.softwareSkills.map((data) => {
+                  return <Content>{data.name}</Content>;
+                })}
+              </CreativeSkills>
+            </div>
+            <div className="col-1">
+              <Setting>
+                <HeadIcon>
+                  <img src={images.setting} alt="" />
+                </HeadIcon>
+                {hobbyName.hobbiesData.map((data) => {
+                  return (
+                    <ImgBox>
+                      <img src={data.icon} alt="" />
+                    </ImgBox>
+                  );
+                })}
+              </Setting>
+            </div>
+          </div>
+        </Body>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

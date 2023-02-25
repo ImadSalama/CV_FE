@@ -16,7 +16,6 @@ function ChooseTemplateScreen() {
   const dispatch = useDispatch();
 
   const data = useSelector((state) => state);
-  console.log("data in choose template==>", data);
 
   useEffect(() => {
     dispatch(getChoosenResume(choosenResume));

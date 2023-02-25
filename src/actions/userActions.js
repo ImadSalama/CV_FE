@@ -20,8 +20,6 @@ import { getIsLoggedIn, setUserInfo } from "../helpers";
 import { apiUrl } from "../services/settings";
 
 export const googleLogin = (email, name) => async (dispatch) => {
-  console.log("user in actions", email);
-
   dispatch({
     type: USER_SIGNINREQUEST,
     payload: {
@@ -94,7 +92,6 @@ export const signin = (email, password) => async (dispatch) => {
       username: email,
       password,
     });
-    console.log({ data });
     setUserInfo(JSON.stringify(data));
     dispatch({
       type: USER_SIGNIN_SUCCESS,
@@ -157,7 +154,6 @@ export const register =
   };
 
 export const signout = () => (dispatch) => {
-  console.log("sign out action");
   localStorage.removeItem("userInfo");
   localStorage.removeItem("cartItems");
   dispatch({ type: USER_SIGNOUT });

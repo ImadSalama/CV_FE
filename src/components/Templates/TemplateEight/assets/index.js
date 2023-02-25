@@ -1,7 +1,7 @@
 import bg from "./bg.png";
-import fb from "./fb.png";
+import facebook from "./fb.png";
 import ln from "./ln.png";
-import tw from "./tw.png";
+import twitter from "./tw.png";
 import cup from "./cup.png";
 import movies from "./movies.png";
 import paint from "./paint.png";
@@ -11,9 +11,9 @@ import travel from "./travel.png";
 
 export default {
   bg,
-  fb,
+  facebook,
   ln,
-  tw,
+  twitter,
   cup,
   movies,
   paint,

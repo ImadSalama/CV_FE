@@ -108,7 +108,7 @@ const modelMapper = {
       description: "description",
     },
   },
-  hobbies: {},
+  //hobbies: {},
 };
 
 export const mapModel = (model, modelType, direction) => {
@@ -120,8 +120,11 @@ export const mapModel = (model, modelType, direction) => {
     currentFields.forEach((field) => {
       item[fields[field]] = m[field];
     });
-    newData.push(item);
+    if (!Object.values(item).every((v) => !v)) {
+      newData.push(item);
+    }
   });
+
   return newData;
 };
 

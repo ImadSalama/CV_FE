@@ -12,6 +12,8 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import moment from "moment";
+import jsPDF from "jspdf";
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -184,15 +186,26 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.4 },
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Ten`);
   };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
@@ -221,206 +234,209 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <ProfileBox>
-            <div className="my-row">
-              <div className="col-4">
-                <ProfileName>
-                  {personalInfo.firstName ? personalInfo.firstName : "Ana"}{" "}
-                  <span>
-                    {personalInfo.lastName ? personalInfo.lastName : "Jones"}
-                  </span>
-                </ProfileName>
-                <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
-              </div>
-              <div className="col-8">
-                <Content>
-                  <span>
-                    {personalInfo?.firstName} {personalInfo?.lastName}
-                  </span>
-                  <br />
-                  {personalInfo?.history}
-                </Content>
-                <ContactBox>
-                  <div className="my-row">
-                    <div className="col-6 p-0">
-                      <ContactDetails>
-                        <img src={images.name} alt="" />
-                        <Content>
-                          {personalInfo.firstName
-                            ? `${personalInfo.firstName} ${personalInfo.lastName} `
-                            : "Ana Jones"}
-                        </Content>
-                      </ContactDetails>
-                      <ContactDetails>
-                        <img src={images.dob} alt="" />
-                        <Content>{personalInfo?.dob}</Content>
-                      </ContactDetails>
-                      <ContactDetails>
-                        <img src={images.address} alt="" />
-                        <Content>
-                          {personalInfo?.address} ,{personalInfo.city}
-                        </Content>
-                      </ContactDetails>
-                    </div>
-                    <div className="col-6 p-0">
-                      <ContactDetails>
-                        <img src={images.call} alt="" />
-                        <Content>{personalInfo?.phone}</Content>
-                      </ContactDetails>
-                      <ContactDetails>
-                        <img src={images.mail} alt="" />
-                        <Content>{personalInfo?.email}</Content>
-                      </ContactDetails>
-                      <ContactDetails>
-                        <img src={images.website} alt="" />
-                        <Content>{extraFields?.website}</Content>
-                      </ContactDetails>
-                    </div>
+      > */}
+      <Container ref={componentRef}>
+        <ProfileBox>
+          <div className="my-row">
+            <div className="col-4">
+              <ProfileName>
+                {personalInfo.firstName ? personalInfo.firstName : "Ana"}{" "}
+                <span>
+                  {personalInfo.lastName ? personalInfo.lastName : "Jones"}
+                </span>
+              </ProfileName>
+              <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
+            </div>
+            <div className="col-8">
+              <Content>
+                <span>
+                  {personalInfo?.firstName} {personalInfo?.lastName}
+                </span>
+                <br />
+                {personalInfo?.history}
+              </Content>
+              <ContactBox>
+                <div className="my-row">
+                  <div className="col-6 p-0">
+                    <ContactDetails>
+                      <img src={images.name} alt="" />
+                      <Content>
+                        {personalInfo.firstName
+                          ? `${personalInfo.firstName} ${personalInfo.lastName} `
+                          : "Ana Jones"}
+                      </Content>
+                    </ContactDetails>
+                    <ContactDetails>
+                      <img src={images.dob} alt="" />
+                      <Content>{personalInfo?.dob}</Content>
+                    </ContactDetails>
+                    <ContactDetails>
+                      <img src={images.address} alt="" />
+                      <Content>
+                        {personalInfo?.address} ,{personalInfo.city}
+                      </Content>
+                    </ContactDetails>
                   </div>
-                </ContactBox>
-              </div>
+                  <div className="col-6 p-0">
+                    <ContactDetails>
+                      <img src={images.call} alt="" />
+                      <Content>{personalInfo?.phone}</Content>
+                    </ContactDetails>
+                    <ContactDetails>
+                      <img src={images.mail} alt="" />
+                      <Content>{personalInfo?.email}</Content>
+                    </ContactDetails>
+                    <ContactDetails>
+                      <img src={images.website} alt="" />
+                      <Content>{extraFields?.website}</Content>
+                    </ContactDetails>
+                  </div>
+                </div>
+              </ContactBox>
             </div>
-          </ProfileBox>
-          <WhiteBox>
-            <Box>
-              <TitleBox>
-                <Title>Experience</Title>
-                <TitleDivider></TitleDivider>
-              </TitleBox>
+          </div>
+        </ProfileBox>
+        <WhiteBox>
+          <Box>
+            <TitleBox>
+              <Title>Experience</Title>
+              <TitleDivider></TitleDivider>
+            </TitleBox>
 
-              <Experience>
-                <div className="my-row">
-                  {workExperienceList.map((data) => {
-                    return (
-                      <div className="col-4 p-0">
-                        <TitleSmall>{data.employer}</TitleSmall>
-                        <Content>
-                          {data.title} | {data.startDate} -{" "}
-                          {data.currentlyWorkHere == true
-                            ? "Present"
-                            : data.endDate}
-                        </Content>
-                        <TitleSmall>Major Job Responsibilities:</TitleSmall>
-                        <ul>
-                          <NumberBullet>{data.description}</NumberBullet>
-                        </ul>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Experience>
-            </Box>
-          </WhiteBox>
-          <WhiteBox>
-            <Box>
-              <TitleBox>
-                <Title>Education</Title>
-                <TitleDivider></TitleDivider>
-              </TitleBox>
-              <Experience>
-                <div className="my-row">
-                  {educationDetailsList.map((data) => {
-                    return (
-                      <div className="col-4 p-0">
-                        <TitleSmall>{data.studyField}</TitleSmall>
-                        <Content>{data.instituteName}</Content>
-                        <Content>
-                          {data.graduationStartDate} - {data.graduationEndDate}{" "}
-                          | GPA {data.gpa}
-                        </Content>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Experience>
-            </Box>
-          </WhiteBox>
-          <WhiteBox>
-            <Box>
-              <TitleBox>
-                <Title>Skills</Title>
-                <TitleDivider></TitleDivider>
-              </TitleBox>
-              <Experience>
-                <div className="my-row">
-                  {skillsInfo.professionalSkills.map((data) => {
-                    return (
-                      <div className="col-4 p-0">
-                        <SkillsBar>
-                          <Content>{data.name}</Content>
-                          <Content>{data.rating}%</Content>
-                        </SkillsBar>
-                        <SkillBar
-                          aria-label="custom thumb label"
-                          defaultValue={data.rating}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </Experience>
-            </Box>
-          </WhiteBox>
-          <WhiteBox>
-            <div className="my-row">
-              <div className="col-4 pl-0">
-                <Box>
-                  <Hobbies>
-                    <TitleBox>
-                      <Title>Hobbies</Title>
-                      <TitleDivider></TitleDivider>
-                    </TitleBox>
-                    <HobbiesFlex>
-                      {hobbyName.hobbiesData.map((data) => {
-                        return (
-                          <HobbiesBox>
-                            <img src={data.icon} alt="" />
-                            <Content>{data.name}</Content>
-                          </HobbiesBox>
-                        );
-                      })}
-                    </HobbiesFlex>
-                  </Hobbies>
-                </Box>
-              </div>
-              <div className="col-8">
-                <Box>
-                  <ReferenceBox>
-                    <TitleBox>
-                      <Title>References</Title>
-                      <TitleDivider></TitleDivider>
-                    </TitleBox>
-                    <div className="my-row">
-                      {extraFields.references.map((data) => {
-                        return (
-                          <div className="col-6">
-                            <TitleSmall>{data.referenceName}</TitleSmall>
-                            <Content>{data.referenceDesg}</Content>
-                            <Content>{data.referenceAddress}</Content>
-                            <Content className="mt-2">
-                              Phone: {data.referencePhone}
-                            </Content>
-                            <Content>Email: {data.referenceEmail}</Content>
-                          </div>
-                        );
-                      })}
+            <Experience>
+              <div className="my-row">
+                {workExperienceList.map((data) => {
+                  return (
+                    <div className="col-6 p-0">
+                      <TitleSmall>{data.employer}</TitleSmall>
+                      <Content>
+                        {data.title} |{" "}
+                        {moment(data.startDate).format("MM/YYYY")} {" - "}
+                        {data.currentlyWorkHere == true
+                          ? "Present"
+                          : moment(data.endDate).format("MM/YYYY")}
+                      </Content>
+                      <TitleSmall>Major Job Responsibilities:</TitleSmall>
+                      <ul>
+                        <NumberBullet>{data.description}</NumberBullet>
+                      </ul>
                     </div>
-                    *
-                  </ReferenceBox>
-                </Box>
+                  );
+                })}
               </div>
+            </Experience>
+          </Box>
+        </WhiteBox>
+        <WhiteBox>
+          <Box>
+            <TitleBox>
+              <Title>Education</Title>
+              <TitleDivider></TitleDivider>
+            </TitleBox>
+            <Experience>
+              <div className="my-row">
+                {educationDetailsList.map((data) => {
+                  return (
+                    <div className="col-4 p-0">
+                      <TitleSmall>{data.studyField}</TitleSmall>
+                      <Content>{data.instituteName}</Content>
+                      <Content>
+                        {moment(data.graduationStartDate).format("MM/DD/YYYY")}{" "}
+                        - {moment(data.graduationEndDate).format("MM/DD/YYYY")}{" "}
+                        | GPA {data.gpa}
+                      </Content>
+                    </div>
+                  );
+                })}
+              </div>
+            </Experience>
+          </Box>
+        </WhiteBox>
+        <WhiteBox>
+          <Box>
+            <TitleBox>
+              <Title>Skills</Title>
+              <TitleDivider></TitleDivider>
+            </TitleBox>
+            <Experience>
+              <div className="my-row">
+                {skillsInfo.professionalSkills.map((data) => {
+                  return (
+                    <div className="col-4 p-0">
+                      <SkillsBar>
+                        <Content>{data.name}</Content>
+                        <Content>{data.rating}%</Content>
+                      </SkillsBar>
+                      <SkillBar
+                        aria-label="custom thumb label"
+                        defaultValue={data.rating}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </Experience>
+          </Box>
+        </WhiteBox>
+        <WhiteBox>
+          <div className="my-row">
+            <div className="col-4 pl-0">
+              <Box>
+                <Hobbies>
+                  <TitleBox>
+                    <Title>Hobbies</Title>
+                    <TitleDivider></TitleDivider>
+                  </TitleBox>
+                  <HobbiesFlex>
+                    {hobbyName.hobbiesData.map((data) => {
+                      return (
+                        <HobbiesBox>
+                          <img src={data.icon} alt="" />
+                          <Content>{data.name}</Content>
+                        </HobbiesBox>
+                      );
+                    })}
+                  </HobbiesFlex>
+                </Hobbies>
+              </Box>
             </div>
-          </WhiteBox>
-        </Container>
-      </PDFExport>
+            <div className="col-8">
+              <Box>
+                <ReferenceBox>
+                  <TitleBox>
+                    <Title>References</Title>
+                    <TitleDivider></TitleDivider>
+                  </TitleBox>
+                  <div className="my-row">
+                    {extraFields.references.map((data) => {
+                      return (
+                        <div className="col-6">
+                          <TitleSmall>{data.referenceName}</TitleSmall>
+                          <Content>{data.referenceDesg}</Content>
+                          <Content>{data.referenceAddress}</Content>
+                          <Content className="mt-2">
+                            Phone: {data.referencePhone}
+                          </Content>
+                          <Content>Email: {data.referenceEmail}</Content>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  *
+                </ReferenceBox>
+              </Box>
+            </div>
+          </div>
+        </WhiteBox>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

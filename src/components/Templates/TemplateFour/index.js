@@ -6,7 +6,8 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
-
+import moment from "moment";
+import jsPDF from "jspdf";
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -147,12 +148,22 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      const doc = new jsPDF({
+        format: "a4",
+        unit: "px",
+      });
+
+      doc.html(componentRef.current, {
+        async callback(doc) {
+          await doc.save("CVPDF");
+        },
+        html2canvas: { scale: 0.4 },
+      });
       return;
     }
 
@@ -186,201 +197,202 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <MainBox>
-            <ProfileDetail>
-              <ProfileDetails>
-                <ProfileName>
-                  {personalInfo.firstName
-                    ? `${personalInfo.firstName} ${personalInfo.lastName}`
-                    : "Ana Jones"}
-                </ProfileName>
-                <div className="d-flex align-items-center">
-                  <img src={images.email} alt="" />
-                  <ContentDetail>
-                    {personalInfo.email
-                      ? `${personalInfo.email}`
-                      : "example@email.com"}
-                  </ContentDetail>
-                </div>
-                <div className="d-flex align-items-center">
-                  <img src={images.phone} alt="" />
-                  <ContentDetail>
-                    {personalInfo.phone
-                      ? `${personalInfo.phone}`
-                      : "+12 3456 789"}
-                  </ContentDetail>
-                </div>
-              </ProfileDetails>
-              <ImageSide>
-                <img src={profileImage || images.profileimg} alt="" />
-                <ContentDetail className="orange-color text-center">
-                  {personalInfo.profession
-                    ? `${personalInfo.profession}`
-                    : "Software Engineer"}
+      > */}
+      <Container ref={componentRef}>
+        <MainBox>
+          <ProfileDetail>
+            <ProfileDetails>
+              <ProfileName>
+                {personalInfo.firstName
+                  ? `${personalInfo.firstName} ${personalInfo.lastName}`
+                  : "Ana Jones"}
+              </ProfileName>
+              <div className="d-flex align-items-center">
+                <img src={images.email} alt="" />
+                <ContentDetail>
+                  {personalInfo.email
+                    ? `${personalInfo.email}`
+                    : "example@email.com"}
                 </ContentDetail>
-              </ImageSide>
-            </ProfileDetail>
-          </MainBox>
-          <DevelopmentTitle>
-            <h2>
-              {personalInfo.history
-                ? `${personalInfo.history}`
-                : ` Development and design of web applications
+              </div>
+              <div className="d-flex align-items-center">
+                <img src={images.phone} alt="" />
+                <ContentDetail>
+                  {personalInfo.phone
+                    ? `${personalInfo.phone}`
+                    : "+12 3456 789"}
+                </ContentDetail>
+              </div>
+            </ProfileDetails>
+            <ImageSide>
+              <img src={profileImage || images.profileimg} alt="" />
+              <ContentDetail className="orange-color text-center">
+                {personalInfo.profession
+                  ? `${personalInfo.profession}`
+                  : "Software Engineer"}
+              </ContentDetail>
+            </ImageSide>
+          </ProfileDetail>
+        </MainBox>
+        <DevelopmentTitle>
+          <h2>
+            {personalInfo.history
+              ? `${personalInfo.history}`
+              : ` Development and design of web applications
             for startups and large companies`}
-            </h2>
-          </DevelopmentTitle>
-          <MainBox>
-            <div className="my-row">
-              <div className="col-4">
-                <img src={images.graduation} alt="" />
+          </h2>
+        </DevelopmentTitle>
+        <MainBox>
+          <div className="my-row">
+            <div className="col-4">
+              <img src={images.graduation} alt="" />
 
-                <Heading>Skills</Heading>
-                {skillsInfo.professionalSkills.map((data) => {
-                  return (
-                    <div className="d-flex flex-wrap ">
-                      <Description>
-                        <Title>{data?.skillHeading}</Title>
-                        <Title style={{ color: "#8C8B9140" }}>
-                          {data?.skillsName}
-                        </Title>
-                      </Description>
-                      <Heading>
-                        {data?.skillExperience}{" "}
-                        <span className="orange-color">Years</span>
-                      </Heading>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="col-4">
-                <img src={images.heart} alt="" />
-
-                <Heading>Intrest In Languages</Heading>
-                {extraFields.interestedLanguage.map((data) => {
-                  return (
-                    <div className="d-flex flex-wrap justify-content-between">
-                      <Description>
-                        <Title>{data.intrestName}</Title>
-                        <Title style={{ color: "#8C8B9140" }}>
-                          {data.intrestLang}
-                        </Title>
-                      </Description>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="col-4">
-                <img src={images.heart} alt="" />
-
-                <Heading>Hobbies</Heading>
-                <div className="d-flex flex-wrap justify-content-between">
-                  <Description>
-                    <Title>Hobbies Name</Title>
-                    {hobbyName.hobbiesData.map((data) => {
-                      return (
-                        <>
-                          <Title style={{ color: "#8C8B9140" }}>
-                            {data.name}
-                          </Title>
-                        </>
-                      );
-                    })}
-                  </Description>
-                </div>
-              </div>
-            </div>
-            <ProjectsMain>
-              <div className="my-row">
-                {extraFields.projects.map((data) => {
-                  return (
-                    <>
-                      <div className="col-6">
-                        <img src={images.projects} alt="" />
-
-                        <Heading>{data.projectName}</Heading>
-                        <ProjectBox>
-                          <div className="d-flex">
-                            <Heading>
-                              {data.projectNumber}{" "}
-                              <span className="plus">+</span>
-                            </Heading>
-                            <ProjectDescription>
-                              {data.projectDescription}
-                            </ProjectDescription>
-                          </div>
-                        </ProjectBox>
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
-            </ProjectsMain>
-          </MainBox>
-          <MainBox>
-            <div className="my-row">
-              <div className="col-6 p-0">
-                <Heading>Experiences</Heading>
-                <ExperienceDivider></ExperienceDivider>
-                <div className="my-row">
-                  {workExperienceList.map((data) => {
-                    return (
-                      <div className="col-6 p-0">
-                        <Title>
-                          {data?.title} @{data?.employer}
-                        </Title>
-                        <Title style={{ color: "#8C8B9140" }}>
-                          {data?.endDate} - {data?.startDate}
-                        </Title>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="col-6 p-0">
-                <Heading>Education</Heading>
-                <ExperienceDivider></ExperienceDivider>
-                <div className="my-row">
-                  {educationDetailsList.map((data) => {
-                    return (
-                      <div className="col-6 p-0">
-                        <Title>
-                          {data?.studyField} @ {data?.instituteName}
-                        </Title>
-                        <Title style={{ color: "#8C8B9140" }}>
-                          {data?.graduationStartDate} -{" "}
-                          {data?.graduationEndDate}
-                        </Title>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </MainBox>
-          <Footer>
-            <div className="my-row">
-              {personalInfo.socialLinks?.map((data) => {
+              <Heading>Skills</Heading>
+              {skillsInfo.professionalSkills.map((data) => {
                 return (
-                  <div className="col-4">
-                    <SocialFooter>
-                      <img src={images[data.socialSite]} alt="" />
-                    </SocialFooter>
-                    <ContentDetail>{data.socialLink}</ContentDetail>
+                  <div className="d-flex flex-wrap ">
+                    <Description>
+                      <Title>{data?.skillHeading}</Title>
+                      <Title style={{ color: "#8C8B9140" }}>
+                        {data?.skillsName}
+                      </Title>
+                    </Description>
+                    <Heading>
+                      {data?.skillExperience}{" "}
+                      <span className="orange-color">Years</span>
+                    </Heading>
                   </div>
                 );
               })}
             </div>
-          </Footer>
-        </Container>
-      </PDFExport>
+            <div className="col-4">
+              <img src={images.heart} alt="" />
+
+              <Heading>Intrest In Languages</Heading>
+              {extraFields.interestedLanguage.map((data) => {
+                return (
+                  <div className="d-flex flex-wrap justify-content-between">
+                    <Description>
+                      <Title>{data.intrestName}</Title>
+                      <Title style={{ color: "#8C8B9140" }}>
+                        {data.intrestLang}
+                      </Title>
+                    </Description>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="col-4">
+              <img src={images.heart} alt="" />
+
+              <Heading>Hobbies</Heading>
+              <div className="d-flex flex-wrap justify-content-between">
+                <Description>
+                  <Title>Hobbies Name</Title>
+                  {hobbyName.hobbiesData.map((data) => {
+                    return (
+                      <>
+                        <Title style={{ color: "#8C8B9140" }}>
+                          {data.name}
+                        </Title>
+                      </>
+                    );
+                  })}
+                </Description>
+              </div>
+            </div>
+          </div>
+          <ProjectsMain>
+            <div className="my-row">
+              {extraFields.projects.map((data) => {
+                return (
+                  <>
+                    <div className="col-6">
+                      <img src={images.projects} alt="" />
+
+                      <Heading>{data.projectName}</Heading>
+                      <ProjectBox>
+                        <div className="d-flex">
+                          <Heading>
+                            {data.projectNumber} <span className="plus">+</span>
+                          </Heading>
+                          <ProjectDescription>
+                            {data.projectDescription}
+                          </ProjectDescription>
+                        </div>
+                      </ProjectBox>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          </ProjectsMain>
+        </MainBox>
+        <MainBox>
+          <div className="my-row">
+            <div className="col-6 p-0">
+              <Heading>Experiences</Heading>
+              <ExperienceDivider></ExperienceDivider>
+              <div className="my-row">
+                {workExperienceList.map((data) => {
+                  return (
+                    <div className="col-6 p-0">
+                      <Title>
+                        {data?.title} @{data?.employer}
+                      </Title>
+                      <Title style={{ color: "#8C8B9140" }}>
+                        {moment(data?.endDate).format("MM/DD/YYYY")} -{" "}
+                        {moment(data?.startDate).format("MM/DD/YYYY")}
+                      </Title>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="col-6 p-0">
+              <Heading>Education</Heading>
+              <ExperienceDivider></ExperienceDivider>
+              <div className="my-row">
+                {educationDetailsList.map((data) => {
+                  return (
+                    <div className="col-6 p-0">
+                      <Title>
+                        {data?.studyField} @ {data?.instituteName}
+                      </Title>
+                      <Title style={{ color: "#8C8B9140" }}>
+                        {moment(data?.graduationStartDate).format("MM/DD/YYYY")}{" "}
+                        - {moment(data?.graduationEndDate).format("MM/DD/YYYY")}
+                      </Title>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </MainBox>
+        <Footer>
+          <div className="my-row">
+            {personalInfo.socialLinks?.map((data) => {
+              return (
+                <div className="col-4">
+                  <SocialFooter>
+                    <img src={images[data.socialSite]} alt="" />
+                  </SocialFooter>
+                  <ContentDetail>{data.socialLink}</ContentDetail>
+                </div>
+              );
+            })}
+          </div>
+        </Footer>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

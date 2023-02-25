@@ -70,7 +70,7 @@ function SigninScreen(props) {
 
               <div>
                 <label htmlFor="email">
-                  <small>Email</small>
+                  <small>User Name</small>
                 </label>
 
                 <InputField
@@ -93,11 +93,11 @@ function SigninScreen(props) {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div className="forgot-pass">
+              {/* <div className="forgot-pass">
                 <Link>
                   <small>Forgot Password ?</small>
                 </Link>
-              </div>
+              </div> */}
               <div className="form-button">
                 <button className="primary" type="submit">
                   Sign in

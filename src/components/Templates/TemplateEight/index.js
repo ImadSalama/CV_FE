@@ -9,6 +9,9 @@ import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "../../../services/urlQueryService";
+import moment from "moment";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Container = styled.div`
   margin-left: auto;
@@ -164,17 +167,22 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const query = useQuery();
   const [isMember, setIsMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      html2canvas(componentRef.current).then((canvas) => {
+        const img = canvas.toDataURL("image/jpeg", 1);
+        const pdf = new jsPDF();
+        pdf.addImage(img, "jpeg", 0, 0, 220, 300);
+        pdf.save("cv.pdf");
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Eight`);
   };
 
   // React.useEffect(() => {
@@ -210,106 +218,112 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <MainSec>
-            <ProfileName>
-              {personalInfo?.firstName
-                ? `${personalInfo.firstName} ${personalInfo.lastName} `
-                : "Ana Jones"}
-            </ProfileName>
-            <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
+      > */}
+      <Container ref={componentRef}>
+        <MainSec>
+          <ProfileName>
+            {personalInfo?.firstName
+              ? `${personalInfo.firstName} ${personalInfo.lastName} `
+              : "Ana Jones"}
+          </ProfileName>
+          <ProfileDesg>{personalInfo?.profession}</ProfileDesg>
 
-            <SocialLinks>
-              {personalInfo.socialLinks?.map((data) => {
+          <SocialLinks>
+            {personalInfo.socialLinks?.map((data) => {
+              return (
+                <Anchor>
+                  <img src={images[data.socialSite]} alt="" />
+                  <SocialName>{data.socialLink}</SocialName>
+                </Anchor>
+              );
+            })}
+          </SocialLinks>
+          <InnerContainer>
+            <Title>Education</Title>
+            <Divider></Divider>
+            <div className="my-row">
+              {educationDetailsList.map((data) => {
                 return (
-                  <Anchor>
-                    <img src={images[data.socialSite]} alt="" />
-                    <SocialName>{data.socialLink}</SocialName>
-                  </Anchor>
+                  <div className="col-4 p-0">
+                    <Education>
+                      <TitleE>{data?.studyField}</TitleE>
+                      <About>
+                        {data?.instituteName}{" "}
+                        {moment(data?.graduationStartDate).format("MM/DD/YYYY")}{" "}
+                        - {moment(data.graduationEndDate).format("MM/DD/YYYY")}
+                      </About>
+                      <Description>{data?.description}</Description>
+                    </Education>
+                  </div>
                 );
               })}
-            </SocialLinks>
-            <InnerContainer>
-              <Title>Education</Title>
-              <Divider></Divider>
-              <div className="my-row">
-                {educationDetailsList.map((data) => {
-                  return (
-                    <div className="col-4 p-0">
-                      <Education>
-                        <TitleE>{data?.studyField}</TitleE>
-                        <About>
-                          {data?.instituteName} {data?.graduationStartDate} -{" "}
-                          {data.graduationEndDate}
-                        </About>
-                        <Description>{data?.description}</Description>
-                      </Education>
-                    </div>
-                  );
-                })}
-              </div>
+            </div>
 
-              <div className="my-row">
-                <div className="col-6">
-                  <VerticalBox>
-                    <Title>Experience</Title>
-                    {workExperienceList.map((data) => {
-                      return (
-                        <DetailBox>
-                          <TitleE>{data.title}</TitleE>
-                          <About>
-                            {data.employer} | {data.startDate} - {data.endDate}
-                          </About>
-                          <Description>{data.description}</Description>
-                        </DetailBox>
-                      );
-                    })}
-                  </VerticalBox>
-                </div>
-                <div className="col-6">
-                  <VerticalBox>
-                    <Title>Skills</Title>
-                    {skillsInfo.professionalSkills.map((data) => {
-                      return (
-                        <DetailBox>
-                          <TitleE>{data.name}</TitleE>
-                          <ProgressBar
-                            completed={data.rating}
-                            bgColor="rgb(54, 54, 54)"
-                            height="5px"
-                            isLabelVisible={false}
-                            baseBgColor="#EBF0F1"
-                          />
-                        </DetailBox>
-                      );
-                    })}
-                  </VerticalBox>
-                </div>
-                <div className="col-12">
-                  <Title>Interests</Title>
-                  <Interest>
-                    {hobbyName.hobbiesData.map((data) => {
-                      return (
-                        <InterestBox>
-                          <img src={data.icon} alt="" />
-                          <TitleE>{data.name}</TitleE>
-                        </InterestBox>
-                      );
-                    })}
-                  </Interest>
-                </div>
+            <div className="my-row">
+              <div className="col-6">
+                <VerticalBox>
+                  <Title>Experience</Title>
+                  {workExperienceList.map((data) => {
+                    return (
+                      <DetailBox>
+                        <TitleE>{data.title}</TitleE>
+                        <About>
+                          {data.employer} |{" "}
+                          {moment(data.startDate).format("MM/YYYY")} {" - "}
+                          {data.currentlyWorkHere == true
+                            ? "Present"
+                            : moment(data.endDate).format("MM/YYYY")}
+                        </About>
+                        <Description>{data.description}</Description>
+                      </DetailBox>
+                    );
+                  })}
+                </VerticalBox>
               </div>
-            </InnerContainer>
-          </MainSec>
-        </Container>
-      </PDFExport>
+              <div className="col-6">
+                <VerticalBox>
+                  <Title>Skills</Title>
+                  {skillsInfo.professionalSkills.map((data) => {
+                    return (
+                      <DetailBox>
+                        <TitleE>{data.name}</TitleE>
+                        <ProgressBar
+                          completed={data.rating}
+                          bgColor="rgb(54, 54, 54)"
+                          height="5px"
+                          isLabelVisible={false}
+                          baseBgColor="#EBF0F1"
+                        />
+                      </DetailBox>
+                    );
+                  })}
+                </VerticalBox>
+              </div>
+              <div className="col-12">
+                <Title>Interests</Title>
+                <Interest>
+                  {hobbyName.hobbiesData.map((data) => {
+                    return (
+                      <InterestBox>
+                        <img src={data.icon} alt="" />
+                        <TitleE>{data.name}</TitleE>
+                      </InterestBox>
+                    );
+                  })}
+                </Interest>
+              </div>
+            </div>
+          </InnerContainer>
+        </MainSec>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

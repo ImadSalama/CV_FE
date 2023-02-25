@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import images from "./assets";
 import { Line } from "react-chartjs-2";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -9,6 +9,9 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import moment from "moment";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const SkillBar = withStyles({
   root: {
@@ -64,9 +67,9 @@ const PersonalBox = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  height: 145px;
+  height: 40%;
   border-radius: 50%;
-  width: 145px;
+  width: 40%;
   box-shadow: 0px 10px 5px -7px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0px 10px 5px -7px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 10px 5px -7px rgba(0, 0, 0, 0.1);
@@ -181,7 +184,7 @@ const ContentMain = styled.div`
   }
 `;
 const TitleSpan = styled.span`
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   padding: 5px 15px;
   border-radius: 5px;
@@ -202,15 +205,21 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      html2canvas(componentRef.current).then((canvas) => {
+        const img = canvas.toDataURL("image/jpeg", 1);
+        const pdf = new jsPDF();
+        pdf.addImage(img, "jpeg", 0, 0, 220, 300);
+        pdf.save("cv.pdf");
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Three`);
   };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
@@ -220,6 +229,7 @@ export default ({
       pdfExportComponent.current.save();
     }
   };
+
   return (
     <div className="custom_container">
       <div className="d-flex justify-content-between">
@@ -239,190 +249,193 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <div className="my-row">
-            <div className="col-4">
-              <MainSide>
-                <Heading>personal information</Heading>
-                <PersonalBox>
-                  <div class="d-flex justify-content-center">
-                    <ProfileImage
-                      src={profileImage || images.profileimg}
-                    ></ProfileImage>
-                  </div>
-                  <Title className="pt-5">
-                    {personalInfo.firstName
-                      ? `${personalInfo.firstName} ${personalInfo.lastName}`
-                      : "Ana Jones"}{" "}
-                  </Title>
-                  <TitleOrange>
-                    {personalInfo.profession
-                      ? `${personalInfo.profession}`
-                      : "Software Developer"}
-                  </TitleOrange>
-                  <ContentDetails>
-                    {personalInfo.history
-                      ? `${personalInfo.history}`
-                      : `Ana is a graphic designer who works in a web designing
+      > */}
+      <Container ref={componentRef}>
+        <div className="my-row">
+          <div className="col-4">
+            <MainSide>
+              <Heading>personal information</Heading>
+              <PersonalBox>
+                <div class="d-flex justify-content-center">
+                  <ProfileImage
+                    src={profileImage || images.profileimg}
+                  ></ProfileImage>
+                </div>
+                <Title className="pt-5">
+                  {personalInfo.firstName
+                    ? `${personalInfo.firstName} ${personalInfo.lastName}`
+                    : "Ana Jones"}{" "}
+                </Title>
+                <TitleOrange>
+                  {personalInfo.profession
+                    ? `${personalInfo.profession}`
+                    : "Software Developer"}
+                </TitleOrange>
+                <ContentDetails>
+                  {personalInfo.history
+                    ? `${personalInfo.history}`
+                    : `Ana is a graphic designer who works in a web designing
                   company. They often ask for quick designs and she would like
                   to have the help of ready-made graphics, which you can later
                   modify to fit your needs.`}
-                  </ContentDetails>
-                </PersonalBox>
-                {extraFields.pye.map((data) => {
+                </ContentDetails>
+              </PersonalBox>
+              {extraFields.pye.map((data) => {
+                return (
+                  <div class="d-flex justify-content-between flex-wrap">
+                    <Projects>
+                      <Title>+{data.projectsCompleted}</Title>
+                      <TitleOrange>Projects</TitleOrange>
+                    </Projects>
+                    <Projects style={{ backgroundColor: "#EC642A" }}>
+                      <Title>+{data.customer}</Title>
+                      <TitleOrange>Customer</TitleOrange>
+                    </Projects>
+                    <Projects style={{ backgroundColor: "#B59C7A" }}>
+                      <Title>{data.experience} Years</Title>
+                      <TitleOrange>Experience</TitleOrange>
+                    </Projects>
+                  </div>
+                );
+              })}
+
+              <SocialBox>
+                <NameImg>
+                  <Icon src={images.email}></Icon>
+                  <ContentDetails>{personalInfo?.email}</ContentDetails>
+                </NameImg>
+                <NameImg>
+                  <Icon src={images.phone}></Icon>
+                  <ContentDetails>{personalInfo?.phone}</ContentDetails>
+                </NameImg>
+                <NameImg>
+                  <Icon src={images.location}></Icon>
+                  <ContentDetails>{personalInfo?.address}</ContentDetails>
+                </NameImg>
+                {personalInfo.socialLinks?.map((data) => {
                   return (
-                    <div class="d-flex justify-content-between flex-wrap">
-                      <Projects>
-                        <Title>+{data.projectsCompleted}</Title>
-                        <TitleOrange>Projects</TitleOrange>
-                      </Projects>
-                      <Projects style={{ backgroundColor: "#EC642A" }}>
-                        <Title>+{data.customer}</Title>
-                        <TitleOrange>Customer</TitleOrange>
-                      </Projects>
-                      <Projects style={{ backgroundColor: "#B59C7A" }}>
-                        <Title>{data.experience} Years</Title>
-                        <TitleOrange>Experience</TitleOrange>
-                      </Projects>
-                    </div>
+                    <NameImg>
+                      <Icon src={images[data.socialSite]}></Icon>
+                      <ContentDetails>{data.socialLink}</ContentDetails>
+                    </NameImg>
                   );
                 })}
-
-                <SocialBox>
-                  <NameImg>
-                    <Icon src={images.email}></Icon>
-                    <ContentDetails>{personalInfo?.email}</ContentDetails>
-                  </NameImg>
-                  <NameImg>
-                    <Icon src={images.phone}></Icon>
-                    <ContentDetails>{personalInfo?.phone}</ContentDetails>
-                  </NameImg>
-                  <NameImg>
-                    <Icon src={images.location}></Icon>
-                    <ContentDetails>{personalInfo?.address}</ContentDetails>
-                  </NameImg>
-                  {personalInfo.socialLinks?.map((data) => {
-                    return (
-                      <NameImg>
-                        <Icon src={images[data.socialSite]}></Icon>
-                        <ContentDetails>{data.socialLink}</ContentDetails>
-                      </NameImg>
-                    );
-                  })}
-                </SocialBox>
-                <Heading>Professional Goals</Heading>
-                <PersonalBox>
-                  <Line
-                    data={state}
-                    options={{
-                      title: {
-                        display: false,
-                        text: "Average Rainfall per month",
-                        fontSize: 20,
-                      },
-                      legend: {
-                        display: false,
-                        position: "right",
-                      },
-                    }}
-                  />
-                </PersonalBox>
-              </MainSide>
-            </div>
-            <div class="col-8">
-              <MainSide>
-                <Heading>Experience</Heading>
-
-                <PersonalBox>
-                  {workExperienceList.map((value) => {
-                    return (
-                      <DetailBox className="mb-5">
-                        <Label>{value?.startDate}</Label>
-                        <ContentMain>
-                          <Title>
-                            {value?.title} - {value?.employer}
-                            <TitleSpan className="orange-span">
-                              {value.currentlyWorkHere == true
-                                ? "Current Job"
-                                : value?.endDate}
-                            </TitleSpan>
-                          </Title>
-
-                          <ContentDetails>{value?.description}</ContentDetails>
-                        </ContentMain>
-                      </DetailBox>
-                    );
-                  })}
-                </PersonalBox>
-                <Heading>Education</Heading>
-                <PersonalBox>
-                  {educationDetailsList.map((value) => {
-                    return (
-                      <DetailBox className="mb-5">
-                        <Label>{value?.graduationStartDate}</Label>
-                        <ContentMain>
-                          <Title>
-                            {value?.studyField} - {value?.instituteName}
-                            <TitleSpan className="orange-span">
-                              Current Formation
-                            </TitleSpan>
-                          </Title>
-
-                          <ContentDetails>{value?.description}</ContentDetails>
-                        </ContentMain>
-                      </DetailBox>
-                    );
-                  })}
-                </PersonalBox>
-                <Heading>Professional Skills</Heading>
-                <PersonalBox>
-                  <div className="my-row">
-                    {skillsInfo.professionalSkills.map((data) => {
-                      return (
-                        <div className="col-6">
-                          <Label>{data.name}</Label>
-                          <SkillBar
-                            aria-label="custom thumb label"
-                            defaultValue={data.rating}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </PersonalBox>
-                <Heading>Hobbies</Heading>
-                <PersonalBox>
-                  <div className="my-row">
-                    {hobbyName.hobbiesData.map((data) => {
-                      return (
-                        <div className="col-3">
-                          <div className="d-flex align-items-center flex-wrap">
-                            <img
-                              className="customImage"
-                              src={data.icon}
-                              alt=""
-                            />
-                            <ContentDetails className="pl-3">
-                              {data.name}
-                            </ContentDetails>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </PersonalBox>
-              </MainSide>
-            </div>
+              </SocialBox>
+              <Heading>Professional Goals</Heading>
+              <PersonalBox>
+                <Line
+                  data={state}
+                  options={{
+                    title: {
+                      display: false,
+                      text: "Average Rainfall per month",
+                      fontSize: 20,
+                    },
+                    legend: {
+                      display: false,
+                      position: "right",
+                    },
+                  }}
+                />
+              </PersonalBox>
+            </MainSide>
           </div>
-        </Container>
-      </PDFExport>
+          <div class="col-8">
+            <MainSide>
+              <Heading>Experience</Heading>
+
+              <PersonalBox>
+                {workExperienceList.map((value) => {
+                  return (
+                    <DetailBox className="mb-5">
+                      <Label>
+                        {moment(value?.startDate).format("MM/DD/YYYY")}
+                      </Label>
+                      <ContentMain>
+                        <Title>
+                          {value?.title} - {value?.employer}
+                          <TitleSpan className="orange-span">
+                            {value.currentlyWorkHere == true
+                              ? "Current Job"
+                              : moment(value?.endDate).format("MM/DD/YYYY")}
+                          </TitleSpan>
+                        </Title>
+
+                        <ContentDetails>{value?.description}</ContentDetails>
+                      </ContentMain>
+                    </DetailBox>
+                  );
+                })}
+              </PersonalBox>
+              <Heading>Education</Heading>
+              <PersonalBox>
+                {educationDetailsList.map((value) => {
+                  return (
+                    <DetailBox className="mb-5">
+                      <Label>
+                        {moment(value?.graduationStartDate).format(
+                          "MM/DD/YYYY"
+                        )}
+                      </Label>
+                      <ContentMain>
+                        <Title>
+                          {value?.studyField} - {value?.instituteName}
+                          <TitleSpan className="orange-span">
+                            Current Formation
+                          </TitleSpan>
+                        </Title>
+
+                        <ContentDetails>{value?.description}</ContentDetails>
+                      </ContentMain>
+                    </DetailBox>
+                  );
+                })}
+              </PersonalBox>
+              <Heading>Professional Skills</Heading>
+              <PersonalBox>
+                <div className="my-row">
+                  {skillsInfo.professionalSkills.map((data) => {
+                    return (
+                      <div className="col-6">
+                        <Label>{data.name}</Label>
+                        <SkillBar
+                          aria-label="custom thumb label"
+                          defaultValue={data.rating}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </PersonalBox>
+              <Heading>Hobbies</Heading>
+              <PersonalBox>
+                <div className="my-row">
+                  {hobbyName.hobbiesData.map((data) => {
+                    return (
+                      <div className="col-3">
+                        <div className="d-flex align-items-center flex-wrap">
+                          <img className="customImage" src={data.icon} alt="" />
+                          <ContentDetails className="pl-3">
+                            {data.name}
+                          </ContentDetails>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </PersonalBox>
+            </MainSide>
+          </div>
+        </div>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

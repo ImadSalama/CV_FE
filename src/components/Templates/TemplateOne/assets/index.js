@@ -15,8 +15,8 @@ import video_games from "./video_games.svg";
 import books from "./books.svg";
 import aviation from "./aviation.svg";
 import djplaying from "./dj_playing.svg";
-
-
+import like from "./like.png";
+import dislike from "./dislike.png";
 export default {
   bear,
   heart,
@@ -35,4 +35,6 @@ export default {
   books,
   aviation,
   djplaying,
+  like,
+  dislike,
 };

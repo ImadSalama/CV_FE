@@ -257,8 +257,6 @@ function DetailsForm() {
     updatedList[index].workStatus = value;
     updatedList[index].endDate = "";
     setWorkExperienceList(updatedList);
-    
-    
   };
   const deleteWorkExperience = (index) => {
     let updatedList = [...workExperienceList];
@@ -396,7 +394,6 @@ function DetailsForm() {
     setFactsInfo({
       factsList,
     });
-    // console.log("skills object", skillsInfo)
   }, [factsList]);
 
   useEffect(() => {
@@ -418,7 +415,6 @@ function DetailsForm() {
     setHobbiesInfo({
       hobbiesList,
     });
-    console.log("hobbies list==>", hobbiesList);
   }, [hobbiesList]);
 
   useEffect(() => {

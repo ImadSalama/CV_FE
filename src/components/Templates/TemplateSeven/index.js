@@ -10,6 +10,11 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import { getISMemeberUser } from "../../../helpers";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import moment from "moment";
+import jsPDF from "jspdf";
+import Printer, { print } from "react-pdf-print";
+import html2canvas from "html2canvas";
+
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -202,15 +207,21 @@ export default ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  const reportTemplateRef = useRef(null);
   const history = useHistory();
   const [isMember] = useState(() => getISMemeberUser());
   const handleSubmit = () => {
     if (isMember) {
-      handlePrint();
+      html2canvas(componentRef.current).then((canvas) => {
+        const img = canvas.toDataURL("image/jpeg", 1);
+        const pdf = new jsPDF();
+        pdf.addImage(img, "jpeg", 0, 0, 220, 300);
+        pdf.save("cv.pdf");
+      });
       return;
     }
 
-    history.push(`/Payment?returnUrl=cvform?resume=Four`);
+    history.push(`/Payment?returnUrl=cvform?resume=Seven`);
   };
   const container = React.useRef(null);
   const pdfExportComponent = React.useRef(null);
@@ -239,193 +250,199 @@ export default ({
           {" "}
           {isMember ? "Download Resume" : "Go With Pro"}{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`Resume`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <LightTemplate>
-            <div className="my-row">
-              <div className="col-4">
-                <Profile>
-                  <ProfileName>
-                    {personalInfo.firstName
-                      ? `${personalInfo.firstName} ${personalInfo.lastName}`
-                      : "Jon Snow"}
-                  </ProfileName>
-                  <ProfileDesg>
-                    {personalInfo.profession
-                      ? personalInfo.profession
-                      : "Graphic Designer"}
-                  </ProfileDesg>
-                </Profile>
-                <PersonalInfo>
-                  <InfoTitle>Personal Information</InfoTitle>
-                  <InfoDetail>
-                    <Title>Name</Title>
-                    <Description>{personalInfo?.firstName}</Description>
-                  </InfoDetail>
-                  <InfoDetail>
-                    <Title>D . O . B</Title>
-                    <Description>{personalInfo?.dob}</Description>
-                  </InfoDetail>
-                  <InfoDetail>
-                    <Title>Address</Title>
-                    <Description>
-                      {personalInfo?.address} , {personalInfo?.city}
-                    </Description>
-                  </InfoDetail>
-                  <InfoDetail>
-                    <Title>Email</Title>
-                    <Description>{personalInfo?.email}</Description>
-                  </InfoDetail>
-                  <InfoDetail>
-                    <Title>Phone</Title>
-                    <Description>{personalInfo?.phone}</Description>
-                  </InfoDetail>
-                  <FullDivider></FullDivider>
-                  <InfoTitle>Languages</InfoTitle>
-                  <InfoDetail>
-                    <Description>
-                      {skillsInfo.language.map((data) => {
-                        return <Description>{data}</Description>;
-                      })}
-                    </Description>
-                  </InfoDetail>
-                </PersonalInfo>
-              </div>
-              <div className="col-8">
-                <DetailBox>
-                  <TitleRight>
-                    Hello, I’m {personalInfo?.firstName}{" "}
-                    {personalInfo?.lastName}!
-                  </TitleRight>
-                  <AboutMe>{personalInfo?.history}</AboutMe>
-                  <FullDivider></FullDivider>
-                  <div className="my-row">
-                    <div className="col-6">
-                      <InfoTitle>Software Skills</InfoTitle>
-                      <FlexBox>
-                        {skillsInfo.softwareSkills.map((data) => {
-                          return (
-                            <ProgressBarMain>
-                              <CircularProgressbar
-                                styles={{
-                                  root: {
-                                    height: 70,
-                                    width: 70,
-                                  },
-                                  path: {
-                                    stroke: "#FFE32C",
-                                    strokeWidth: "5px",
-                                  },
-                                  text: {
-                                    fontSize: 10,
-                                  },
-                                  trail: {
-                                    stroke: "white",
-                                  },
-                                }}
-                                counterClockwise={true}
-                                value={data.rating}
-                                text={data.rating + "%"}
-                              />
-                              <Title>{data.name}</Title>
-                            </ProgressBarMain>
-                          );
-                        })}
-                      </FlexBox>
-                    </div>
-                    <div className="col-6">
-                      <InfoTitle>Professional Skills</InfoTitle>
-                      {skillsInfo.professionalSkills.map((data) => {
-                        return (
-                          <>
-                            <FlexBetween>
-                              <SkillName>{data?.name}</SkillName>
-                              <SkillName>{data?.rating}%</SkillName>
-                            </FlexBetween>
+      > */}
 
-                            <ProgressBar
-                              completed={data?.rating}
-                              bgColor="#FFE32C"
-                              height="5px"
-                              isLabelVisible={false}
-                              baseBgColor="#EBF0F1"
-                            />
-                          </>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <FullDivider style={{ margin: "30px 0" }}></FullDivider>
-                  <div className="my-row">
-                    <div className="col-6">
-                      <InfoTitle>Work Experience</InfoTitle>
-                      {workExperienceList.map((data) => {
-                        return (
-                          <BoxFlex>
-                            <Badge>
-                              {data.currentlyWorkHere == true
-                                ? "Current Job"
-                                : `${data.startDate} - ${data.endDate}`}
-                            </Badge>
-
-                            <Details>
-                              <DetailsHeading>{data.title}</DetailsHeading>
-                              <DetailsDesg>{data.employer}</DetailsDesg>
-                              <DetailsContent>
-                                {data.description}
-                              </DetailsContent>
-                            </Details>
-                          </BoxFlex>
-                        );
-                      })}
-                    </div>
-                    <div className="col-6">
-                      <InfoTitle>Education</InfoTitle>
-                      {educationDetailsList.map((data) => {
-                        return (
-                          <BoxFlex>
-                            <Badge>
-                              {data.graduationStartDate} -{" "}
-                              {data.graduationEndDate}
-                            </Badge>
-                            <Details>
-                              <DetailsHeading>{data.studyField}</DetailsHeading>
-                              <DetailsDesg>{data.instituteName}</DetailsDesg>
-                              <DetailsContent>
-                                {data.description}
-                              </DetailsContent>
-                            </Details>
-                          </BoxFlex>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <FullDivider></FullDivider>
-                  <InfoTitle>Interests</InfoTitle>
-                  <Interest>
-                    <div className="my-row">
-                      {hobbyName.hobbiesData.map((data) => {
-                        return (
-                          <div className="col-4">
-                            <img src={data.icon} alt="" />
-                            <IntrestName>{data.name}</IntrestName>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </Interest>
-                </DetailBox>
-              </div>
+      <Container ref={componentRef} id="canvas">
+        <LightTemplate>
+          <div className="my-row">
+            <div className="col-4">
+              <Profile>
+                <ProfileName>
+                  {personalInfo.firstName
+                    ? `${personalInfo.firstName} ${personalInfo.lastName}`
+                    : "Jon Snow"}
+                </ProfileName>
+                <ProfileDesg>
+                  {personalInfo.profession
+                    ? personalInfo.profession
+                    : "Graphic Designer"}
+                </ProfileDesg>
+              </Profile>
+              <PersonalInfo>
+                <InfoTitle>Personal Information</InfoTitle>
+                <InfoDetail>
+                  <Title>Name</Title>
+                  <Description>{personalInfo?.firstName}</Description>
+                </InfoDetail>
+                <InfoDetail>
+                  <Title>D . O . B</Title>
+                  <Description>{personalInfo?.dob}</Description>
+                </InfoDetail>
+                <InfoDetail>
+                  <Title>Address</Title>
+                  <Description>
+                    {personalInfo?.address} , {personalInfo?.city}
+                  </Description>
+                </InfoDetail>
+                <InfoDetail>
+                  <Title>Email</Title>
+                  <Description>{personalInfo?.email}</Description>
+                </InfoDetail>
+                <InfoDetail>
+                  <Title>Phone</Title>
+                  <Description>{personalInfo?.phone}</Description>
+                </InfoDetail>
+                <FullDivider></FullDivider>
+                <InfoTitle>Languages</InfoTitle>
+                <InfoDetail>
+                  <Description>
+                    {skillsInfo.language.map((data) => {
+                      return <Description>{data}</Description>;
+                    })}
+                  </Description>
+                </InfoDetail>
+              </PersonalInfo>
             </div>
-          </LightTemplate>
-        </Container>
-      </PDFExport>
+            <div className="col-8">
+              <DetailBox>
+                <TitleRight>
+                  Hello, I’m {personalInfo?.firstName} {personalInfo?.lastName}!
+                </TitleRight>
+                <AboutMe>{personalInfo?.history}</AboutMe>
+                <FullDivider></FullDivider>
+                <div className="my-row">
+                  <div className="col-6">
+                    <InfoTitle>Software Skills</InfoTitle>
+                    <FlexBox>
+                      {skillsInfo.softwareSkills.map((data) => {
+                        return (
+                          <ProgressBarMain>
+                            <CircularProgressbar
+                              styles={{
+                                root: {
+                                  height: 70,
+                                  width: 70,
+                                },
+                                path: {
+                                  stroke: "#FFE32C",
+                                  strokeWidth: "5px",
+                                },
+                                text: {
+                                  fontSize: 10,
+                                },
+                                trail: {
+                                  stroke: "white",
+                                },
+                              }}
+                              counterClockwise={true}
+                              value={data.rating}
+                              text={data.rating + "%"}
+                            />
+                            <Title>{data.name}</Title>
+                          </ProgressBarMain>
+                        );
+                      })}
+                    </FlexBox>
+                  </div>
+                  <div className="col-6">
+                    <InfoTitle>Professional Skills</InfoTitle>
+                    {skillsInfo.professionalSkills.map((data) => {
+                      return (
+                        <>
+                          <FlexBetween>
+                            <SkillName>{data?.name}</SkillName>
+                            <SkillName>{data?.rating}%</SkillName>
+                          </FlexBetween>
+
+                          <ProgressBar
+                            completed={data?.rating}
+                            bgColor="#FFE32C"
+                            height="5px"
+                            isLabelVisible={false}
+                            baseBgColor="#EBF0F1"
+                          />
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+                <FullDivider style={{ margin: "30px 0" }}></FullDivider>
+                <div className="my-row">
+                  <div className="col-6">
+                    <InfoTitle>Work Experience</InfoTitle>
+                    {workExperienceList.map((data) => {
+                      return (
+                        <BoxFlex>
+                          <Badge>
+                            {data.currentlyWorkHere == true
+                              ? "Current Job"
+                              : `${moment(data.startDate).format(
+                                  "MM/DD/YYYY"
+                                )} - ${moment(data.endDate).format(
+                                  "MM/DD/YYYY"
+                                )}`}
+                          </Badge>
+
+                          <Details>
+                            <DetailsHeading>{data.title}</DetailsHeading>
+                            <DetailsDesg>{data.employer}</DetailsDesg>
+                            <DetailsContent>{data.description}</DetailsContent>
+                          </Details>
+                        </BoxFlex>
+                      );
+                    })}
+                  </div>
+                  <div className="col-6">
+                    <InfoTitle>Education</InfoTitle>
+                    {educationDetailsList.map((data) => {
+                      return (
+                        <BoxFlex>
+                          <Badge>
+                            {moment(data.graduationStartDate).format(
+                              "MM/DD/YYYY"
+                            )}{" "}
+                            -{" "}
+                            {moment(data.graduationEndDate).format(
+                              "MM/DD/YYYY"
+                            )}
+                          </Badge>
+                          <Details>
+                            <DetailsHeading>{data.studyField}</DetailsHeading>
+                            <DetailsDesg>{data.instituteName}</DetailsDesg>
+                            <DetailsContent>{data.description}</DetailsContent>
+                          </Details>
+                        </BoxFlex>
+                      );
+                    })}
+                  </div>
+                </div>
+                <FullDivider></FullDivider>
+                <InfoTitle>Interests</InfoTitle>
+                <Interest>
+                  <div className="my-row">
+                    {hobbyName.hobbiesData.map((data) => {
+                      return (
+                        <div className="col-4">
+                          <img src={data.icon} alt="" />
+                          <IntrestName>{data.name}</IntrestName>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Interest>
+              </DetailBox>
+            </div>
+          </div>
+        </LightTemplate>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

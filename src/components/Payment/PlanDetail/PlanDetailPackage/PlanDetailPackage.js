@@ -1,18 +1,16 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Row, Col, Divider } from "antd";
 import PlanDetailPackageCard from "../PlanDetailPacakgeCard/PlanDetailPackageCard";
-import { MonthlyPlan, YearlyPlan, PlanLocalStorageKey } from "../../../../constants/global";
+import {
+  MonthlyPlan,
+  YearlyPlan,
+  PlanLocalStorageKey,
+} from "../../../../constants/global";
 import { PurchasePlanContext } from "../../../../Screens/PayPalScreen/PaypalScreen";
 
-
-
-
-
-
 const PlanDetailPackage = () => {
-        const {amount, updateamount} = useContext(PurchasePlanContext)
-  // console.log({otherPRops})
-  // console.log({otherPRops})
+  const { amount, updateamount } = useContext(PurchasePlanContext);
+
   return (
     <>
       <Row
@@ -106,7 +104,6 @@ const PlanDetailPackage = () => {
               >
                 <>Pro Monthly</>
               </h6>
-               
             }
             price={
               <>
@@ -156,4 +153,4 @@ const PlanDetailPackage = () => {
   );
 };
 
-export default (PlanDetailPackage);
+export default PlanDetailPackage;

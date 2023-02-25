@@ -6,10 +6,12 @@ import travel from "./travel.png";
 import writing from "./writing.png";
 import gaming from "./gaming.png";
 import circle from "./circle.png";
-import behance from "./behance.png";
-import ln from "./ln.png";
-import tw from "./tw.png";
-
+// import behance from "./behance.png";
+// import ln from "./ln.png";
+// import tw from "./tw.png";
+import twitter from "./twitter.svg";
+import behance from "./behance.svg";
+import linkedin from "./linkin.svg";
 export default {
   profile,
   basketball,
@@ -20,6 +22,6 @@ export default {
   writing,
   circle,
   behance,
-  ln,
-  tw,
+  linkedin,
+  twitter,
 };

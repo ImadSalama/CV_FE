@@ -7,6 +7,8 @@ import "react-circular-progressbar/dist/styles.css";
 import { useReactToPrint } from "react-to-print";
 import ExtraFields from "../../../Screens/CVMaking/Extras/Extras";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
+import moment from "moment";
+import jsPDF from "jspdf";
 
 const Container = styled.div`
   height: auto;
@@ -156,6 +158,23 @@ export default ({
       pdfExportComponent.current.save();
     }
   };
+
+  const reportTemplateRef = useRef(null);
+
+  const handleGeneratePdf = () => {
+    const doc = new jsPDF({
+      format: "a4",
+      unit: "px",
+    });
+
+    doc.html(componentRef.current, {
+      async callback(doc) {
+        await doc.save("CVPDF");
+      },
+      html2canvas: { scale: 0.4 },
+    });
+  };
+
   return (
     <div className="custom_container">
       <div className="d-flex justify-content-between">
@@ -170,202 +189,205 @@ export default ({
         <button
           type="button"
           className="bg-gray-500 border border-gray-500 p-2 mb-4"
-          onClick={handlePrint}
+          onClick={handleGeneratePdf}
         >
           {" "}
           Download Resume{" "}
         </button>
+        <div ref={reportTemplateRef} fileName={`ResumeTow`}></div>
       </div>
-      <PDFExport
+      {/* <PDFExport
         ref={pdfExportComponent}
         fileName={`Resume`}
         paperSize="auto"
         margin={40}
-      >
-        <Container ref={componentRef}>
-          <div className="my-row">
-            <div className="col-4">
-              <ProfileDetail>
-                <DetailBox>
-                  <ProfileImage>
-                    <img src={profileImage || icons.dp} />
-                  </ProfileImage>
-                </DetailBox>
-                <DetailBox>
-                  <UserName>
-                    {personalInfo?.firstName
-                      ? `${personalInfo?.firstName} ${personalInfo?.lastName}`
-                      : "Ana Jones"}
-                  </UserName>
-                  <SkillSet>
-                    {personalInfo?.profession || "Software Engineer"}
-                  </SkillSet>
-                </DetailBox>
-                <ContentBox>
-                  <HeadingContent>Profile</HeadingContent>
-                  <HeadingDivider></HeadingDivider>
-                  <ContentDetail>{extraFields?.quote}</ContentDetail>
-                </ContentBox>
+      > */}
+      <Container ref={componentRef}>
+        <div className="my-row">
+          <div className="col-4">
+            <ProfileDetail>
+              <DetailBox>
+                <ProfileImage>
+                  <img src={profileImage || icons.dp} />
+                </ProfileImage>
+              </DetailBox>
+              <DetailBox>
+                <UserName>
+                  {personalInfo?.firstName
+                    ? `${personalInfo?.firstName} ${personalInfo?.lastName}`
+                    : "Ana Jones"}
+                </UserName>
+                <SkillSet>
+                  {personalInfo?.profession || "Software Engineer"}
+                </SkillSet>
+              </DetailBox>
+              <ContentBox>
+                <HeadingContent>Profile</HeadingContent>
+                <HeadingDivider></HeadingDivider>
+                <ContentDetail>{extraFields?.quote}</ContentDetail>
+              </ContentBox>
 
-                <ContentBox>
-                  <HeadingContent>Contact</HeadingContent>
-                  <HeadingDivider></HeadingDivider>
-                  <ContentDetail>{personalInfo?.phone}</ContentDetail>
-                  <ContentDetail>
-                    {personalInfo?.address ||
-                      " 993 Carson Stwest New York, NJ 07093"}
-                  </ContentDetail>
-                  <ContentDetail>
-                    {extraFields?.website}
-                    <br />
-                    {personalInfo?.email}
-                  </ContentDetail>
-                </ContentBox>
-                <ContentBox>
-                  <HeadingContent>Interests</HeadingContent>
-                  <HeadingDivider></HeadingDivider>
-                  <div className="row">
-                    {hobbyName.hobbiesData.map((data) => {
-                      return (
-                        <div className="col-6">
-                          <InterestIcons>
-                            <img src={data.icon} />
-                          </InterestIcons>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </ContentBox>
-              </ProfileDetail>
-            </div>
-            <div className="col-8">
-              <PortfolioSec>
-                <HeadingWithDivider>
-                  <HeadingContent className="text-left">About</HeadingContent>
-                  <HeadingDivider className="width-70"></HeadingDivider>
-                </HeadingWithDivider>
-                <ContentDetail className="width-70 text-left">
-                  {personalInfo?.history ||
-                    `I am Amber Bris a 25 year old Lead Visual Designer & Freelance
+              <ContentBox>
+                <HeadingContent>Contact</HeadingContent>
+                <HeadingDivider></HeadingDivider>
+                <ContentDetail>{personalInfo?.phone}</ContentDetail>
+                <ContentDetail>
+                  {personalInfo?.address ||
+                    " 993 Carson Stwest New York, NJ 07093"}
+                </ContentDetail>
+                <ContentDetail>
+                  {extraFields?.website}
+                  <br />
+                  {personalInfo?.email}
+                </ContentDetail>
+              </ContentBox>
+              <ContentBox>
+                <HeadingContent>Interests</HeadingContent>
+                <HeadingDivider></HeadingDivider>
+                <div className="row">
+                  {hobbyName.hobbiesData.map((data) => {
+                    return (
+                      <div className="col-6">
+                        <InterestIcons>
+                          <img src={data.icon} />
+                        </InterestIcons>
+                      </div>
+                    );
+                  })}
+                </div>
+              </ContentBox>
+            </ProfileDetail>
+          </div>
+          <div className="col-8">
+            <PortfolioSec>
+              <HeadingWithDivider>
+                <HeadingContent className="text-left">About</HeadingContent>
+                <HeadingDivider className="width-70"></HeadingDivider>
+              </HeadingWithDivider>
+              <ContentDetail className="width-70 text-left">
+                {personalInfo?.history ||
+                  `I am Amber Bris a 25 year old Lead Visual Designer & Freelance
                 UI/UX Expert from New York. I loves everything that has to do
                 with App Design, IJI/UX, Graphic design, Packaging, Industrial
                 design and feel true devotion for typography. I have 4 years of
                 experience working as a designer and working with a studio
                 during studies..`}
-                </ContentDetail>
-              </PortfolioSec>
+              </ContentDetail>
+            </PortfolioSec>
+            <PortfolioSec>
+              <HeadingWithDivider>
+                <HeadingContent className="text-left">Education</HeadingContent>
+                <HeadingDivider className="width-70"></HeadingDivider>
+              </HeadingWithDivider>
               <PortfolioSec>
-                <HeadingWithDivider>
-                  <HeadingContent className="text-left">
-                    Education
-                  </HeadingContent>
-                  <HeadingDivider className="width-70"></HeadingDivider>
-                </HeadingWithDivider>
-                <PortfolioSec>
-                  {educationDetailsList.map((data) => {
-                    return (
-                      <EducationDetail>
-                        <EducationYear>
-                          <p>
-                            {data.graduationStartDate} -{" "}
-                            {data.graduationEndDate}
-                          </p>
-                        </EducationYear>
-                        <EducationDivider></EducationDivider>
-                        <EducationInst>
-                          <h3>{data.studyField}</h3>
-                          <h5>{data.instituteName}</h5>
-                          <p>{data.description}</p>
-                        </EducationInst>
-                      </EducationDetail>
-                    );
-                  })}
-                </PortfolioSec>
+                {educationDetailsList.map((data) => {
+                  return (
+                    <EducationDetail>
+                      <EducationYear>
+                        <p>
+                          {moment(data.graduationStartDate).format(
+                            "MM/DD/YYYY"
+                          )}{" "}
+                          -{" "}
+                          {moment(data.graduationEndDate).format("MM/DD/YYYY")}
+                        </p>
+                      </EducationYear>
+                      <EducationDivider></EducationDivider>
+                      <EducationInst>
+                        <h3>{data.studyField}</h3>
+                        <h5>{data.instituteName}</h5>
+                        <p>{data.description}</p>
+                      </EducationInst>
+                    </EducationDetail>
+                  );
+                })}
               </PortfolioSec>
-              <PortfolioSec>
-                <HeadingWithDivider>
-                  <HeadingContent className="text-left">
-                    Language Skills
-                  </HeadingContent>
-                  <HeadingDivider className="width-70"></HeadingDivider>
-                </HeadingWithDivider>
-                <ContentDetail className="width-70 text-left">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                </ContentDetail>
-                <div className="my-row">
-                  {skillsInfo.professionalSkills.map((data) => {
-                    return (
-                      <div className="col-3">
-                        <FlexBox>
-                          <CircularProgressbar
-                            styles={{
-                              root: {
-                                height: 100,
-                                width: 100,
-                              },
-                              path: {
-                                stroke: "black",
-                              },
-                              text: {
-                                fontSize: 10,
-                              },
-                            }}
-                            value={data.rating}
-                            text={data.rating + "%"}
-                          />
+            </PortfolioSec>
+            <PortfolioSec>
+              <HeadingWithDivider>
+                <HeadingContent className="text-left">
+                  Language Skills
+                </HeadingContent>
+                <HeadingDivider className="width-70"></HeadingDivider>
+              </HeadingWithDivider>
+              <ContentDetail className="width-70 text-left">
+                It is a long established fact that a reader will be distracted
+                by the readable content of a page when looking at its layout.
+              </ContentDetail>
+              <div className="my-row">
+                {skillsInfo.professionalSkills.map((data) => {
+                  return (
+                    <div className="col-3">
+                      <FlexBox>
+                        <CircularProgressbar
+                          styles={{
+                            root: {
+                              height: 100,
+                              width: 100,
+                            },
+                            path: {
+                              stroke: "black",
+                            },
+                            text: {
+                              fontSize: 10,
+                            },
+                          }}
+                          value={data.rating}
+                          text={data.rating + "%"}
+                        />
 
-                          <p>{data.name}</p>
-                        </FlexBox>
-                      </div>
-                    );
+                        <p>{data.name}</p>
+                      </FlexBox>
+                    </div>
+                  );
+                })}
+              </div>
+            </PortfolioSec>
+            <PortfolioSec>
+              <HeadingWithDivider>
+                <HeadingContent className="text-left">Facts</HeadingContent>
+                <HeadingDivider className="width-70"></HeadingDivider>
+              </HeadingWithDivider>
+              <ContentDetail className="width-70 text-left">
+                <ul className="ml-3">
+                  {extraFields.facts.map((data) => {
+                    return <li>{data.factName}</li>;
                   })}
-                </div>
-              </PortfolioSec>
+                </ul>
+              </ContentDetail>
+            </PortfolioSec>
+            <PortfolioSec>
+              <HeadingWithDivider>
+                <HeadingContent className="text-left">
+                  Employment History
+                </HeadingContent>
+                <HeadingDivider className="width-70"></HeadingDivider>
+              </HeadingWithDivider>
               <PortfolioSec>
-                <HeadingWithDivider>
-                  <HeadingContent className="text-left">Facts</HeadingContent>
-                  <HeadingDivider className="width-70"></HeadingDivider>
-                </HeadingWithDivider>
-                <ContentDetail className="width-70 text-left">
-                  <ul className="ml-3">
-                    {extraFields.facts.map((data) => {
-                      return <li>{data.factName}</li>;
-                    })}
-                  </ul>
-                </ContentDetail>
+                {workExperienceList.map((value) => {
+                  return (
+                    <EducationDetail>
+                      <EducationYear>
+                        <p>
+                          {moment(value.startDate).format("MM/YYYY")} -{" "}
+                          {moment(value.endDate).format("MM/YYYY")}
+                        </p>
+                      </EducationYear>
+                      <EducationDivider></EducationDivider>
+                      <EducationInst>
+                        <h3>{value.title}</h3>
+                        <h5>{value.employer}</h5>
+                        <p>{value.description}</p>
+                      </EducationInst>
+                    </EducationDetail>
+                  );
+                })}
               </PortfolioSec>
-              <PortfolioSec>
-                <HeadingWithDivider>
-                  <HeadingContent className="text-left">
-                    Employment History
-                  </HeadingContent>
-                  <HeadingDivider className="width-70"></HeadingDivider>
-                </HeadingWithDivider>
-                <PortfolioSec>
-                  {workExperienceList.map((value) => {
-                    return (
-                      <EducationDetail>
-                        <EducationYear>
-                          <p>
-                            {value.startDate} - {value.endDate}
-                          </p>
-                        </EducationYear>
-                        <EducationDivider></EducationDivider>
-                        <EducationInst>
-                          <h3>{value.title}</h3>
-                          <h5>{value.employer}</h5>
-                          <p>{value.description}</p>
-                        </EducationInst>
-                      </EducationDetail>
-                    );
-                  })}
-                </PortfolioSec>
-              </PortfolioSec>
-            </div>
+            </PortfolioSec>
           </div>
-        </Container>
-      </PDFExport>
+        </div>
+      </Container>
+      {/* </PDFExport> */}
     </div>
   );
 };

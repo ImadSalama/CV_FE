@@ -120,7 +120,6 @@ const Education = ({
 
     setSkillsInfo({ ...skillsInfo, [name]: filteredRecords });
   };
-  console.log(hobbyName);
   return (
     <div className="transitionfade">
       <div style={{ display: "flex", justifyContent: "center" }}>
