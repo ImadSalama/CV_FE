@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { HashRouter as Router, Route, Redirect } from "react-router-dom";
 import MainScreen from "../Screens/MainScreen/MainScreen";
 import RegisterScreen from "../Screens/RegisterScreen/RegisterScreen";
 import SigninScreen from "../Screens/SigninScreen/SigninScreen";
