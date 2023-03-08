@@ -3,7 +3,7 @@
   "proxy": "http://127.0.0.1:5000",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://imadsalama.github.io/CV_FE",
+  "homepage": "https://imadsalama.github.io/CV_FE/",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@material-ui/core": "^4.12.1",
