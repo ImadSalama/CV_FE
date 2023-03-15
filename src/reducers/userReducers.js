@@ -58,7 +58,7 @@ export const userRegisterReducer = (state = {}, action) => {
       return { loading: true };
     case USER_REGISTER_SUCCESS:
       // setIsLoggedIn(action.payload.token);
-      window.location.href = `${window.location.origin}/signin`;
+      window.location.href = `${window.location.origin}${window.location.pathname}#/signin`;
     // return {
     //   loading: false,
     //   userInfo: action.payload,

@@ -17,7 +17,7 @@ function Feedback() {
 
   const reviews = (
     useSelector((state) => state.userReview.reviews) || []
-  ).slice(0, 4);
+  ).slice(-4);
 
   useEffect(() => {
     dispatch(fetchReview());
